@@ -1,0 +1,10 @@
+name: Deceit
+description: "River's take on Molehunt"
+version: '${version}'
+
+main: pro.fazeclan.river.deceit.Deceit
+api-version: '26.2'
+load: POSTWORLD
+
+authors: [ riversflowing ]
+website: https://github.com/flowingforever
