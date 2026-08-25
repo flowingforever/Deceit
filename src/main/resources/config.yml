@@ -1,2 +1,2 @@
 role-chance-dividend: 1.05
-backstab-punish: 100 # ticks
+backstab-cooldown: 100 # ticks

@@ -35,9 +35,9 @@ public class BackstabListener implements Listener {
         if (!item.getPersistentDataContainer().has(Deceit.getKey("backstab"))) {
             return;
         }
+        attacker.setCooldown(item, plugin.getConfig().getInt("backstab-cooldown", 100));
         if (!isBehindPlayer(attacker, victim)) {
             event.setDamage(event.getDamage() / 2.0);
-            attacker.setCooldown(item, plugin.getConfig().getInt("backstab-punish", 100));
             return;
         }
         event.setDamage(2000); // one tap pretty much
