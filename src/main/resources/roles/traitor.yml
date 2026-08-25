@@ -1,0 +1,7 @@
+name: '<red>Traitor</red>'
+description:
+  - '<gray>Eliminate all opposing players to win.'
+abilities: []
+limit: -1
+winning-ends-games: true
+coins: 4

@@ -1,5 +1,5 @@
 name: Deceit
-description: "River's take on Molehunt"
+description: "Murder Mystery style minigames"
 version: '${version}'
 
 main: pro.fazeclan.river.deceit.Deceit
@@ -8,3 +8,13 @@ load: POSTWORLD
 
 authors: [ riversflowing ]
 website: https://github.com/flowingforever
+
+dependencies:
+  server:
+    Jarona:
+      load: BEFORE
+      required: true
+    NBTAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true

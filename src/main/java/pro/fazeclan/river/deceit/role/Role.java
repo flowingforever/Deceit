@@ -5,32 +5,88 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.menu.ShopEntry;
+import pro.fazeclan.river.jarona.game.GameValues;
 
 import java.io.File;
 import java.util.List;
 
 public abstract class Role {
 
-    @Getter
-    private final String id;
-
     private final File file;
     private final YamlConfiguration config;
 
-    public Role(Deceit plugin, String id) {
+    @Getter
+    private final String id;
+
+    @Getter
+    private final Faction faction;
+    @Getter
+    private final boolean takesPriority; // more for the neutral roles
+
+    public Role(Deceit plugin, String id, Faction faction, boolean takesPriority) {
         plugin.saveResource("roles/" + id + ".yml", false);
         this.file = new File(plugin.getDataFolder(), "roles/" + id + ".yml");
         this.config = YamlConfiguration.loadConfiguration(this.file);
 
         this.id = id;
+        this.faction = faction;
+        this.takesPriority = takesPriority;
     }
 
     public <T> T getProperty(String key, T def) {
         return (T) config.get(key, def);
     }
 
-    public abstract int getMaxPlayers(List<Player> players);
-    public abstract ItemStack[] getSpawnItems();
-    public abstract ItemStack[] getShopItems();
+    public abstract List<ItemStack> getSpawnItems();
+    public abstract List<ShopEntry> getShopItems();
+    public abstract ItemStack getDisplayItem();
+    public abstract boolean hasWon(List<Player> players, GameValues values);
+    public abstract String getPrefix();
+    public abstract String winsWith();
+
+    public String getName() {
+        return getProperty("name", "None");
+    }
+
+    public List<String> getDescription() {
+        return getProperty("description", List.of());
+    }
+
+    public List<String> getAbilities() {
+        return getProperty("abilities", List.of());
+    }
+
+    public int getLimit() {
+        return getProperty("limit", -1);
+    }
+
+    public boolean isLimited() {
+        return getLimit() > 0;
+    }
+
+    public boolean isEnabled() {
+        return getLimit() != 0;
+    }
+
+    public boolean winningEndsGames() {
+        return getProperty("winning-ends-games", true);
+    }
+
+    public int getCoins() {
+        return getProperty("coins", 0);
+    }
+
+    public boolean hasAbility(String id) {
+        return getAbilities().contains(id);
+    }
+
+    public boolean isSameTeam(Role other) {
+        if (faction == Faction.NEUTRAL) {
+            return other.equals(this);
+        } else {
+            return other.faction.equals(faction);
+        }
+    }
 
 }
