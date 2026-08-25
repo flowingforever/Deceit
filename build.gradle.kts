@@ -20,7 +20,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("26.2.build.+")
     compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
-    compileOnly(files("../Jarona/build/libs/Jarona-0.1.0-all.jar"))
+    compileOnly(files("../Jarona/build/libs/Jarona-" + providers.gradleProperty("jarona_version").get() + "-all.jar"))
     compileOnly("de.tr7zw:item-nbt-api-plugin:2.15.7")
     compileOnly("io.github.alexdev03:unlimitednametags-api-paper:2.0.0")
     compileOnly("io.github.tofaa2:spigot:3.0.3-SNAPSHOT")
@@ -42,7 +42,7 @@ tasks {
         // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("26.2")
         jvmArgs("-Xms2G", "-Xmx2G", "-Dcom.mojang.eula.agree=true")
-        pluginJars(files("../Jarona/build/libs/Jarona-0.1.0-all.jar"))
+        pluginJars(files("../Jarona/build/libs/Jarona-" + providers.gradleProperty("jarona_version").get() + "-all.jar"))
         downloadPlugins {
             modrinth("packetevents", "2.13.0+spigot")
             modrinth("nbtapi", "2.15.7")
