@@ -1,10 +1,15 @@
 package pro.fazeclan.river.deceit;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import lombok.Getter;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 import pro.fazeclan.river.deceit.ability.AbilityManager;
 import pro.fazeclan.river.deceit.game.DeceitMurderGame;
+import pro.fazeclan.river.deceit.listener.BackstabListener;
+import pro.fazeclan.river.deceit.listener.CorpseListener;
+import pro.fazeclan.river.deceit.listener.PreventionListener;
 import pro.fazeclan.river.deceit.listener.ShopListener;
 import pro.fazeclan.river.deceit.role.RoleManager;
 import pro.fazeclan.river.jarona.Jarona;
@@ -30,7 +35,14 @@ public final class Deceit extends JavaPlugin {
         this.abilityManager = new AbilityManager(this);
         abilityManager.registerAll();
 
-        getServer().getPluginManager().registerEvents(new ShopListener(), this);
+        var pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new ShopListener(), this);
+        pluginManager.registerEvents(new BackstabListener(this), this);
+        pluginManager.registerEvents(new PreventionListener(), this);
+        pluginManager.registerEvents(new CorpseListener(), this);
+
+        var events = PacketEvents.getAPI().getEventManager();
+        events.registerListener(new PreventionListener(), PacketListenerPriority.NORMAL);
     }
 
     @Override

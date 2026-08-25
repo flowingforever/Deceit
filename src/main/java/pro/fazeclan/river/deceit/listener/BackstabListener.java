@@ -1,0 +1,72 @@
+package pro.fazeclan.river.deceit.listener;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.util.Vector;
+import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.jarona.util.GameUtil;
+
+public class BackstabListener implements Listener {
+
+    private final Deceit plugin;
+
+    public BackstabListener(Deceit plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler
+    private void onPlayerAttack(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player victim)) {
+            return;
+        }
+        if (!(event.getDamager() instanceof Player attacker)) {
+            return;
+        }
+        if (!GameUtil.hasGame(victim.getWorld(), Deceit.getKey("murder"))) {
+            return;
+        }
+        var item = attacker.getInventory().getItemInMainHand();
+        if (attacker.hasCooldown(item)) {
+            event.setDamage(0.0);
+            return;
+        }
+        if (!item.getPersistentDataContainer().has(Deceit.getKey("backstab"))) {
+            return;
+        }
+        if (!isBehindPlayer(attacker, victim)) {
+            event.setDamage(event.getDamage() / 2.0);
+            attacker.setCooldown(item, plugin.getConfig().getInt("backstab-punish", 100));
+            return;
+        }
+        event.setDamage(2000); // one tap pretty much
+    }
+
+    private boolean isBehindPlayer(Player attacker, Player victim) {
+        // thank you sonicdude for this beautiful code so i don't have to look up everything
+        Vector victimFacing = victim.getLocation()
+                .getDirection()
+                .setY(0);
+
+        Vector victimToAttacker = attacker.getLocation()
+                .toVector()
+                .subtract(victim.getLocation().toVector())
+                .setY(0);
+
+        if (victimFacing.lengthSquared() == 0.0
+                || victimToAttacker.lengthSquared() == 0.0) {
+            return false;
+        }
+
+        victimFacing.normalize();
+        victimToAttacker.normalize();
+
+        double behindDot = victimFacing
+                .multiply(-1)
+                .dot(victimToAttacker);
+
+        return behindDot >= 0.5;
+    }
+
+}

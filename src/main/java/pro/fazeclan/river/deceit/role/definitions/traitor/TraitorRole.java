@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
@@ -22,7 +23,7 @@ public class TraitorRole extends AbstractTraitorRole {
     @Override
     public List<ItemStack> getSpawnItems() {
         return List.of(
-                ItemType.BOW.createItemStack(),
+                ItemType.BOW.createItemStack(meta -> meta.setUnbreakable(true)),
                 ItemType.ARROW.createItemStack(40)
         );
     }
@@ -46,6 +47,11 @@ public class TraitorRole extends AbstractTraitorRole {
                                     Component.text("\"Perfect for stabbing people in the back!\"").color(NamedTextColor.GRAY),
                                     Component.text(" - Shakespeare, probably").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                             ));
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("backstab"),
+                                    PersistentDataType.BOOLEAN,
+                                    true
+                            );
                         }),
                         2
                 ),

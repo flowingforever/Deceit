@@ -10,6 +10,7 @@ import pro.fazeclan.river.jarona.invui.window.Window;
 
 public class ShopMenu {
 
+    // TODO: Turn into Dialog menu
     public static void createAndShowMenu(Player player, GameValues values) {
         var role = RoleUtil.getRole(player, values);
         var items = role.getShopItems();

@@ -1,24 +1,32 @@
 package pro.fazeclan.river.deceit.util;
 
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Pose;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.tablist.NameContext;
+import pro.fazeclan.river.jarona.util.GameUtil;
+import pro.fazeclan.river.jarona.util.QuadFunction;
 
 public class GameFunctions {
 
     public static void assignRole(Player player, Role role, GameValues values) {
         values.setValue("role_" + player.getUniqueId(), role);
         values.setValue("faction_" + player.getUniqueId(), role.getFaction());
-        TriFunction<Player, Player, NameContext, String> name = values.setValue(
+        values.setValue(
                 "name_" + player.getUniqueId(),
-                (t, v, ctx) -> {
+                (QuadFunction<Player, Player, NameContext, GameValues, String>) (t, v, ctx, vl) -> {
                     if (v.getGameMode().isInvulnerable()
-                            || (RoleUtil.canSeeTeam(t, v, values))) {
+                            || RoleUtil.canSeeTeam(t, v, values)
+                            || !vl.getValue("undiscovered_" + player.getUniqueId(), true)) {
                         if (ctx.equals(NameContext.TABLIST)) {
                             return role.getPrefix() + " %jarona_nickname%";
                         } else {
@@ -32,6 +40,7 @@ public class GameFunctions {
         values.setValue("coins_" + player.getUniqueId(), role.getCoins());
 
         player.getInventory().clear();
+        player.setSaturation(2f);
         for (ItemStack item : role.getSpawnItems()) {
             if (item == null) continue;
             player.give(item);
@@ -43,6 +52,32 @@ public class GameFunctions {
         assignRole(player, role, values);
         player.teleport(location);
         player.setGameMode(GameMode.ADVENTURE);
+
+    }
+
+    public static void eliminatePlayer(Player player, boolean undiscovered) {
+
+        var game = GameUtil.getGame(player);
+        if (game == null) {
+            return;
+        }
+        var values = game.getGameValues(player.getWorld().getUID());
+        values.setValue("undiscovered_" + player.getUniqueId(), undiscovered);
+        player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());
+        player.setGameMode(GameMode.SPECTATOR);
+
+        // todo: summon corpse
+        player.getWorld().spawn(player.getLocation(), Mannequin.class, m -> {
+            m.setProfile(ResolvableProfile.resolvableProfile(player.getPlayerProfile()));
+            m.setCustomNameVisible(false);
+            m.setDescription(null);
+            m.setPose(Pose.SWIMMING, true);
+            m.setInvulnerable(true);
+        });
+
+        // todo: add time
+
+        // todo: consider svc
 
     }
 

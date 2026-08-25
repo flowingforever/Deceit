@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle("26.2.build.+")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
     compileOnly(files("../Jarona/build/libs/Jarona-0.1.0-all.jar"))
     compileOnly("de.tr7zw:item-nbt-api-plugin:2.15.7")
     compileOnly("io.github.alexdev03:unlimitednametags-api-paper:2.0.0")
