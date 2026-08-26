@@ -10,8 +10,11 @@ import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.RoleUtil;
+import pro.fazeclan.river.deceit.util.TimeUtil;
+import pro.fazeclan.river.jarona.condition.Condition;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.game.GameWithMap;
+import pro.fazeclan.river.jarona.util.ConditionUtil;
 import pro.fazeclan.river.jarona.util.GameUtil;
 import pro.fazeclan.river.jarona.util.WorldlessLocation;
 
@@ -21,6 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 // say that again...
 public class DeceitMurderGame extends GameWithMap {
@@ -47,7 +52,7 @@ public class DeceitMurderGame extends GameWithMap {
         world.setGameRule(GameRules.LOCATOR_BAR, false);
         world.setGameRule(GameRules.REDUCED_DEBUG_INFO, true);
 
-        // TODO: announce text that shows roles
+        // announcement text
         var values = getGameValues(world.getUID());
         var scheduler = Bukkit.getScheduler();
         var mm = MiniMessage.miniMessage();
@@ -87,15 +92,47 @@ public class DeceitMurderGame extends GameWithMap {
             }
         }
 
-        // TODO: timer that shows for only the non-innocent
+        // timer that only shows for the non-innocent
+        values.setValue("time_limit", config.getLong("deceit.initial-time", 2400));
+
+        ConditionUtil.getWorldConditions(world)
+                .getOrCreate(
+                        "murder_time_limit",
+                        new Condition() {
+                            @Override
+                            public Function<Condition, String> getHud() {
+                                return c -> {
+                                    var vl = getGameValues(world.getUID());
+                                    long duration = vl.getValue("time_limit", 0L) - vl.getValue("tick", 0L);
+                                    return "<red><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></red>";
+                                };
+                            }
+
+                            @Override
+                            public BiFunction<Condition, Player, Boolean> getHudCondition() {
+                                return (c, v) -> {
+                                    var vl = getGameValues(world.getUID());
+                                    return RoleUtil.isEvil(v, vl) || v.getGameMode().isInvulnerable();
+                                };
+                            }
+
+                            @Override
+                            public boolean getAvailable() {
+                                return true;
+                            }
+
+                            @Override
+                            public void reset() {}
+                        }
+                );
 
     }
 
     @Override
     public void tick(World world, List<Player> players) {
 
-        var gameValues = getGameValues(world.getUID());
-        var winners = getWinningRoles(players, gameValues);
+        var values = getGameValues(world.getUID());
+        var winners = getWinningRoles(players, values);
 
         for (var winner : winners) {
             if (winner.winningEndsGames()) {
@@ -104,9 +141,11 @@ public class DeceitMurderGame extends GameWithMap {
             }
         }
 
-        incrementGameTick(world);
+        if (values.getValue("time_limit", 0L) < values.getValue("tick", 0L)) {
+            GameUtil.endGame(world);
+        }
 
-        // TODO: if someone's holding a compass, set that compass location to the nearest player
+        incrementGameTick(world);
 
     }
 

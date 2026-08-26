@@ -6,6 +6,7 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
@@ -15,6 +16,8 @@ import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.tablist.NameContext;
 import pro.fazeclan.river.jarona.util.GameUtil;
 import pro.fazeclan.river.jarona.util.QuadFunction;
+
+import java.io.File;
 
 public class GameFunctions {
 
@@ -37,7 +40,7 @@ public class GameFunctions {
                     return "%jarona_nickname%";
                 }
         );
-        values.setValue("coins_" + player.getUniqueId(), role.getCoins());
+        giveCoins(player, values, role.getCoins());
 
         player.getInventory().clear();
         player.setSaturation(2f);
@@ -61,13 +64,14 @@ public class GameFunctions {
         if (game == null) {
             return;
         }
-        var values = game.getGameValues(player.getWorld().getUID());
+        var world = player.getWorld();
+        var values = game.getGameValues(world.getUID());
         values.setValue("undiscovered_" + player.getUniqueId(), undiscovered);
         player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());
         player.setGameMode(GameMode.SPECTATOR);
 
-        // todo: summon corpse
-        player.getWorld().spawn(player.getLocation(), Mannequin.class, m -> {
+        // summon corpse
+        world.spawn(player.getLocation(), Mannequin.class, m -> {
             m.setProfile(ResolvableProfile.resolvableProfile(player.getPlayerProfile()));
             m.setCustomNameVisible(false);
             m.setDescription(null);
@@ -75,7 +79,12 @@ public class GameFunctions {
             m.setInvulnerable(true);
         });
 
-        // todo: add time
+        // add time
+        var config = YamlConfiguration.loadConfiguration(new File(world.getWorldFolder(), "map_config.yml"));
+        values.setValue(
+                "time_limit",
+                values.getValue("time_limit", 0L) + config.getLong("deceit.added-time", 400)
+        );
 
         // todo: consider svc
 
@@ -89,6 +98,14 @@ public class GameFunctions {
         } else {
             return false;
         }
+    }
+
+    public static void payout(Player player, GameValues values) {
+        giveCoins(player, values, 2);
+    }
+
+    public static void giveCoins(Player player, GameValues values, int coins) {
+        values.setValue("coins_" + player.getUniqueId(), values.getValue("coins_" + player.getUniqueId(), 0) + coins);
     }
 
 }

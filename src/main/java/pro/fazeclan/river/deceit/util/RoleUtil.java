@@ -29,4 +29,8 @@ public class RoleUtil {
         return r1.isSameTeam(r2) && r1.getFaction() != Faction.INNOCENT;
     }
 
+    public static boolean isEvil(Player player, GameValues values) {
+        return !getRole(player, values).getFaction().equals(Faction.INNOCENT);
+    }
+
 }
