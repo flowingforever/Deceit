@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
+import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.game.GameValues;
 
 import java.util.List;
@@ -16,9 +17,8 @@ public abstract class AbstractInnocentRole extends Role {
 
     @Override
     public boolean hasWon(List<Player> players, GameValues values) {
-        return players.stream()
-                .filter(player -> !player.getGameMode().isInvulnerable())
-                .allMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(Faction.INNOCENT));
+        return RoleUtil.onlyPlayersInFactionRemain(players, values, getFaction())
+                || values.getValue("time_limit", 0L) <= values.getValue("tick", 0L);
     }
 
     @Override

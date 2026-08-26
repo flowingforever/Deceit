@@ -69,6 +69,10 @@ public class TraitorRole extends AbstractTraitorRole {
                 new ShopEntry(
                         ItemType.SPLASH_POTION.createItemStack(meta -> meta.setBasePotionType(PotionType.HEALING)),
                         1
+                ),
+                new ShopEntry(
+                        ItemType.COMPASS.createItemStack(),
+                        1
                 )
         );
     }

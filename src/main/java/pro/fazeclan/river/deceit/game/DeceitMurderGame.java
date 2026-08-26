@@ -141,7 +141,7 @@ public class DeceitMurderGame extends GameWithMap {
             }
         }
 
-        if (values.getValue("time_limit", 0L) < values.getValue("tick", 0L)) {
+        if (values.getValue("time_limit", 0L) <= values.getValue("tick", 0L)) {
             GameUtil.endGame(world);
         }
 

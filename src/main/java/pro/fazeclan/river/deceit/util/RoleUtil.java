@@ -5,6 +5,7 @@ import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.jarona.game.GameValues;
 
+import java.util.List;
 import java.util.UUID;
 
 public class RoleUtil {
@@ -31,6 +32,20 @@ public class RoleUtil {
 
     public static boolean isEvil(Player player, GameValues values) {
         return !getRole(player, values).getFaction().equals(Faction.INNOCENT);
+    }
+
+    public static boolean isInnocent(Player player, GameValues values) {
+        return getRole(player, values).getFaction().equals(Faction.INNOCENT);
+    }
+
+    public static boolean isTraitor(Player player, GameValues values) {
+        return getRole(player, values).getFaction().equals(Faction.TRAITOR);
+    }
+
+    public static boolean onlyPlayersInFactionRemain(List<Player> players, GameValues values, Faction faction) {
+        return players.stream()
+                .filter(player -> !player.getGameMode().isInvulnerable())
+                .allMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(faction));
     }
 
 }
