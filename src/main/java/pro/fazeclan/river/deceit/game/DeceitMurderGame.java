@@ -1,5 +1,7 @@
 package pro.fazeclan.river.deceit.game;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 // say that again...
@@ -66,6 +69,41 @@ public class DeceitMurderGame extends GameWithMap {
 
         var gameValues = getGameValues(world.getUID());
         var winners = getWinningRoles(players, gameValues);
+
+        var title = new StringBuilder();
+        var subtitle = new StringBuilder();
+
+        title.append("<gray><< ");
+        for (var winner : winners) {
+            if (!title.toString().equals("<gray><< ")) {
+                title.append(" + ");
+            }
+            title.append(winner.getPrefix());
+
+            if (!subtitle.isEmpty()) {
+                subtitle.append(" + ");
+            }
+            subtitle.append(winner.getName()).append("s");
+        }
+
+        // if nothing changed, just do none bro
+        if (title.toString().equals("<gray><< ")) {
+            title.append("<gray>?</gray>");
+        }
+        title.append(" >></gray>");
+
+        if (subtitle.isEmpty()) {
+            subtitle.append("No one");
+        }
+        subtitle.append(" won!");
+
+        var mm = MiniMessage.miniMessage();
+        for (var player : players) {
+            player.showTitle(Title.title(
+                    mm.deserialize(title.toString()),
+                    mm.deserialize(subtitle.toString())
+            ));
+        }
 
     }
 
@@ -158,7 +196,13 @@ public class DeceitMurderGame extends GameWithMap {
     }
 
     private List<Role> getWinningRoles(List<Player> players, GameValues values) {
-        return getMainRoles(players, values).stream().filter(role -> role.hasWon(players, values)).toList();
+        var manager = plugin.getRoleManager();
+        return getMainRoles(players, values)
+                .stream()
+                .filter(role -> role.hasWon(players, values))
+                .map(role -> manager.getRole(role.winsWith()))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
 }
