@@ -2,8 +2,7 @@ package pro.fazeclan.river.deceit.game;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.Deceit;
@@ -45,6 +44,51 @@ public class DeceitMurderGame extends GameWithMap {
         var spawn = WorldlessLocation.deserialize("spawn", config).toLocation(world);
         handleRoleSelection(spawn, players);
 
+        world.setGameRule(GameRules.LOCATOR_BAR, false);
+        world.setGameRule(GameRules.REDUCED_DEBUG_INFO, true);
+
+        // TODO: announce text that shows roles
+        var values = getGameValues(world.getUID());
+        var scheduler = Bukkit.getScheduler();
+        var mm = MiniMessage.miniMessage();
+        for (var player : players) {
+            Role role = values.getValue("role_" + player.getUniqueId());
+            scheduler.runTaskLater(plugin, () -> {
+                var sound = role.getAnnouncementSound();
+                player.showTitle(Title.title(
+                        mm.deserialize("<gray><< " + role.getPrefix() + " >></gray>"),
+                        mm.deserialize(role.getAnnouncement())
+                ));
+                player.playSound(
+                        player,
+                        sound.name().asString(),
+                        sound.volume(),
+                        sound.pitch()
+                );
+            }, 60);
+
+            long delay = 120;
+            for (var text : role.getDescription()) {
+                scheduler.runTaskLater(plugin, () -> {
+                    player.showTitle(Title.title(
+                            mm.deserialize("<gray><< " + role.getPrefix() + " >></gray>"),
+                            mm.deserialize(text),
+                            0, 65, 20
+                    ));
+                    player.playSound(
+                            player.getLocation(),
+                            "minecraft:block.note_block.bit",
+                            SoundCategory.PLAYERS,
+                            1f,
+                            1f
+                    );
+                }, delay);
+                delay += 60;
+            }
+        }
+
+        // TODO: timer that shows for only the non-innocent
+
     }
 
     @Override
@@ -61,6 +105,8 @@ public class DeceitMurderGame extends GameWithMap {
         }
 
         incrementGameTick(world);
+
+        // TODO: if someone's holding a compass, set that compass location to the nearest player
 
     }
 

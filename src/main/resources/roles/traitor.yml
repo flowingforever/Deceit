@@ -1,6 +1,10 @@
 name: '<red>Traitor'
+announcement: <red>You're a Traitor!
+announcement-sound: 'minecraft:block.note_block.bass'
+announcement-pitch: 0.5
 description:
-  - '<gray>Eliminate all opposing players to win.'
+  - '<gray>Eliminate all opposing players before'
+  - '<gray>time runs out to win!'
 abilities: []
 limit: -1
 winning-ends-games: true

@@ -1,6 +1,8 @@
 package pro.fazeclan.river.deceit.role;
 
 import lombok.Getter;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -75,6 +77,21 @@ public abstract class Role {
 
     public int getCoins() {
         return getProperty("coins", 0);
+    }
+
+    public String getAnnouncement() {
+        return getProperty("announcement", getName());
+    }
+
+    public Sound getAnnouncementSound() {
+        String sound = getProperty("announcement-sound", "minecraft:block.note_block.bell");
+        float pitch = getProperty("announcement-pitch", 1.0).floatValue();
+        return Sound.sound(
+                Key.key(sound),
+                Sound.Source.PLAYER,
+                1.0f,
+                pitch
+        );
     }
 
     public boolean hasAbility(String id) {

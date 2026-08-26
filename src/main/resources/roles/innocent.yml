@@ -1,7 +1,10 @@
 name: '<green>Innocent'
+announcement: <green>You're Innocent!
+announcement-sound: 'minecraft:block.note_block.bit'
+announcement-pitch: 2.0
 description:
-  - '<gray>Very defenseless. Stay alive until time'
-  - '<gray>runs out or eliminate all opposing parties.'
+  - <gray>You're very defenseless. Stay alive until time
+  - <gray>runs out or eliminate all opposing parties.
 abilities: []
 limit: -1
 winning-ends-games: true
