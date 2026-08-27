@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
@@ -48,9 +49,9 @@ public class TraitorRole extends AbstractTraitorRole {
                                     Component.text(" - Shakespeare, probably").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                             ));
                             meta.getPersistentDataContainer().set(
-                                    Deceit.getKey("backstab"),
-                                    PersistentDataType.BOOLEAN,
-                                    true
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "backstab"
                             );
                         }),
                         2
@@ -71,16 +72,24 @@ public class TraitorRole extends AbstractTraitorRole {
                         1
                 ),
                 new ShopEntry(
-                        ItemType.COMPASS.createItemStack(),
+                        ItemType.COMPASS.createItemStack(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "tracker"
+                            );
+                            meta.itemName(Component.text("Tracker"));
+                        }),
                         1
                 ),
                 new ShopEntry(
                         ItemType.CREEPER_HEAD.createItemStack(meta -> {
                             meta.getPersistentDataContainer().set(
-                                    Deceit.getKey("grenade"),
-                                    PersistentDataType.BOOLEAN,
-                                    true
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "creepanade"
                             );
+                            meta.setRarity(ItemRarity.COMMON);
                             meta.itemName(Component.text("Creepanade"));
                         }),
                         2
@@ -88,9 +97,9 @@ public class TraitorRole extends AbstractTraitorRole {
                 new ShopEntry(
                         ItemType.TNT.createItemStack(meta -> {
                             meta.getPersistentDataContainer().set(
-                                    Deceit.getKey("explosive"),
-                                    PersistentDataType.BOOLEAN,
-                                    true
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "explosive"
                             );
                             meta.itemName(Component.text("Explosive"));
                         }),

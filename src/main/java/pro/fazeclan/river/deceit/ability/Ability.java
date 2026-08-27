@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.jarona.condition.*;
 
@@ -16,6 +17,8 @@ public abstract class Ability implements Listener {
 
     private final File file;
     private final YamlConfiguration config;
+    @Getter
+    private final Deceit plugin;
 
     public Ability(Deceit plugin, String id) {
         plugin.saveResource("abilities/" + id + ".yml", false);
@@ -24,6 +27,7 @@ public abstract class Ability implements Listener {
 
         this.id = id;
 
+        this.plugin = plugin;
         plugin.getServer()
                 .getPluginManager()
                 .registerEvents(this, plugin);
@@ -43,6 +47,11 @@ public abstract class Ability implements Listener {
             }
         }
         return sb.toString().trim();
+    }
+
+    public boolean hasAbility(ItemStack stack) {
+        return stack.getPersistentDataContainer().has(Deceit.getKey("ability"))
+                && stack.getPersistentDataContainer().get(Deceit.getKey("ability"), PersistentDataType.STRING).equals(getId());
     }
 
     public abstract ItemStack getDisplayItem();

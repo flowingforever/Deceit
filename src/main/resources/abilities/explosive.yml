@@ -1,0 +1,6 @@
+cooldown: 400 # ticks
+radius: 3.5
+damage: 40.0
+minimum-damage: 10.0
+velocity-multiplier: 0.5
+delay: 5 # ticks

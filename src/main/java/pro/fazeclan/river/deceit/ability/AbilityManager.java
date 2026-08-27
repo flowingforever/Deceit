@@ -3,6 +3,10 @@ package pro.fazeclan.river.deceit.ability;
 import lombok.Getter;
 import org.bukkit.event.HandlerList;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.ability.definitions.BackstabAbility;
+import pro.fazeclan.river.deceit.ability.definitions.CreepanadeAbility;
+import pro.fazeclan.river.deceit.ability.definitions.ExplosiveAbility;
+import pro.fazeclan.river.deceit.ability.definitions.TrackerAbility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +22,10 @@ public class AbilityManager {
     }
 
     public void registerAll() {
-
+        register(new CreepanadeAbility(plugin));
+        register(new ExplosiveAbility(plugin));
+        register(new TrackerAbility(plugin));
+        register(new BackstabAbility(plugin));
     }
 
     public void reloadRegistry() {
