@@ -37,7 +37,7 @@ public final class Deceit extends JavaPlugin {
         pluginManager.registerEvents(new BackstabListener(this), this);
         pluginManager.registerEvents(new PreventionListener(), this);
         pluginManager.registerEvents(new CorpseListener(), this);
-        pluginManager.registerEvents(new CompassListener(), this);
+        pluginManager.registerEvents(new ItemListener(this), this);
 
         var events = PacketEvents.getAPI().getEventManager();
         events.registerListener(new PreventionListener(), PacketListenerPriority.NORMAL);
