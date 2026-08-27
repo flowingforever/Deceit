@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -82,7 +81,6 @@ public class ItemListener implements Listener {
         var world = player.getWorld();
         world.playSound(player.getLocation(), "minecraft:entity.creeper.hurt", 1.0f, 1.0f);
         world.spawn(player.getEyeLocation(), SulfurCube.class, sc -> {
-            sc.getScoreboardTags().add("grenade_" + player.getUniqueId());
             sc.setAware(false);
             sc.getEquipment().setItem(EquipmentSlot.BODY, ItemType.CREEPER_HEAD.createItemStack());
             sc.setVelocity(player.getLocation().getDirection());
@@ -97,6 +95,12 @@ public class ItemListener implements Listener {
             sc.getAttribute(Attribute.AIR_DRAG_MODIFIER).setBaseValue(0.5);
             sc.getAttribute(Attribute.GRAVITY).setBaseValue(0.05);
             sc.getAttribute(Attribute.BOUNCINESS).setBaseValue(1);
+
+            final double radius = plugin.getConfig().getDouble("grenade-radius", 5.0);
+            final double damage = plugin.getConfig().getDouble("grenade-damage", 20.0);
+            final double minimumDamage = plugin.getConfig().getDouble("grenade-minimum-damage", 5.0);
+            final double velocityMultiplier = plugin.getConfig().getDouble("grenade-velocity-multiplier", 1.1);
+            int delay = plugin.getConfig().getInt("grenade-delay", 5);
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 if (!sc.isValid()) {
                     return;
@@ -105,15 +109,14 @@ public class ItemListener implements Listener {
                 var loc = sc.getLocation().clone();
                 sc.setGravity(false);
                 sc.setVelocity(new Vector());
-                handleExplosionBuildup(player, loc);
+                handleExplosionBuildup(player, loc, radius, damage, minimumDamage, velocityMultiplier, delay);
                 plugin.getServer().getScheduler().runTaskLater(plugin, sc::remove, plugin.getConfig().getInt("grenade-delay", 5));
             }, 60);
         });
 
     }
 
-    private void handleExplosionBuildup(Player thrower, Location location) {
-        int delay = plugin.getConfig().getInt("grenade-delay", 5);
+    private void handleExplosionBuildup(Player thrower, Location location, double radius, double damage, double minDmg, double veloMultiplier, int delay) {
         var world = thrower.getWorld().getUID();
 
         new BukkitRunnable() {
@@ -134,15 +137,15 @@ public class ItemListener implements Listener {
                 if (Bukkit.getWorld(world) == null) {
                     return;
                 }
-                handleExplosion(thrower, location);
+                handleExplosion(thrower, location, radius, damage, minDmg, veloMultiplier);
                 super.cancel();
             }
         }.runTaskTimer(plugin, 0L, 2L);
     }
 
-    private void handleExplosion(Player thrower, Location location) {
+    private void handleExplosion(Player thrower, Location location, double radius, double damage, double minDmg, double veloMultiplier) {
         createExplosionEffect(location);
-        damageNearbyPlayers(thrower, location);
+        damageNearbyPlayers(thrower, location, radius, damage, minDmg, veloMultiplier);
     }
 
     private void createExplosionEffect(Location location) {
@@ -165,18 +168,14 @@ public class ItemListener implements Listener {
         );
     }
 
-    private void damageNearbyPlayers(Player thrower, Location location) {
-        double radius = plugin.getConfig().getDouble("grenade-radius", 5.0);
-        double damage = plugin.getConfig().getDouble("grenade-damage", 20.0);
-        double minimumDamage = plugin.getConfig().getDouble("grenade-minimum-damage", 5.0);
-        double velocityMultiplier = plugin.getConfig().getDouble("grenade-velocity-multiplier", 1.1);
+    private void damageNearbyPlayers(Player thrower, Location location, double radius, double damage, double minDmg, double veloMultiplier) {
         for (Player nearbyPlayer : location.getNearbyPlayers(radius)) {
             if (nearbyPlayer.getGameMode().isInvulnerable()) {
                 continue;
             }
 
             var distance = location.distance(nearbyPlayer.getLocation());
-            var distanceMultiplier = (radius - distance) * velocityMultiplier;
+            var distanceMultiplier = (radius - distance) * veloMultiplier;
             var push = location.toVector().subtract(nearbyPlayer.getLocation().toVector()).multiply(-1);
             if (push.lengthSquared() > 0) {
                 push.normalize();
@@ -187,10 +186,63 @@ public class ItemListener implements Listener {
 
             push.multiply(distanceMultiplier);
 
-            nearbyPlayer.damage(Math.max(damage / distance, minimumDamage), thrower);
+            nearbyPlayer.damage(Math.max(damage / distance, minDmg), thrower);
             nearbyPlayer.setVelocity(push);
         }
     }
 
+    @EventHandler
+    private void onPlantedExplosiveClick(PlayerInteractEvent event) {
+        if (!GameUtil.hasGame(event.getPlayer().getWorld(), Deceit.getKey("murder"))) {
+            return;
+        }
+        var player = event.getPlayer();
+        var item = event.getItem();
+        if (item == null) {
+            return;
+        }
+        if (!item.getPersistentDataContainer().has(Deceit.getKey("explosive"))) {
+            return;
+        }
+        if (player.hasCooldown(item)) {
+            return;
+        }
+        player.getInventory().removeItemAnySlot(item);
+        var config = plugin.getConfig();
+        player.setCooldown(item, config.getInt("explosive-cooldown", 0));
+        var world = player.getWorld();
+        player.playSound(player.getLocation(), "minecraft:block.note_block.bit", 1.0f, 1.0f);
+        world.spawn(player.getLocation(), SulfurCube.class, sc -> {
+            sc.setAI(false);
+            sc.setAware(false);
+            sc.getEquipment().setItem(EquipmentSlot.BODY, ItemType.TNT.createItemStack());
+            sc.setVelocity(player.getLocation().getDirection());
+            sc.addPotionEffect(new PotionEffect(
+                    PotionEffectType.INVISIBILITY,
+                    -1,
+                    0,
+                    true,
+                    false
+            ));
+            sc.getAttribute(Attribute.SCALE).setBaseValue(0.5);
+            var loc = sc.getLocation();
+            final double radius = config.getDouble("explosive-radius", 3.5);
+            double damage = plugin.getConfig().getDouble("explosive-damage", 20.0);
+            double minimumDamage = plugin.getConfig().getDouble("explosive-minimum-damage", 5.0);
+            double velocityMultiplier = plugin.getConfig().getDouble("explosive-velocity-multiplier", 1.1);
+            int delay = plugin.getConfig().getInt("explosive-delay", 5);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!loc.getNearbyPlayers(radius).isEmpty()) {
+                        handleExplosionBuildup(player, loc, radius, damage, minimumDamage, velocityMultiplier, delay);
+                        plugin.getServer().getScheduler().runTaskLater(plugin, sc::remove, delay);
+                        cancel();
+                    }
+                }
+            }.runTaskTimer(plugin, 60, 2);
+        });
+    }
 
 }

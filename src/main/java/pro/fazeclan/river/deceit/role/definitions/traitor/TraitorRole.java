@@ -84,6 +84,17 @@ public class TraitorRole extends AbstractTraitorRole {
                             meta.itemName(Component.text("Creepanade"));
                         }),
                         2
+                ),
+                new ShopEntry(
+                        ItemType.TNT.createItemStack(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("explosive"),
+                                    PersistentDataType.BOOLEAN,
+                                    true
+                            );
+                            meta.itemName(Component.text("Explosive"));
+                        }),
+                        2
                 )
         );
     }
