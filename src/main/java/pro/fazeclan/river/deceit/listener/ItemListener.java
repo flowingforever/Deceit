@@ -144,19 +144,26 @@ public class ItemListener implements Listener {
     }
 
     private void handleExplosion(Player thrower, Location location, double radius, double damage, double minDmg, double veloMultiplier) {
-        createExplosionEffect(location);
+        createExplosionEffect(location, radius / 2);
         damageNearbyPlayers(thrower, location, radius, damage, minDmg, veloMultiplier);
     }
 
-    private void createExplosionEffect(Location location) {
-        double offset = plugin.getConfig().getDouble("grenade-radius", 5.0) / 2.0;
-
+    private void createExplosionEffect(Location location, double offset) {
         location.getWorld().spawnParticle(
                 Particle.EXPLOSION,
                 location,
                 15,
                 offset,
                 2,
+                offset
+        );
+
+        location.getWorld().spawnParticle(
+                Particle.LAVA,
+                location,
+                15,
+                offset,
+                0,
                 offset
         );
 
