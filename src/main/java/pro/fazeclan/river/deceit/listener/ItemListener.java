@@ -3,14 +3,17 @@ package pro.fazeclan.river.deceit.listener;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.LodestoneTracker;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.SulfurCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pro.fazeclan.river.deceit.Deceit;
@@ -73,22 +76,40 @@ public class ItemListener implements Listener {
             return;
         }
         if (player.hasCooldown(item)) {
-            for (var entity : player.getWorld().getEntitiesByClass(Snowball.class)) {
-                if (entity.getScoreboardTags().contains("grenade_" + player.getUniqueId())) {
-                    var loc = entity.getLocation().clone();
-                    entity.setGravity(false);
-                    entity.setVelocity(new Vector());
-                    handleExplosionBuildup(player, loc);
-                    plugin.getServer().getScheduler().runTaskLater(plugin, entity::remove, plugin.getConfig().getInt("grenade-delay", 5));
-                }
-            }
             return;
         }
         player.setCooldown(item, plugin.getConfig().getInt("grenade-cooldown"));
-        player.launchProjectile(Snowball.class, player.getLocation().getDirection().normalize(), s -> {
-            s.getScoreboardTags().add("grenade_" + player.getUniqueId());
-            s.setItem(new ItemStack(Material.CREEPER_HEAD));
+        var world = player.getWorld();
+        world.playSound(player.getLocation(), "minecraft:entity.creeper.hurt", 1.0f, 1.0f);
+        world.spawn(player.getEyeLocation(), SulfurCube.class, sc -> {
+            sc.getScoreboardTags().add("grenade_" + player.getUniqueId());
+            sc.setAware(false);
+            sc.getEquipment().setItem(EquipmentSlot.BODY, ItemType.CREEPER_HEAD.createItemStack());
+            sc.setVelocity(player.getLocation().getDirection());
+            sc.addPotionEffect(new PotionEffect(
+                    PotionEffectType.INVISIBILITY,
+                    -1,
+                    0,
+                    true,
+                    false
+            ));
+            sc.getAttribute(Attribute.SCALE).setBaseValue(0.5);
+            sc.getAttribute(Attribute.AIR_DRAG_MODIFIER).setBaseValue(0.5);
+            sc.getAttribute(Attribute.GRAVITY).setBaseValue(0.05);
+            sc.getAttribute(Attribute.BOUNCINESS).setBaseValue(1);
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                if (!sc.isValid()) {
+                    return;
+                }
+
+                var loc = sc.getLocation().clone();
+                sc.setGravity(false);
+                sc.setVelocity(new Vector());
+                handleExplosionBuildup(player, loc);
+                plugin.getServer().getScheduler().runTaskLater(plugin, sc::remove, plugin.getConfig().getInt("grenade-delay", 5));
+            }, 60);
         });
+
     }
 
     private void handleExplosionBuildup(Player thrower, Location location) {
@@ -125,10 +146,15 @@ public class ItemListener implements Listener {
     }
 
     private void createExplosionEffect(Location location) {
+        double offset = plugin.getConfig().getDouble("grenade-radius", 5.0) / 2.0;
+
         location.getWorld().spawnParticle(
                 Particle.EXPLOSION,
                 location,
-                1
+                15,
+                offset,
+                2,
+                offset
         );
 
         location.getWorld().playSound(
@@ -142,6 +168,7 @@ public class ItemListener implements Listener {
     private void damageNearbyPlayers(Player thrower, Location location) {
         double radius = plugin.getConfig().getDouble("grenade-radius", 5.0);
         double damage = plugin.getConfig().getDouble("grenade-damage", 20.0);
+        double minimumDamage = plugin.getConfig().getDouble("grenade-minimum-damage", 5.0);
         double velocityMultiplier = plugin.getConfig().getDouble("grenade-velocity-multiplier", 1.1);
         for (Player nearbyPlayer : location.getNearbyPlayers(radius)) {
             if (nearbyPlayer.getGameMode().isInvulnerable()) {
@@ -160,47 +187,9 @@ public class ItemListener implements Listener {
 
             push.multiply(distanceMultiplier);
 
-            nearbyPlayer.damage(damage, thrower);
+            nearbyPlayer.damage(Math.max(damage / distance, minimumDamage), thrower);
             nearbyPlayer.setVelocity(push);
         }
-    }
-
-    @EventHandler
-    private void onGrenadeWallHit(ProjectileHitEvent event) {
-        var tags = event.getEntity().getScoreboardTags();
-        if (tags.stream().noneMatch(tag -> tag.contains("grenade_"))) {
-            return;
-        }
-        var s = event.getEntity();
-
-        if (event.getHitBlockFace() != null) {
-            var velo = s.getVelocity();
-            var loc = s.getLocation();
-            var hitFace = event.getHitBlockFace();
-
-            velo.multiply(hitFace.getDirection().multiply(0.9));
-            loc.add(hitFace.getDirection().multiply(0.25));
-
-            var world = s.getWorld();
-            world.spawn(loc, Snowball.class, sn -> {
-                for (var t : s.getScoreboardTags()) {
-                    sn.getScoreboardTags().add(t);
-                }
-                sn.setItem(new ItemStack(Material.CREEPER_HEAD));
-                sn.setVelocity(velo);
-                sn.setShooter(s.getShooter());
-
-                if (s.getVelocity().length() < plugin.getConfig().getDouble("grenade-leniency", 0.15)) {
-                    sn.setGravity(false);
-                    sn.setVelocity(new Vector());
-                    handleExplosionBuildup((Player) sn.getShooter(), sn.getLocation());
-                    plugin.getServer().getScheduler().runTaskLater(plugin, sn::remove, plugin.getConfig().getInt("grenade-delay", 5));
-                }
-            });
-
-        }
-
-        event.setCancelled(true);
     }
 
 

@@ -4,6 +4,7 @@ compass-cooldown: 100 # ticks
 grenade-cooldown: 200 # ticks
 grenade-radius: 5.0
 grenade-damage: 20.0
+grenade-minimum-damage: 5.0
 grenade-velocity-multiplier: 0.5
 grenade-delay: 5 # ticks
 grenade-leniency: 0.15
