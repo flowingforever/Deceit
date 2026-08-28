@@ -51,6 +51,7 @@ public class DeceitMurderGame extends GameWithMap {
 
         world.setGameRule(GameRules.LOCATOR_BAR, false);
         world.setGameRule(GameRules.REDUCED_DEBUG_INFO, true);
+        world.setGameRule(GameRules.FALL_DAMAGE, true);
 
         // announcement text
         var values = getGameValues(world.getUID());
