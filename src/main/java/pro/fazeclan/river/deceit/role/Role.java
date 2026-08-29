@@ -51,24 +51,12 @@ public abstract class Role {
         return getProperty("name", "None");
     }
 
+    public boolean isEnabled() {
+        return getProperty("enabled", true);
+    }
+
     public List<String> getDescription() {
         return getProperty("description", List.of());
-    }
-
-    public List<String> getAbilities() {
-        return getProperty("abilities", List.of());
-    }
-
-    public int getLimit() {
-        return getProperty("limit", -1);
-    }
-
-    public boolean isLimited() {
-        return getLimit() > 0;
-    }
-
-    public boolean isEnabled() {
-        return getLimit() != 0;
     }
 
     public boolean winningEndsGames() {
@@ -87,6 +75,26 @@ public abstract class Role {
         return getProperty("see-own-team", false);
     }
 
+    public boolean needsSelection() {
+        return !getProperty("selection.remainder", false);
+    }
+
+    public double getSelectionPercentage() {
+        if (getProperty("selection.remainder", false)) {
+            return 100.0;
+        } else {
+            return getProperty("selection.percentage", 100.0);
+        }
+    }
+
+    public int getMinimumCount() {
+        if (getProperty("selection.remainder", false)) {
+            return 0;
+        } else {
+            return getProperty("selection.minimum", 1);
+        }
+    }
+
     public Sound getAnnouncementSound() {
         String sound = getProperty("announcement-sound", "minecraft:block.note_block.bell");
         float pitch = getProperty("announcement-pitch", 1.0).floatValue();
@@ -96,10 +104,6 @@ public abstract class Role {
                 1.0f,
                 pitch
         );
-    }
-
-    public boolean hasAbility(String id) {
-        return getAbilities().contains(id);
     }
 
     public boolean isSameTeam(Role other) {

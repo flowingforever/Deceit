@@ -208,8 +208,11 @@ public class DeceitMurderGame extends GameWithMap {
         var innocents = new ArrayList<>(players);
         Collections.shuffle(innocents);
 
-        int hunterCount = (int) (1 + Math.floor(innocents.size() / 8.5));
-        int neutralCount = (int) Math.floor(hunterCount / 2.0);
+        // making sure to keep these b4 anything else
+        // so percentage conditions aren't messed up
+        // by the innocent count "technically" dropping
+        int hunterCount = getAmountForFaction(players, Faction.TRAITOR);
+        int neutralCount = getAmountForFaction(players, Faction.NEUTRAL);
 
         var traitors = new ArrayList<Player>();
         for (int i = 0; i < hunterCount; i++) {
@@ -227,43 +230,67 @@ public class DeceitMurderGame extends GameWithMap {
         selectRoles(innocents, values, spawn, Faction.INNOCENT);
     }
 
+    private int getAmountForFaction(List<Player> players, Faction faction) {
+        var config = plugin.getConfig();
+        return (int) Math.min(
+                Math.floor(
+                        ((config.getDouble("faction." + faction.toString().toLowerCase() + ".percentage", 11.7) / 100.0) * players.size())
+                        + config.getInt("faction." + faction.toString().toLowerCase() + ".minimum")
+                ),
+                players.size()
+        );
+    }
+
     private void selectRoles(List<Player> players, GameValues values, Location spawn, Faction faction) {
         var manager = plugin.getRoleManager();
 
-        var limitedRoles = new ArrayList<Role>();
-        for (var role : manager.getLimitedRoles(faction)) {
-            for (int i = 0; i < role.getLimit(); i++) {
-                limitedRoles.add(role);
+        var iterablePlayers = new ArrayList<>(players);
+
+        // go through the special roles first
+        var limitedRoles = manager.getLimitedRoles(faction);
+        for (var role : limitedRoles) {
+            int count = getAmountOfRole(players, role);
+            plugin.getLogger().info(role.getName() + " can have " + count);
+            for (int i = 0; i < count; i++) {
+                if (iterablePlayers.isEmpty()) {
+                    break;
+                }
+                GameFunctions.addPlayer(
+                        iterablePlayers.removeLast(),
+                        role,
+                        values,
+                        spawn
+                );
             }
         }
-        Collections.shuffle(limitedRoles);
 
-        var unlimitedRoles = new ArrayList<>(manager.getUnlimitedRoles(faction));
-        Collections.shuffle(unlimitedRoles);
-        int size = unlimitedRoles.size();
-        int index = 0;
+        // set base roles
+        if (!iterablePlayers.isEmpty()) {
+            // tries to make an even split in case there are multiple roles that don't need selection in this particular faction
+            var unlimitedRoles = new ArrayList<>(manager.getUnlimitedRoles(faction));
+            Collections.shuffle(unlimitedRoles);
+            int size = unlimitedRoles.size();
+            int index = 0;
 
-        float dividend = (float) plugin.getConfig().getDouble("role-chance-dividend", 2.0);
-        float chance = 1.0f;
-        for (var player : players) {
-            if (chance > 0f) {
-                if (ThreadLocalRandom.current().nextFloat() <= chance && !limitedRoles.isEmpty()) {
-                    GameFunctions.addPlayer(player, limitedRoles.getFirst(), values, spawn);
-                    limitedRoles.removeFirst();
-                    chance /= dividend;
-                    continue;
+            for (var player : iterablePlayers) {
+                if (index + 1 > size) {
+                    index = 0;
                 }
 
-                chance = 0f;
+                GameFunctions.addPlayer(player, unlimitedRoles.get(index), values, spawn);
+                index++;
             }
-
-            if (index + 1 > size) {
-                index = 0;
-            }
-
-            GameFunctions.addPlayer(player, unlimitedRoles.get(index), values, spawn);
-            index++;
         }
+    }
+
+    private int getAmountOfRole(List<Player> players, Role role) {
+        return (int) Math.min(
+                Math.floor(
+                        ((role.getSelectionPercentage() / 100.0) * players.size())
+                        + role.getMinimumCount()
+                ),
+                players.size()
+        );
     }
 
     private List<Role> getMainRoles(List<Player> players, GameValues values) {

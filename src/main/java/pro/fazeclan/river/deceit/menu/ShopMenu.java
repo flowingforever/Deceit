@@ -19,12 +19,27 @@ public class ShopMenu {
 
         for (var item : items) {
             gui.addItems(BoundItem.builder()
-                    .setItemProvider(item.getItemStack())
+                    .setItemProvider(item.getItemStacks().getFirst())
                     .addClickHandler((i, g, c) -> {
                         if (GameFunctions.buyIfPossible(player, values, item.getCost())) {
-                            player.give(i.getItemProvider(player).get());
+                            for (var entry : item.getItemStacks()) {
+                                player.give(entry);
+                            }
+                            createAndShowMenu(player, values);
+                            player.playSound(
+                                    player.getLocation(),
+                                    "minecraft:block.enchantment_table.use",
+                                    1f,
+                                    2f
+                            );
+                        } else {
+                            player.playSound(
+                                    player.getLocation(),
+                                    "minecraft:block.note_block.bit",
+                                    1f,
+                                    0.5f
+                            );
                         }
-                        g.notifyWindows();
                     }).build());
         }
 

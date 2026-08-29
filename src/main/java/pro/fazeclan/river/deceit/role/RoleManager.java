@@ -3,6 +3,7 @@ package pro.fazeclan.river.deceit.role;
 import lombok.Getter;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.role.definitions.innocent.InnocentRole;
+import pro.fazeclan.river.deceit.role.definitions.innocent.SheriffRole;
 import pro.fazeclan.river.deceit.role.definitions.traitor.TraitorRole;
 
 import java.util.Collection;
@@ -23,6 +24,7 @@ public class RoleManager {
     public void registerAll() {
         // innocent
         register(new InnocentRole(plugin));
+        register(new SheriffRole(plugin));
 
         // neutral
 
@@ -60,7 +62,7 @@ public class RoleManager {
         return getRoles()
                 .stream()
                 .filter(Role::isEnabled)
-                .filter(Role::isLimited)
+                .filter(Role::needsSelection)
                 .toList();
     }
 
@@ -69,7 +71,7 @@ public class RoleManager {
                 .stream()
                 .filter(Role::isEnabled)
                 .filter(role -> role.getFaction().equals(faction))
-                .filter(Role::isLimited)
+                .filter(Role::needsSelection)
                 .toList();
     }
 
@@ -77,7 +79,7 @@ public class RoleManager {
         return getRoles()
                 .stream()
                 .filter(Role::isEnabled)
-                .filter(role -> !role.isLimited())
+                .filter(role -> !role.needsSelection())
                 .toList();
     }
 
@@ -86,7 +88,7 @@ public class RoleManager {
                 .stream()
                 .filter(Role::isEnabled)
                 .filter(role -> role.getFaction().equals(faction))
-                .filter(role -> !role.isLimited())
+                .filter(role -> !role.needsSelection())
                 .toList();
     }
 

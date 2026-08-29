@@ -1,1 +1,7 @@
-role-chance-dividend: 1.05
+faction:
+  traitor:
+    minimum: 1
+    percentage: 11.7
+  neutral:
+    minimum: 0
+    percentage: 10

@@ -1,31 +1,30 @@
-package pro.fazeclan.river.deceit.role.definitions.traitor;
+package pro.fazeclan.river.deceit.role.definitions.innocent;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
-import pro.fazeclan.river.deceit.role.definitions.AbstractTraitorRole;
+import pro.fazeclan.river.deceit.role.definitions.AbstractInnocentRole;
 
 import java.util.List;
 
-public class TraitorRole extends AbstractTraitorRole {
-    public TraitorRole(Deceit plugin) {
-        super(plugin, "traitor");
+public class SheriffRole extends AbstractInnocentRole {
+    public SheriffRole(Deceit plugin) {
+        super(plugin, "sheriff");
     }
 
     @Override
     public List<ItemStack> getSpawnItems() {
         return List.of(
                 ItemType.BOW.createItemStack(meta -> meta.setUnbreakable(true)),
-                ItemType.ARROW.createItemStack(40)
+                ItemType.ARROW.createItemStack(30)
         );
     }
 
@@ -36,23 +35,6 @@ public class TraitorRole extends AbstractTraitorRole {
                         ItemType.STONE_SWORD.createItemStack(meta -> {
                             meta.setUnbreakable(true);
                             meta.addEnchant(Enchantment.SHARPNESS, 1, true);
-                        }),
-                        2
-                ),
-                new ShopEntry(
-                        ItemType.IRON_SWORD.createItemStack(meta -> {
-                            meta.setUnbreakable(true);
-                            meta.itemName(Component.text("Dagger"));
-                            meta.lore(List.of(
-                                    Component.empty(),
-                                    Component.text("\"Perfect for stabbing people in the back!\"").color(NamedTextColor.GRAY),
-                                    Component.text(" - Shakespeare, probably").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                            ));
-                            meta.getPersistentDataContainer().set(
-                                    Deceit.getKey("ability"),
-                                    PersistentDataType.STRING,
-                                    "backstab"
-                            );
                         }),
                         2
                 ),
@@ -75,45 +57,42 @@ public class TraitorRole extends AbstractTraitorRole {
                         1
                 ),
                 new ShopEntry(
-                        ItemType.COMPASS.createItemStack(meta -> {
+                        ItemType.LIGHTNING_ROD.createItemStack(meta -> {
+                            meta.itemName(Component.text("Scanner"));
+                            meta.lore(List.of(
+                                    Component.text("Scans in a small radius for traitors.").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                            ));
                             meta.getPersistentDataContainer().set(
                                     Deceit.getKey("ability"),
                                     PersistentDataType.STRING,
-                                    "tracker"
+                                    "scanner"
                             );
-                            meta.itemName(Component.text("Tracker"));
                         }),
                         1
                 ),
                 new ShopEntry(
-                        ItemType.CREEPER_HEAD.createItemStack(meta -> {
+                        ItemType.DIAMOND_HELMET.createItemStack(meta -> {
+                            meta.itemName(Component.text("Detective's Cap"));
+                            meta.addEnchant(
+                                    Enchantment.BINDING_CURSE,
+                                    1,
+                                    true
+                            );
+                            meta.setUnbreakable(true);
                             meta.getPersistentDataContainer().set(
                                     Deceit.getKey("ability"),
                                     PersistentDataType.STRING,
-                                    "creepanade"
+                                    "detective_cap"
                             );
-                            meta.setRarity(ItemRarity.COMMON);
-                            meta.itemName(Component.text("Creepanade"));
                         }),
-                        2
-                ),
-                new ShopEntry(
-                        ItemType.TNT.createItemStack(meta -> {
-                            meta.getPersistentDataContainer().set(
-                                    Deceit.getKey("ability"),
-                                    PersistentDataType.STRING,
-                                    "explosive"
-                            );
-                            meta.itemName(Component.text("Explosive"));
-                        }),
-                        2
+                        1
                 )
         );
     }
 
     @Override
     public ItemStack getDisplayItem() {
-        return ItemType.RED_DYE.createItemStack(meta -> {
+        return ItemType.BOW.createItemStack(meta -> {
             var mm = MiniMessage.miniMessage();
             meta.itemName(mm.deserialize(getName()));
             meta.lore(getDescription().stream().map(mm::deserialize).toList());
@@ -122,6 +101,6 @@ public class TraitorRole extends AbstractTraitorRole {
 
     @Override
     public String getPrefix() {
-        return "<red>\uD83E\uDE93</red>";
+        return "<gold>\uD83C\uDFF9</gold>";
     }
 }

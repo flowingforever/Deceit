@@ -18,14 +18,6 @@ public class InnocentRole extends AbstractInnocentRole {
     }
 
     @Override
-    public List<ItemStack> getSpawnItems() {
-        return List.of(
-                ItemType.BOW.createItemStack(meta -> meta.setUnbreakable(true)),
-                ItemType.ARROW.createItemStack(20)
-        );
-    }
-
-    @Override
     public List<ShopEntry> getShopItems() {
         return List.of(
                 new ShopEntry(
@@ -36,10 +28,13 @@ public class InnocentRole extends AbstractInnocentRole {
                         2
                 ),
                 new ShopEntry(
-                        ItemType.BOW.createItemStack(meta -> {
-                            meta.setUnbreakable(true);
-                            meta.addEnchant(Enchantment.POWER, 1, true);
-                        }),
+                        List.of(
+                                ItemType.BOW.createItemStack(meta -> {
+                                    meta.setUnbreakable(true);
+                                    meta.addEnchant(Enchantment.POWER, 1, true);
+                                }),
+                                ItemType.ARROW.createItemStack(20)
+                        ),
                         2
                 ),
                 new ShopEntry(

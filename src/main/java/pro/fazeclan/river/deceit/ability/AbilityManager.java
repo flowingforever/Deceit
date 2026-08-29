@@ -3,10 +3,10 @@ package pro.fazeclan.river.deceit.ability;
 import lombok.Getter;
 import org.bukkit.event.HandlerList;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.ability.definitions.BackstabAbility;
-import pro.fazeclan.river.deceit.ability.definitions.CreepanadeAbility;
-import pro.fazeclan.river.deceit.ability.definitions.ExplosiveAbility;
-import pro.fazeclan.river.deceit.ability.definitions.TrackerAbility;
+import pro.fazeclan.river.deceit.ability.definitions.evil.BackstabAbility;
+import pro.fazeclan.river.deceit.ability.definitions.evil.CreepanadeAbility;
+import pro.fazeclan.river.deceit.ability.definitions.evil.ExplosiveAbility;
+import pro.fazeclan.river.deceit.ability.definitions.evil.TrackerAbility;
 
 import java.util.HashMap;
 import java.util.Map;
