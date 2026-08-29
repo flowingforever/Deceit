@@ -19,7 +19,7 @@ public class ShopMenu {
 
         for (var item : items) {
             gui.addItems(BoundItem.builder()
-                    .setItemProvider(item.getItemStacks().getFirst())
+                    .setItemProvider(item.getDisplayItem())
                     .addClickHandler((i, g, c) -> {
                         if (GameFunctions.buyIfPossible(player, values, item.getCost())) {
                             for (var entry : item.getItemStacks()) {

@@ -250,7 +250,6 @@ public class DeceitMurderGame extends GameWithMap {
         var limitedRoles = manager.getLimitedRoles(faction);
         for (var role : limitedRoles) {
             int count = getAmountOfRole(players, role);
-            plugin.getLogger().info(role.getName() + " can have " + count);
             for (int i = 0; i < count; i++) {
                 if (iterablePlayers.isEmpty()) {
                     break;
