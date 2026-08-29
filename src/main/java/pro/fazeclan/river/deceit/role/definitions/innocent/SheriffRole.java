@@ -71,8 +71,8 @@ public class SheriffRole extends AbstractInnocentRole {
                         1
                 ),
                 new ShopEntry(
-                        ItemType.DIAMOND_HELMET.createItemStack(meta -> {
-                            meta.itemName(Component.text("Detective's Cap"));
+                        ItemType.COPPER_HELMET.createItemStack(meta -> {
+                            meta.itemName(Component.text("Sheriff's Cap"));
                             meta.addEnchant(
                                     Enchantment.BINDING_CURSE,
                                     1,
@@ -82,7 +82,7 @@ public class SheriffRole extends AbstractInnocentRole {
                             meta.getPersistentDataContainer().set(
                                     Deceit.getKey("ability"),
                                     PersistentDataType.STRING,
-                                    "detective_cap"
+                                    "sheriff_cap"
                             );
                         }),
                         1
