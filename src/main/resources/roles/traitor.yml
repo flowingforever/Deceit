@@ -9,3 +9,4 @@ abilities: []
 limit: -1
 winning-ends-games: true
 coins: 4
+see-own-team: true

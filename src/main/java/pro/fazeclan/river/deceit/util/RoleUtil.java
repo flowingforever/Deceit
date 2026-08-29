@@ -24,10 +24,10 @@ public class RoleUtil {
         return r1.isSameTeam(r2);
     }
 
-    public static boolean canSeeTeam(Player p1, Player p2, GameValues values) {
-        var r1 = getRole(p1, values);
-        var r2 = getRole(p2, values);
-        return r1.isSameTeam(r2) && r1.getFaction() != Faction.INNOCENT;
+    public static boolean canSeeTeam(Player viewer, Player target, GameValues values) {
+        var r1 = getRole(viewer, values);
+        var r2 = getRole(target, values);
+        return (r1.isSameTeam(r2) && r1.canSeeTeam()) || viewer.getGameMode().isInvulnerable() || viewer.equals(target);
     }
 
     public static boolean isEvil(Player player, GameValues values) {

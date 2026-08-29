@@ -83,6 +83,10 @@ public abstract class Role {
         return getProperty("announcement", getName());
     }
 
+    public boolean canSeeTeam() {
+        return getProperty("see-own-team", false);
+    }
+
     public Sound getAnnouncementSound() {
         String sound = getProperty("announcement-sound", "minecraft:block.note_block.bell");
         float pitch = getProperty("announcement-pitch", 1.0).floatValue();

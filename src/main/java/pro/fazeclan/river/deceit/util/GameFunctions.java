@@ -27,8 +27,7 @@ public class GameFunctions {
         values.setValue(
                 "name_" + player.getUniqueId(),
                 (QuadFunction<Player, Player, NameContext, GameValues, String>) (t, v, ctx, vl) -> {
-                    if (v.getGameMode().isInvulnerable()
-                            || RoleUtil.canSeeTeam(t, v, values)
+                    if (RoleUtil.canSeeTeam(v, t, values)
                             || !vl.getValue("undiscovered_" + player.getUniqueId(), true)) {
                         if (ctx.equals(NameContext.TABLIST)) {
                             return role.getPrefix() + " %jarona_nickname%";
