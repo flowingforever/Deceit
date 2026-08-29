@@ -189,6 +189,7 @@ public class DeceitMurderGame extends GameWithMap {
                     mm.deserialize(title.toString()),
                     mm.deserialize(subtitle.toString())
             ));
+
         }
 
     }

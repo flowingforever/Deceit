@@ -3,6 +3,7 @@ package pro.fazeclan.river.deceit.listener;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,8 @@ import org.bukkit.event.entity.EntityExhaustionEvent;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.jarona.util.GameUtil;
+
+import java.util.ArrayList;
 
 public class PreventionListener implements Listener, PacketListener {
 
@@ -46,18 +49,18 @@ public class PreventionListener implements Listener, PacketListener {
                 return;
             }
             Player viewer = event.getPlayer();
-            var entries = packet.getEntries();
-            if (entries.stream().anyMatch(p -> p.getProfileId().equals(viewer.getUniqueId()))) {
-                return;
-            }
             if (!GameUtil.hasGame(viewer.getWorld(), Deceit.getKey("murder"))) {
                 return;
             }
             var values = GameUtil.getGame(viewer).getGameValues(viewer.getWorld().getUID());
-            if (entries.stream().noneMatch(p -> values.getValue("undiscovered_" + p.getProfileId(), false))) {
-                return;
+            var entries = new ArrayList<>(packet.getEntries());
+            for (var entry : packet.getEntries()) {
+                if (entry.getProfileId().equals(viewer.getUniqueId())) continue;
+                if (values.getValue("revealed_" + entry.getProfileId(), false)) continue;
+                entry.setGameMode(GameMode.ADVENTURE);
             }
-            event.setCancelled(true);
+            packet.setEntries(entries);
+            event.markForReEncode(true);
         }
     }
 }

@@ -36,7 +36,7 @@ public class CorpseListener implements Listener {
             return;
         }
         if (profile.name() != null && profile.uuid() != null) {
-            values.setValue("undiscovered_" + profile.uuid(), false);
+            values.setValue("revealed_" + profile.uuid(), true);
             var m = PacketEvents.getAPI().getPlayerManager();
             var p = new WrapperPlayServerPlayerInfoUpdate(
                     WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE,

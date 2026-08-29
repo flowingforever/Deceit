@@ -7,11 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.ability.Ability;
-import pro.fazeclan.river.deceit.util.RoleUtil;
-import pro.fazeclan.river.jarona.game.GameValues;
-import pro.fazeclan.river.jarona.tablist.NameContext;
 import pro.fazeclan.river.jarona.util.GameUtil;
-import pro.fazeclan.river.jarona.util.QuadFunction;
 
 public class SheriffCapAbility extends Ability {
     public SheriffCapAbility(Deceit plugin) {
@@ -36,16 +32,9 @@ public class SheriffCapAbility extends Ability {
             return;
         }
         var values = GameUtil.getGame(player).getGameValues(player.getWorld().getUID());
-        var role = RoleUtil.getRole(player, values);
         values.setValue(
-                "name_" + player.getUniqueId(),
-                (QuadFunction<Player, Player, NameContext, GameValues, String>) (t, v, ctx, vl) -> {
-                    if (ctx.equals(NameContext.TABLIST)) {
-                        return role.getPrefix() + " %jarona_nickname%";
-                    } else {
-                        return role.getPrefix() + " " + role.getName() + "<newline>%jarona_nickname%";
-                    }
-                }
+                "revealed_" + player.getUniqueId(),
+                true
         );
     }
 
