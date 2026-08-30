@@ -2,6 +2,7 @@ package pro.fazeclan.river.deceit.role;
 
 import lombok.Getter;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.role.definitions.innocent.DoctorRole;
 import pro.fazeclan.river.deceit.role.definitions.innocent.InnocentRole;
 import pro.fazeclan.river.deceit.role.definitions.innocent.SheriffRole;
 import pro.fazeclan.river.deceit.role.definitions.traitor.TraitorRole;
@@ -25,6 +26,7 @@ public class RoleManager {
         // innocent
         register(new InnocentRole(plugin));
         register(new SheriffRole(plugin));
+        register(new DoctorRole(plugin));
 
         // neutral
 

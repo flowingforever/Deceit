@@ -248,7 +248,8 @@ public class DeceitMurderGame extends GameWithMap {
         var iterablePlayers = new ArrayList<>(players);
 
         // go through the special roles first
-        var limitedRoles = manager.getLimitedRoles(faction);
+        var limitedRoles = new ArrayList<>(manager.getLimitedRoles(faction));
+        Collections.shuffle(limitedRoles);
         for (var role : limitedRoles) {
             int count = getAmountOfRole(players, role);
             for (int i = 0; i < count; i++) {

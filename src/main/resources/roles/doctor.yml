@@ -1,0 +1,14 @@
+name: '<light_purple>Doctor'
+enabled: true
+announcement: <light_purple>You're a Doctor!
+announcement-sound: 'minecraft:block.note_block.bit'
+announcement-pitch: 2.0
+description:
+  - <gray>Heal your teammates and assist them!
+limit: -1
+winning-ends-games: true
+coins: 0
+see-own-team: false
+selection:
+  minimum: 1
+  percentage: 16.7

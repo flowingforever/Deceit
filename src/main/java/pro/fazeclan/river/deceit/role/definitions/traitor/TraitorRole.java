@@ -107,6 +107,27 @@ public class TraitorRole extends AbstractTraitorRole {
                             meta.itemName(Component.text("Explosive"));
                         }),
                         2
+                ),
+                new ShopEntry(
+                        ItemType.TORCH.createItemStack(4, meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "torch"
+                            );
+                        }),
+                        1
+                ),
+                new ShopEntry(
+                        ItemType.RED_SHULKER_BOX.createItemStack(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "fake_health_kit"
+                            );
+                            meta.itemName(Component.text("\"Health Kit\""));
+                        }),
+                        1
                 )
         );
     }
