@@ -97,7 +97,7 @@ public class DeceitMurderGame extends GameWithMap {
         }
 
         // timer that only shows for the non-innocent
-        values.setValue("deceit.time_limit", config.getLong("deceit.initial-time", 4800));
+        values.setValue("time_limit", config.getLong("deceit.initial-time", 4800));
 
         // coin handout clock
         var handout = config.getLong("deceit.bell_handout", 2400);
@@ -113,7 +113,7 @@ public class DeceitMurderGame extends GameWithMap {
                     public Function<Condition, String> getHud() {
                         return c -> {
                             var vl = getGameValues(world.getUID());
-                            long duration = vl.getValue("time_limit", 0L) - vl.getValue("tick", 0L);
+                            long duration = vl.getValue("time_limit", 4800L) - vl.getValue("tick", 0L);
                             return "<red><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></red>";
                         };
                     }
@@ -143,7 +143,7 @@ public class DeceitMurderGame extends GameWithMap {
                     public Function<Condition, String> getHud() {
                         return c -> {
                             var vl = getGameValues(world.getUID());
-                            long duration = vl.getValue("bell_handout", 0L) - vl.getValue("tick", 0L);
+                            long duration = vl.getValue("bell_handout", 2400L) - vl.getValue("tick", 0L);
                             return "<yellow>\uD83D\uDD14 <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></yellow>";
                         };
                     }
@@ -177,7 +177,7 @@ public class DeceitMurderGame extends GameWithMap {
             }
         }
 
-        if (values.getValue("bell_handout", 0L) <= getCurrentGameTick(world)) {
+        if (values.getValue("bell_handout", 2400L) <= getCurrentGameTick(world)) {
             for (var player : players) {
                 player.sendMessage(Component.text(" ! ").decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
                                 .append(Component.text("All players have received a bell handout!").decoration(TextDecoration.BOLD, false).color(NamedTextColor.WHITE))
@@ -189,7 +189,7 @@ public class DeceitMurderGame extends GameWithMap {
             values.setValue("bell_handout_count", values.getValue("bell_handout_count", 0) + 1);
         }
 
-        if (values.getValue("time_limit", 0L) <= getCurrentGameTick(world)) {
+        if (values.getValue("time_limit", 4800L) <= getCurrentGameTick(world)) {
             GameUtil.endGame(world);
         }
 
@@ -248,7 +248,7 @@ public class DeceitMurderGame extends GameWithMap {
 
     private void incrementGameTick(World world) {
         var gameValues = getGameValues(world.getUID());
-        gameValues.setValue("tick", gameValues.getValue("tick", 0L) + 1L);
+        gameValues.setValue("tick", getCurrentGameTick(world) + 1L);
     }
 
     private long getCurrentGameTick(World world) {
