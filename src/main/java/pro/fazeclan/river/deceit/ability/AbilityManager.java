@@ -7,6 +7,7 @@ import pro.fazeclan.river.deceit.ability.definitions.evil.BackstabAbility;
 import pro.fazeclan.river.deceit.ability.definitions.evil.CreepanadeAbility;
 import pro.fazeclan.river.deceit.ability.definitions.evil.ExplosiveAbility;
 import pro.fazeclan.river.deceit.ability.definitions.evil.TrackerAbility;
+import pro.fazeclan.river.deceit.ability.definitions.innocent.ScannerAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.SheriffCapAbility;
 
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class AbilityManager {
         register(new TrackerAbility(plugin));
         register(new BackstabAbility(plugin));
         register(new SheriffCapAbility(plugin));
+        register(new ScannerAbility(plugin));
     }
 
     public void reloadRegistry() {

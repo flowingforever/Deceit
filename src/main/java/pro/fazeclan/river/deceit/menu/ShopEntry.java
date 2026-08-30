@@ -27,7 +27,7 @@ public class ShopEntry {
     }
 
     public ItemStack getDisplayItem() {
-        var stack = itemStacks.getFirst();
+        var stack = itemStacks.getFirst().clone();
         List<Component> lore;
         if (stack.lore() == null) {
             lore = new ArrayList<>();

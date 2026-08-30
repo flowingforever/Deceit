@@ -25,7 +25,7 @@ public class ExplosiveAbility extends Ability {
         var player = event.getPlayer();
         var item = event.getItemStack();
 
-        player.getInventory().removeItemAnySlot(item);
+        item.setAmount(item.getAmount() - 1);
         player.setCooldown(item, getProperty("cooldown", 0));
         var world = player.getWorld();
         player.playSound(player.getLocation(), "minecraft:block.note_block.bit", 1.0f, 1.0f);
