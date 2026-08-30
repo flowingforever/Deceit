@@ -172,12 +172,12 @@ public class DeceitMurderGame extends GameWithMap {
         var values = getGameValues(world.getUID());
         var winners = getWinningRoles(players, values);
 
-        for (var winner : winners) {
-            if (winner.winningEndsGames()) {
-                GameUtil.endGame(world);
-                return;
-            }
-        }
+//        for (var winner : winners) {
+//            if (winner.winningEndsGames()) {
+//                GameUtil.endGame(world);
+//                return;
+//            }
+//        }
 
         if (values.getValue("coin_handout", 0L) <= values.getValue("tick", 0L)) {
             for (var player : players) {

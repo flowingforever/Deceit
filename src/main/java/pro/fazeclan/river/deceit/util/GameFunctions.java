@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.role.Role;
+import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.tablist.NameContext;
 import pro.fazeclan.river.jarona.util.GameUtil;
@@ -91,6 +92,10 @@ public class GameFunctions {
         );
 
         // todo: consider svc
+        var svcPlugin = Jarona.getInstance().getVoicechatPlugin();
+        if (svcPlugin != null) {
+            svcPlugin.addSpectator(player);
+        }
 
     }
 

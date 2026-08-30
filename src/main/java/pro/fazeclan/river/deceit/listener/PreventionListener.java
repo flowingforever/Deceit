@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
@@ -51,12 +52,10 @@ public class PreventionListener implements Listener, PacketListener {
             Player viewer = event.getPlayer();
             if (!GameUtil.hasGame(viewer.getWorld(), Deceit.getKey("murder"))) return;
             if (viewer.getGameMode().isInvulnerable()) return;
-
             var values = GameUtil.getGame(viewer).getGameValues(viewer.getWorld().getUID());
             var entries = new ArrayList<>(packet.getEntries());
             for (var entry : packet.getEntries()) {
                 if (entry.getProfileId().equals(viewer.getUniqueId())) continue;
-                // TODO: allow for this to have diff contexts (ex. traitor kills this so other traitors can see they're dead)
                 if (values.getValue("revealed_" + entry.getProfileId(), false)) continue;
                 entry.setGameMode(GameMode.ADVENTURE);
             }
