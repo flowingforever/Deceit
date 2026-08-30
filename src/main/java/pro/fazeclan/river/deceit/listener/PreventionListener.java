@@ -5,6 +5,8 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,7 +16,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
@@ -83,4 +84,12 @@ public class PreventionListener implements Listener, PacketListener {
         }
         GameFunctions.eliminatePlayer(victim, discovered);
     }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    private void onSpectatorChat(AsyncChatEvent event) {
+        if (!GameUtil.hasGame(event.getPlayer().getWorld(), Deceit.getKey("murder"))) return;
+        if (!event.getPlayer().getGameMode().isInvulnerable()) return;
+        event.viewers().removeIf(viewer -> viewer instanceof Player player && !player.getGameMode().isInvulnerable());
+    }
+
 }
