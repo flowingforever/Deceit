@@ -86,6 +86,17 @@ public class SheriffRole extends AbstractInnocentRole {
                             );
                         }),
                         1
+                ),
+                new ShopEntry(
+                        ItemType.RED_SHULKER_BOX.createItemStack(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "health_kit"
+                            );
+                            meta.itemName(Component.text("Health Kit"));
+                        }),
+                        1
                 )
         );
     }
