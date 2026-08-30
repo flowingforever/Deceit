@@ -1,5 +1,6 @@
 package pro.fazeclan.river.deceit.ability.definitions.innocent;
 
+import io.papermc.paper.event.entity.EntityCollideWithEntityEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -29,6 +30,13 @@ public class ScannerAbility extends Ability {
     }
 
     @EventHandler
+    private void onScannerCollide(EntityCollideWithEntityEvent event) {
+        if (event.getEntities().stream().anyMatch(entity -> entity.getScoreboardTags().contains("no_collide"))) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     private void onScannerUse(AbilityEvent event) {
         if (!event.getExpectedAbility().equals(getId())) return;
         var player = event.getPlayer();
@@ -43,7 +51,8 @@ public class ScannerAbility extends Ability {
             sc.getEquipment().setItem(EquipmentSlot.BODY, ItemType.LIGHTNING_ROD.createItemStack());
             sc.setInvisible(true);
             sc.setSilent(true);
-            sc.setAI(false);
+            sc.setAware(false);
+            sc.getScoreboardTags().add("no_collide");
 
             var scheduler = getPlugin().getServer().getScheduler();
             scheduler.runTaskLater(
