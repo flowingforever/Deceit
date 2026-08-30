@@ -1,10 +1,14 @@
 package pro.fazeclan.river.deceit.util;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.player.UserProfile;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.function.TriFunction;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Mannequin;
@@ -18,6 +22,7 @@ import pro.fazeclan.river.jarona.util.GameUtil;
 import pro.fazeclan.river.jarona.util.QuadFunction;
 
 import java.io.File;
+import java.util.UUID;
 
 public class GameFunctions {
 
@@ -57,7 +62,7 @@ public class GameFunctions {
 
     }
 
-    public static void eliminatePlayer(Player player, boolean undiscovered) {
+    public static void eliminatePlayer(Player player, boolean revealed) {
 
         var game = GameUtil.getGame(player);
         if (game == null) {
@@ -65,7 +70,7 @@ public class GameFunctions {
         }
         var world = player.getWorld();
         var values = game.getGameValues(world.getUID());
-        values.setValue("undiscovered_" + player.getUniqueId(), undiscovered);
+        values.setValue("revealed_" + player.getUniqueId(), revealed);
         player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getValue());
         player.setGameMode(GameMode.SPECTATOR);
 
@@ -105,6 +110,33 @@ public class GameFunctions {
 
     public static void giveCoins(Player player, GameValues values, int coins) {
         values.setValue("coins_" + player.getUniqueId(), values.getValue("coins_" + player.getUniqueId(), 0) + coins);
+    }
+
+    public static void revealPlayerAsDead(UUID uuid, String name, GameValues values, World world) {
+        values.setValue("revealed_" + uuid, true);
+        var m = PacketEvents.getAPI().getPlayerManager();
+        var p = new WrapperPlayServerPlayerInfoUpdate(
+                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE,
+                new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
+                        new UserProfile(uuid, name),
+                        true,
+                        0,
+                        com.github.retrooper.packetevents.protocol.player.GameMode.SPECTATOR,
+                        null,
+                        null
+                )
+        );
+        for (var player : world.getPlayers()) {
+            m.sendPacket(player, p);
+        }
+    }
+
+    public static void revealPlayerAsDead(Player player, GameValues values) {
+        revealPlayerAsDead(player.getUniqueId(), player.getName(), values, player.getWorld());
+    }
+
+    public static void revealPlayerAsDead(Player player, String team) {
+
     }
 
 }

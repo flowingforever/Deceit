@@ -9,7 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.util.GameFunctions;
@@ -27,7 +29,43 @@ public class PreventionListener implements Listener, PacketListener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
+    private void onKillingAnythingElseBlow(EntityDamageEvent event) {
+        eliminatePlayer(event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    private void onKillingBlockBlow(EntityDamageByBlockEvent event) {
+        eliminatePlayer(event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
     private void onKillingBlow(EntityDamageByEntityEvent event) {
+        eliminatePlayer(event);
+    }
+
+    @Override
+    public void onPacketSend(PacketSendEvent event) {
+        if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_UPDATE) {
+            var packet = new WrapperPlayServerPlayerInfoUpdate(event);
+            if (!packet.getActions().contains(WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE)) return;
+            Player viewer = event.getPlayer();
+            if (!GameUtil.hasGame(viewer.getWorld(), Deceit.getKey("murder"))) return;
+            if (viewer.getGameMode().isInvulnerable()) return;
+
+            var values = GameUtil.getGame(viewer).getGameValues(viewer.getWorld().getUID());
+            var entries = new ArrayList<>(packet.getEntries());
+            for (var entry : packet.getEntries()) {
+                if (entry.getProfileId().equals(viewer.getUniqueId())) continue;
+                // TODO: allow for this to have diff contexts (ex. traitor kills this so other traitors can see they're dead)
+                if (values.getValue("revealed_" + entry.getProfileId(), false)) continue;
+                entry.setGameMode(GameMode.ADVENTURE);
+            }
+            packet.setEntries(entries);
+            event.markForReEncode(true);
+        }
+    }
+
+    private void eliminatePlayer(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player victim)) {
             return;
         }
@@ -37,30 +75,13 @@ public class PreventionListener implements Listener, PacketListener {
         if (event.getFinalDamage() < victim.getHealth()) {
             return;
         }
-        event.setDamage(0.0);
-        GameFunctions.eliminatePlayer(victim, true);
-    }
 
-    @Override
-    public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_UPDATE) {
-            var packet = new WrapperPlayServerPlayerInfoUpdate(event);
-            if (!packet.getActions().contains(WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE)) {
-                return;
-            }
-            Player viewer = event.getPlayer();
-            if (!GameUtil.hasGame(viewer.getWorld(), Deceit.getKey("murder"))) {
-                return;
-            }
-            var values = GameUtil.getGame(viewer).getGameValues(viewer.getWorld().getUID());
-            var entries = new ArrayList<>(packet.getEntries());
-            for (var entry : packet.getEntries()) {
-                if (entry.getProfileId().equals(viewer.getUniqueId())) continue;
-                if (values.getValue("revealed_" + entry.getProfileId(), false)) continue;
-                entry.setGameMode(GameMode.ADVENTURE);
-            }
-            packet.setEntries(entries);
-            event.markForReEncode(true);
+        event.setDamage(0.0);
+        boolean undiscovered = true;
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)
+                || event.getCause().equals(EntityDamageEvent.DamageCause.KILL)) {
+            undiscovered = false;
         }
+        GameFunctions.eliminatePlayer(victim, undiscovered);
     }
 }

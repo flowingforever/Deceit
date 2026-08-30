@@ -1,5 +1,7 @@
 package pro.fazeclan.river.deceit.game;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
@@ -96,7 +98,13 @@ public class DeceitMurderGame extends GameWithMap {
         // timer that only shows for the non-innocent
         values.setValue("time_limit", config.getLong("deceit.initial-time", 2400));
 
-        ConditionUtil.getWorldConditions(world)
+        // coin handout clock
+        values.setValue("coin_handout", config.getLong("deceit.coin_handout", 1800));
+        values.setValue("initial_coin_handout", config.getLong("deceit.coin_handout", 1800));
+        values.setValue("coin_handout_count", 0);
+
+        var worldConditions = ConditionUtil.getWorldConditions(world);
+        worldConditions
                 .getOrCreate(
                         "murder_time_limit",
                         new Condition() {
@@ -127,6 +135,35 @@ public class DeceitMurderGame extends GameWithMap {
                         }
                 );
 
+        worldConditions.getOrCreate(
+                "murder_coin_handout",
+                new Condition() {
+                    @Override
+                    public Function<Condition, String> getHud() {
+                        return c -> {
+                            var vl = getGameValues(world.getUID());
+                            long duration = vl.getValue("coin_handout", 0L) - vl.getValue("tick", 0L);
+                            return "<yellow><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></yellow>";
+                        };
+                    }
+
+                    @Override
+                    public BiFunction<Condition, Player, Boolean> getHudCondition() {
+                        return (c, v) -> {
+                            var vl = getGameValues(world.getUID());
+                            return RoleUtil.isEvil(v, vl) || v.getGameMode().isInvulnerable();
+                        };
+                    }
+
+                    @Override
+                    public boolean getAvailable() {
+                        return true;
+                    }
+
+                    @Override
+                    public void reset() {}
+                }
+        );
     }
 
     @Override
@@ -140,6 +177,15 @@ public class DeceitMurderGame extends GameWithMap {
                 GameUtil.endGame(world);
                 return;
             }
+        }
+
+        if (values.getValue("coin_handout", 0L) <= values.getValue("tick", 0L)) {
+            for (var player : players) {
+                player.sendMessage(Component.text("All players have received a coin handout!").color(NamedTextColor.YELLOW));
+                GameFunctions.payout(player, values);
+            }
+            values.setValue("coin_handout", values.getValue("initial_coin_handout", 1800L) * (values.getValue("coin_handout_count", 0) + 2L));
+            values.setValue("coin_handout_count", values.getValue("coin_handout_count", 0) + 1);
         }
 
         if (values.getValue("time_limit", 0L) <= values.getValue("tick", 0L)) {

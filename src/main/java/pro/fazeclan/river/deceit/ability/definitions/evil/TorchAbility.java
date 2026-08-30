@@ -20,6 +20,7 @@ public class TorchAbility extends Ability {
     private void onTorchCorpseInteraction(PlayerInteractAtEntityEvent event) {
         var player = event.getPlayer();
         var item = player.getEquipment().getItem(event.getHand());
+        if (event.getPlayer().getGameMode().isInvulnerable()) return;
         if (!hasAbility(item)) return;
         if (!(event.getRightClicked() instanceof Mannequin corpse)) return;
         if (corpse.getVisualFire().equals(TriState.TRUE)) return;
