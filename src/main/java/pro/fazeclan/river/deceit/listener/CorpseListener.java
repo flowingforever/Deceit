@@ -6,10 +6,13 @@ import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.util.TriState;
+import org.bukkit.Material;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.util.Transformation;
@@ -21,20 +24,17 @@ import pro.fazeclan.river.jarona.util.GameUtil;
 
 public class CorpseListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     private void onCorpseInteract(PlayerInteractAtEntityEvent event) {
         if (!(event.getRightClicked() instanceof Mannequin corpse)) {
             return;
         }
         var world = corpse.getWorld();
-        if (!GameUtil.hasGame(world, Deceit.getKey("murder"))) {
-            return;
-        }
+        if (!GameUtil.hasGame(world, Deceit.getKey("murder"))) return;
+        if (corpse.getVisualFire().equals(TriState.TRUE)) return;
+        if (!corpse.getPassengers().isEmpty()) return;
         var values = GameUtil.getGame(world).getGameValues(world.getUID());
         var profile = corpse.getProfile();
-        if (!corpse.getPassengers().isEmpty()) {
-            return;
-        }
         if (profile.name() != null && profile.uuid() != null) {
             values.setValue("revealed_" + profile.uuid(), true);
             var m = PacketEvents.getAPI().getPlayerManager();

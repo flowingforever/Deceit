@@ -3,11 +3,9 @@ package pro.fazeclan.river.deceit.ability;
 import lombok.Getter;
 import org.bukkit.event.HandlerList;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.ability.definitions.evil.BackstabAbility;
-import pro.fazeclan.river.deceit.ability.definitions.evil.CreepanadeAbility;
-import pro.fazeclan.river.deceit.ability.definitions.evil.ExplosiveAbility;
-import pro.fazeclan.river.deceit.ability.definitions.evil.TrackerAbility;
+import pro.fazeclan.river.deceit.ability.definitions.evil.*;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.HealthKitAbility;
+import pro.fazeclan.river.deceit.ability.definitions.innocent.ScalpelAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.ScannerAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.SheriffCapAbility;
 
@@ -25,13 +23,19 @@ public class AbilityManager {
     }
 
     public void registerAll() {
+        // traitor
         register(new CreepanadeAbility(plugin));
         register(new ExplosiveAbility(plugin));
         register(new TrackerAbility(plugin));
         register(new BackstabAbility(plugin));
+        register(new FakeHealthKitAbility(plugin));
+        register(new TorchAbility(plugin));
+
+        // innocent
         register(new SheriffCapAbility(plugin));
         register(new ScannerAbility(plugin));
         register(new HealthKitAbility(plugin));
+        register(new ScalpelAbility(plugin));
     }
 
     public void reloadRegistry() {

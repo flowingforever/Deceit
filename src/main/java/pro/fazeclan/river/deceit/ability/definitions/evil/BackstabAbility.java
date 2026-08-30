@@ -27,11 +27,11 @@ public class BackstabAbility extends Ability {
             return;
         }
         var item = attacker.getInventory().getItemInMainHand();
-        if (attacker.hasCooldown(item)) {
-            event.setDamage(0.0);
+        if (!hasAbility(item)) {
             return;
         }
-        if (!hasAbility(item)) {
+        if (attacker.hasCooldown(item)) {
+            event.setDamage(0.0);
             return;
         }
         attacker.setCooldown(item, getProperty("cooldown", 100));
