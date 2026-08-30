@@ -8,7 +8,7 @@ description:
   - '<gray>time runs out to win!'
 limit: -1
 winning-ends-games: true
-coins: 4
+bells: 4
 see-own-team: true
 selection:
   remainder: true

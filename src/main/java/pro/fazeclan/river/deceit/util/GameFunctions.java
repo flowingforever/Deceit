@@ -4,8 +4,6 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
-import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.function.TriFunction;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -45,7 +43,7 @@ public class GameFunctions {
                     return "%jarona_nickname%";
                 }
         );
-        giveCoins(player, values, role.getCoins());
+        giveBells(player, values, role.getBells());
 
         player.getInventory().clear();
         player.setSaturation(2f);
@@ -91,7 +89,7 @@ public class GameFunctions {
                 values.getValue("time_limit", 0L) + config.getLong("deceit.added-time", 400)
         );
 
-        // todo: consider svc
+        // consider svc
         var svcPlugin = Jarona.getInstance().getVoicechatPlugin();
         if (svcPlugin != null) {
             svcPlugin.addSpectator(player);
@@ -100,9 +98,9 @@ public class GameFunctions {
     }
 
     public static boolean buyIfPossible(Player player, GameValues values, int cost) {
-        int coins = values.getValue("coins_" + player.getUniqueId(), 0);
+        int coins = values.getValue("bells_" + player.getUniqueId(), 0);
         if (coins >= cost) {
-            values.setValue("coins_" + player.getUniqueId(), coins - cost);
+            values.setValue("bells_" + player.getUniqueId(), coins - cost);
             return true;
         } else {
             return false;
@@ -110,11 +108,11 @@ public class GameFunctions {
     }
 
     public static void payout(Player player, GameValues values) {
-        giveCoins(player, values, 2);
+        giveBells(player, values, 2);
     }
 
-    public static void giveCoins(Player player, GameValues values, int coins) {
-        values.setValue("coins_" + player.getUniqueId(), values.getValue("coins_" + player.getUniqueId(), 0) + coins);
+    public static void giveBells(Player player, GameValues values, int bells) {
+        values.setValue("bells_" + player.getUniqueId(), values.getValue("bells_" + player.getUniqueId(), 0) + bells);
     }
 
     public static void revealPlayerAsDead(UUID uuid, String name, GameValues values, World world) {
@@ -138,10 +136,6 @@ public class GameFunctions {
 
     public static void revealPlayerAsDead(Player player, GameValues values) {
         revealPlayerAsDead(player.getUniqueId(), player.getName(), values, player.getWorld());
-    }
-
-    public static void revealPlayerAsDead(Player player, String team) {
-
     }
 
 }

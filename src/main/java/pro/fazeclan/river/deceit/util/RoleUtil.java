@@ -48,4 +48,12 @@ public class RoleUtil {
                 .allMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(faction));
     }
 
+    public List<Player> getAllInTeam(Player focus, List<Player> players, GameValues values) {
+        return players
+                .stream()
+                .filter(p -> RoleUtil.areSameTeam(focus, p, values))
+                .filter(p -> !p.getGameMode().isInvulnerable())
+                .toList();
+    }
+
 }

@@ -10,7 +10,7 @@ import pro.fazeclan.river.jarona.invui.window.Window;
 
 public class ShopMenu {
 
-    // TODO: Turn into Dialog menu
+    // TODO: Turn into Dialog menu (still unsure ab this idea imo)
     public static void createAndShowMenu(Player player, GameValues values) {
         var role = RoleUtil.getRole(player, values);
         var items = role.getShopItems();
@@ -45,7 +45,7 @@ public class ShopMenu {
 
         Window.builder()
                 .setUpperGui(gui)
-                .setTitle("<yellow>Shop! " + values.getValue("coins_" + player.getUniqueId(), 0) + " coins.</yellow>")
+                .setTitle("<yellow>" + values.getValue("bells_" + player.getUniqueId(), 0) + " \uD83D\uDD14</yellow>")
                 .open(player);
     }
 

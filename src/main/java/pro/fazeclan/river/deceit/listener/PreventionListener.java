@@ -56,7 +56,7 @@ public class PreventionListener implements Listener, PacketListener {
             var entries = new ArrayList<>(packet.getEntries());
             for (var entry : packet.getEntries()) {
                 if (entry.getProfileId().equals(viewer.getUniqueId())) continue;
-                if (values.getValue("revealed_" + entry.getProfileId(), false)) continue;
+                if (values.getValue("revealed_" + entry.getProfileId(), true)) continue;
                 entry.setGameMode(GameMode.ADVENTURE);
             }
             packet.setEntries(entries);
@@ -76,11 +76,11 @@ public class PreventionListener implements Listener, PacketListener {
         }
 
         event.setDamage(0.0);
-        boolean undiscovered = true;
+        boolean discovered = false;
         if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)
                 || event.getCause().equals(EntityDamageEvent.DamageCause.KILL)) {
-            undiscovered = false;
+            discovered = true;
         }
-        GameFunctions.eliminatePlayer(victim, undiscovered);
+        GameFunctions.eliminatePlayer(victim, discovered);
     }
 }

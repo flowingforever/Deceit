@@ -63,8 +63,8 @@ public abstract class Role {
         return getProperty("winning-ends-games", true);
     }
 
-    public int getCoins() {
-        return getProperty("coins", 0);
+    public int getBells() {
+        return getProperty("bells", 0);
     }
 
     public String getAnnouncement() {

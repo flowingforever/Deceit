@@ -7,7 +7,7 @@ description:
   - <gray>Heal your teammates and assist them!
 limit: -1
 winning-ends-games: true
-coins: 0
+bells: 0
 see-own-team: false
 selection:
   minimum: 1

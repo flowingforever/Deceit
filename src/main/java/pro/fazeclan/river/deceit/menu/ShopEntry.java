@@ -35,12 +35,8 @@ public class ShopEntry {
             lore = new ArrayList<>(Objects.requireNonNull(stack.lore()));
         }
         lore.add(Component.empty());
-        String txt = "coins";
-        if (cost == 1) {
-            txt = "coin";
-        }
         lore.add(MiniMessage.miniMessage().deserialize(
-                "<!i><dark_gray>Price: <yellow>" + cost + " " + txt
+                "<!i><dark_gray>Price: <yellow>" + cost + " \uD83D\uDD14"
         ));
         stack.lore(lore);
         return stack;

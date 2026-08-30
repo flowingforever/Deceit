@@ -2,6 +2,7 @@ package pro.fazeclan.river.deceit.game;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
@@ -13,6 +14,7 @@ import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.deceit.util.TimeUtil;
+import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.condition.Condition;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.game.GameWithMap;
@@ -25,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -96,54 +97,24 @@ public class DeceitMurderGame extends GameWithMap {
         }
 
         // timer that only shows for the non-innocent
-        values.setValue("time_limit", config.getLong("deceit.initial-time", 2400));
+        values.setValue("deceit.time_limit", config.getLong("deceit.initial-time", 4800));
 
         // coin handout clock
-        values.setValue("coin_handout", config.getLong("deceit.coin_handout", 1800));
-        values.setValue("initial_coin_handout", config.getLong("deceit.coin_handout", 1800));
-        values.setValue("coin_handout_count", 0);
+        var handout = config.getLong("deceit.bell_handout", 2400);
+        values.setValue("bell_handout", handout);
+        values.setValue("initial_bell_handout", handout);
+        values.setValue("bell_handout_count", 0);
 
         var worldConditions = ConditionUtil.getWorldConditions(world);
-        worldConditions
-                .getOrCreate(
-                        "murder_time_limit",
-                        new Condition() {
-                            @Override
-                            public Function<Condition, String> getHud() {
-                                return c -> {
-                                    var vl = getGameValues(world.getUID());
-                                    long duration = vl.getValue("time_limit", 0L) - vl.getValue("tick", 0L);
-                                    return "<red><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></red>";
-                                };
-                            }
-
-                            @Override
-                            public BiFunction<Condition, Player, Boolean> getHudCondition() {
-                                return (c, v) -> {
-                                    var vl = getGameValues(world.getUID());
-                                    return RoleUtil.isEvil(v, vl) || v.getGameMode().isInvulnerable();
-                                };
-                            }
-
-                            @Override
-                            public boolean getAvailable() {
-                                return true;
-                            }
-
-                            @Override
-                            public void reset() {}
-                        }
-                );
-
         worldConditions.getOrCreate(
-                "murder_coin_handout",
+                "murder_time_limit",
                 new Condition() {
                     @Override
                     public Function<Condition, String> getHud() {
                         return c -> {
                             var vl = getGameValues(world.getUID());
-                            long duration = vl.getValue("coin_handout", 0L) - vl.getValue("tick", 0L);
-                            return "<yellow><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></yellow>";
+                            long duration = vl.getValue("time_limit", 0L) - vl.getValue("tick", 0L);
+                            return "<red><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></red>";
                         };
                     }
 
@@ -164,6 +135,33 @@ public class DeceitMurderGame extends GameWithMap {
                     public void reset() {}
                 }
         );
+
+        worldConditions.getOrCreate(
+                "murder_bell_handout",
+                new Condition() {
+                    @Override
+                    public Function<Condition, String> getHud() {
+                        return c -> {
+                            var vl = getGameValues(world.getUID());
+                            long duration = vl.getValue("bell_handout", 0L) - vl.getValue("tick", 0L);
+                            return "<yellow>\uD83D\uDD14 <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></yellow>";
+                        };
+                    }
+
+                    @Override
+                    public BiFunction<Condition, Player, Boolean> getHudCondition() {
+                        return (_, _) -> true;
+                    }
+
+                    @Override
+                    public boolean getAvailable() {
+                        return true;
+                    }
+
+                    @Override
+                    public void reset() {}
+                }
+        );
     }
 
     @Override
@@ -172,23 +170,26 @@ public class DeceitMurderGame extends GameWithMap {
         var values = getGameValues(world.getUID());
         var winners = getWinningRoles(players, values);
 
-//        for (var winner : winners) {
-//            if (winner.winningEndsGames()) {
-//                GameUtil.endGame(world);
-//                return;
-//            }
-//        }
-
-        if (values.getValue("coin_handout", 0L) <= values.getValue("tick", 0L)) {
-            for (var player : players) {
-                player.sendMessage(Component.text("All players have received a coin handout!").color(NamedTextColor.YELLOW));
-                GameFunctions.payout(player, values);
+        for (var winner : winners) {
+            if (winner.winningEndsGames()) {
+                GameUtil.endGame(world);
+                return;
             }
-            values.setValue("coin_handout", values.getValue("initial_coin_handout", 1800L) * (values.getValue("coin_handout_count", 0) + 2L));
-            values.setValue("coin_handout_count", values.getValue("coin_handout_count", 0) + 1);
         }
 
-        if (values.getValue("time_limit", 0L) <= values.getValue("tick", 0L)) {
+        if (values.getValue("bell_handout", 0L) <= getCurrentGameTick(world)) {
+            for (var player : players) {
+                player.sendMessage(Component.text(" ! ").decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                                .append(Component.text("All players have received a bell handout!").decoration(TextDecoration.BOLD, false).color(NamedTextColor.WHITE))
+                                .append(Component.text(" (+2 \uD83D\uDD14)").color(NamedTextColor.YELLOW).decoration(TextDecoration.BOLD, false))
+                );
+                GameFunctions.payout(player, values);
+            }
+            values.setValue("bell_handout", values.getValue("initial_bell_handout", 1800L) * (values.getValue("bell_handout_count", 0) + 2L));
+            values.setValue("bell_handout_count", values.getValue("bell_handout_count", 0) + 1);
+        }
+
+        if (values.getValue("time_limit", 0L) <= getCurrentGameTick(world)) {
             GameUtil.endGame(world);
         }
 
@@ -201,7 +202,9 @@ public class DeceitMurderGame extends GameWithMap {
 
         var gameValues = getGameValues(world.getUID());
         var winners = getWinningRoles(players, gameValues);
+        var svc = Jarona.getInstance().getVoicechatPlugin();
 
+        // end of game title builders
         var title = new StringBuilder();
         var subtitle = new StringBuilder();
 
@@ -236,6 +239,9 @@ public class DeceitMurderGame extends GameWithMap {
                     mm.deserialize(subtitle.toString())
             ));
 
+            if (svc != null) {
+                svc.removePlayer(player);
+            }
         }
 
     }
