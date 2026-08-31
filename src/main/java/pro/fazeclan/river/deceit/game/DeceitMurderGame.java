@@ -114,7 +114,7 @@ public class DeceitMurderGame extends GameWithMap {
                         return c -> {
                             var vl = getGameValues(world.getUID());
                             long duration = vl.getValue("time_limit", 4800L) - vl.getValue("tick", 0L);
-                            return "<red><b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></red>";
+                            return "<red>\uD83D\uDDE1 <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></red>";
                         };
                     }
 

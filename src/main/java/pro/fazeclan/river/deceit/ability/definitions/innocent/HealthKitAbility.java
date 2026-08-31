@@ -2,8 +2,6 @@ package pro.fazeclan.river.deceit.ability.definitions.innocent;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Particle;
-import org.bukkit.block.BlockType;
-import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.event.EventHandler;

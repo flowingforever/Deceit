@@ -5,7 +5,6 @@ announcement-sound: 'minecraft:block.note_block.bit'
 announcement-pitch: 2.0
 description:
   - <gray>Heal your teammates and assist them!
-limit: -1
 winning-ends-games: true
 bells: 0
 see-own-team: false

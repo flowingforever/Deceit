@@ -16,6 +16,7 @@ import java.util.List;
 public abstract class Role {
 
     private final File file;
+    @Getter
     private final YamlConfiguration config;
 
     @Getter
@@ -26,7 +27,10 @@ public abstract class Role {
     @Getter
     private final boolean takesPriority; // more for the neutral roles
 
+    private final Deceit plugin;
+
     public Role(Deceit plugin, String id, Faction faction, boolean takesPriority) {
+        this.plugin = plugin;
         plugin.saveResource("roles/" + id + ".yml", false);
         this.file = new File(plugin.getDataFolder(), "roles/" + id + ".yml");
         this.config = YamlConfiguration.loadConfiguration(this.file);
@@ -111,6 +115,27 @@ public abstract class Role {
             return other.equals(this);
         } else {
             return other.faction.equals(faction);
+        }
+    }
+
+    public void reloadRole() {
+        try {
+            config.load(file);
+        } catch (Exception _) {
+            plugin.getLogger().warning("Role " + getId() + " failed to reload!");
+        }
+    }
+
+    public void resetRole() {
+        plugin.saveResource("role/" + id + ".yml", true);
+        reloadRole();
+    }
+
+    public void saveRole() {
+        try {
+            config.save(file);
+        } catch (Exception _) {
+            plugin.getLogger().warning("Role " + getId() + " failed to save!");
         }
     }
 

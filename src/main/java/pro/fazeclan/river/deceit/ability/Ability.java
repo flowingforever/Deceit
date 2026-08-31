@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.jarona.condition.*;
 
 import java.io.File;
 
@@ -16,6 +15,7 @@ public abstract class Ability implements Listener {
     private final String id;
 
     private final File file;
+    @Getter
     private final YamlConfiguration config;
     @Getter
     private final Deceit plugin;
@@ -55,5 +55,26 @@ public abstract class Ability implements Listener {
     }
 
     public abstract ItemStack getDisplayItem();
+
+    public void reloadAbility() {
+        try {
+            config.load(file);
+        } catch (Exception _) {
+            plugin.getLogger().warning("Ability " + getId() + " failed to reload!");
+        }
+    }
+
+    public void resetAbility() {
+        plugin.saveResource("abilities/" + id + ".yml", true);
+        reloadAbility();
+    }
+
+    public void saveAbility() {
+        try {
+            config.save(file);
+        } catch (Exception _) {
+            plugin.getLogger().warning("Ability " + getId() + " failed to save!");
+        }
+    }
 
 }

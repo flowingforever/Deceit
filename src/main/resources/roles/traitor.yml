@@ -6,7 +6,6 @@ announcement-pitch: 0.5
 description:
   - '<gray>Eliminate all opposing players before'
   - '<gray>time runs out to win!'
-limit: -1
 winning-ends-games: true
 bells: 4
 see-own-team: true

@@ -1,12 +1,9 @@
 package pro.fazeclan.river.deceit.role.definitions;
 
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
-import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.menu.ShopEntry;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.RoleUtil;
