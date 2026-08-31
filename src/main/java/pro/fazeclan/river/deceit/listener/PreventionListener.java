@@ -65,20 +65,15 @@ public class PreventionListener implements Listener, PacketListener {
     }
 
     private void eliminatePlayer(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player victim)) {
-            return;
-        }
-        if (!GameUtil.hasGame(victim.getWorld(), Deceit.getKey("murder"))) {
-            return;
-        }
-        if (event.getFinalDamage() < victim.getHealth()) {
-            return;
-        }
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (!GameUtil.hasGame(victim.getWorld(), Deceit.getKey("murder"))) return;
+        if (event.getFinalDamage() < victim.getHealth()) return;
 
         event.setDamage(0.0);
         boolean discovered = false;
         if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)
                 || event.getCause().equals(EntityDamageEvent.DamageCause.KILL)) {
+            victim.teleport(victim.getWorld().getSpawnLocation().clone().add(0, 20, 0));
             discovered = true;
         }
         GameFunctions.eliminatePlayer(victim, discovered);

@@ -21,13 +21,16 @@ public class RoleUtil {
     public static boolean areSameTeam(Player p1, Player p2, GameValues values) {
         var r1 = getRole(p1, values);
         var r2 = getRole(p2, values);
-        return r1.isSameTeam(r2);
+        return r1 != null && r2 != null && r1.isSameTeam(r2);
     }
 
     public static boolean canSeeTeam(Player viewer, Player target, GameValues values) {
         var r1 = getRole(viewer, values);
         var r2 = getRole(target, values);
-        return (r1.isSameTeam(r2) && r1.canSeeTeam()) || viewer.getGameMode().isInvulnerable() || viewer.equals(target);
+        return (r1 != null && r2 != null
+                && r1.isSameTeam(r2) && r1.canSeeTeam())
+                || viewer.getGameMode().isInvulnerable()
+                || viewer.equals(target);
     }
 
     public static boolean isEvil(Player player, GameValues values) {
@@ -40,6 +43,13 @@ public class RoleUtil {
 
     public static boolean isTraitor(Player player, GameValues values) {
         return getRole(player, values).getFaction().equals(Faction.TRAITOR);
+    }
+
+    public static boolean isTeamAlive(List<Player> players, GameValues values, Faction faction) {
+        return players
+                .stream()
+                .filter(player -> !player.getGameMode().isInvulnerable())
+                .anyMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(faction));
     }
 
     public static boolean onlyPlayersInFactionRemain(List<Player> players, GameValues values, Faction faction) {

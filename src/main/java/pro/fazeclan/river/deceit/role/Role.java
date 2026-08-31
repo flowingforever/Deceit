@@ -5,6 +5,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
@@ -13,7 +14,7 @@ import pro.fazeclan.river.jarona.game.GameValues;
 import java.io.File;
 import java.util.List;
 
-public abstract class Role {
+public abstract class Role implements Listener {
 
     private final File file;
     @Getter
@@ -26,7 +27,7 @@ public abstract class Role {
     private final Faction faction;
     @Getter
     private final boolean takesPriority; // more for the neutral roles
-
+    @Getter
     private final Deceit plugin;
 
     public Role(Deceit plugin, String id, Faction faction, boolean takesPriority) {
@@ -38,6 +39,8 @@ public abstract class Role {
         this.id = id;
         this.faction = faction;
         this.takesPriority = takesPriority;
+
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public <T> T getProperty(String key, T def) {
@@ -127,7 +130,7 @@ public abstract class Role {
     }
 
     public void resetRole() {
-        plugin.saveResource("role/" + id + ".yml", true);
+        plugin.saveResource("roles/" + id + ".yml", true);
         reloadRole();
     }
 

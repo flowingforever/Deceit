@@ -1,0 +1,12 @@
+name: '<#ff85f7>Jester'
+enabled: true
+announcement: <#ff85f7>You're a Jester!
+announcement-sound: 'minecraft:block.note_block.bass'
+announcement-pitch: 0.5
+description:
+  - '<gray>Die by the hands of the innocent!'
+winning-ends-games: true
+bells: 4
+see-own-team: true
+selection:
+  remainder: true

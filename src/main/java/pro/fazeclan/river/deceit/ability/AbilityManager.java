@@ -31,6 +31,9 @@ public class AbilityManager {
         register(new FakeHealthKitAbility(plugin));
         register(new TorchAbility(plugin));
 
+        // neutral
+        register(new FakeDaggerAbility(plugin));
+
         // innocent
         register(new SheriffCapAbility(plugin));
         register(new ScannerAbility(plugin));
