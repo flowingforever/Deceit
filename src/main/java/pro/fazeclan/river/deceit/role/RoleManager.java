@@ -25,17 +25,17 @@ public class RoleManager {
     }
 
     public void registerAll() {
-        // innocent
-        register(new InnocentRole(plugin));
-        register(new SheriffRole(plugin));
-        register(new DoctorRole(plugin));
-
         // neutral
         register(new JesterRole(plugin));
         register(new FiendRole(plugin));
 
         // traitor
         register(new TraitorRole(plugin));
+
+        // innocent
+        register(new InnocentRole(plugin));
+        register(new SheriffRole(plugin));
+        register(new DoctorRole(plugin));
     }
 
     public <R extends Role> R register(R role) {

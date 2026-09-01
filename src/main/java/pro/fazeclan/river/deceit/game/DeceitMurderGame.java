@@ -258,7 +258,7 @@ public class DeceitMurderGame extends GameWithMap {
 
     private void incrementGameTick(World world) {
         var gameValues = getGameValues(world.getUID());
-        gameValues.setValue("tick", getCurrentGameTick(world) + 1L);
+        gameValues.setValue("tick", gameValues.getValue("tick", 0L) + 1L);
     }
 
     private long getCurrentGameTick(World world) {
@@ -356,31 +356,24 @@ public class DeceitMurderGame extends GameWithMap {
         );
     }
 
-    private List<Role> getMainRoles(List<Player> players, GameValues values) {
-        var list = new ArrayList<Role>();
-        for (var player : players) {
-            var role = RoleUtil.getRole(player, values);
-            if (list.stream().noneMatch(r -> r.isSameTeam(role))) {
-                if (role.isTakesPriority()) {
-                    if (role.winningEndsGames()) {
-                        return List.of(role);
-                    }
-                }
-
-                list.addLast(role);
-            }
-        }
-        return list;
-    }
-
     private List<Role> getWinningRoles(List<Player> players, GameValues values) {
         var manager = plugin.getRoleManager();
-        return getMainRoles(players, values)
+        var mainList = manager.getRoles()
                 .stream()
+                .unordered()
                 .filter(role -> role.hasWon(players, values))
                 .map(role -> manager.getRole(role.winsWith()))
                 .filter(Objects::nonNull)
+                .distinct()
                 .toList();
+        if (mainList.stream().anyMatch(Role::isTakesPriority)) {
+            return mainList
+                    .stream()
+                    .filter(Role::isTakesPriority)
+                    .toList();
+        } else {
+            return mainList;
+        }
     }
 
 }
