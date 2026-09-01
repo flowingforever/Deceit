@@ -48,6 +48,7 @@ public class GameFunctions {
 
         player.getInventory().clear();
         player.setSaturation(2f);
+        player.getInventory().setHeldItemSlot(0);
         for (ItemStack item : role.getSpawnItems()) {
             if (item == null) continue;
             player.give(item);

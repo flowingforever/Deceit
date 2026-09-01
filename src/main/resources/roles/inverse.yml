@@ -1,0 +1,13 @@
+name: 'Inverse'
+color: '#d6c4ff'
+enabled: true
+announcement: You're an Inverse!
+announcement-sound: 'minecraft:block.note_block.bass'
+announcement-pitch: 0.5
+description:
+  - '<gray>Get a kill and become the inverse of that role!'
+winning-ends-games: false
+bells: 0
+see-own-team: true
+selection:
+  remainder: true

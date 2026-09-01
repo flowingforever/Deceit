@@ -6,6 +6,7 @@ import pro.fazeclan.river.deceit.role.definitions.innocent.DoctorRole;
 import pro.fazeclan.river.deceit.role.definitions.innocent.InnocentRole;
 import pro.fazeclan.river.deceit.role.definitions.innocent.SheriffRole;
 import pro.fazeclan.river.deceit.role.definitions.neutral.FiendRole;
+import pro.fazeclan.river.deceit.role.definitions.neutral.InverseRole;
 import pro.fazeclan.river.deceit.role.definitions.neutral.JesterRole;
 import pro.fazeclan.river.deceit.role.definitions.traitor.TraitorRole;
 import pro.fazeclan.river.deceit.role.definitions.traitor.UnderlingRole;
@@ -29,6 +30,7 @@ public class RoleManager {
         // neutral
         register(new JesterRole(plugin));
         register(new FiendRole(plugin));
+        register(new InverseRole(plugin));
 
         // traitor
         register(new TraitorRole(plugin));
