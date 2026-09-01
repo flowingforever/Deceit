@@ -366,14 +366,19 @@ public class DeceitMurderGame extends GameWithMap {
                 .filter(Objects::nonNull)
                 .distinct()
                 .toList();
+
+        if (mainList.stream().anyMatch(Role::livingKeepsGameGoing)) {
+            return List.of();
+        }
+
         if (mainList.stream().anyMatch(Role::isTakesPriority)) {
             return mainList
                     .stream()
                     .filter(Role::isTakesPriority)
                     .toList();
-        } else {
-            return mainList;
         }
+
+        return mainList;
     }
 
 }

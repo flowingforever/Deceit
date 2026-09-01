@@ -117,6 +117,11 @@ public abstract class Role implements Listener {
         return getProperty("color", "green");
     }
 
+    // unnecessary for most roles
+    public boolean livingKeepsGameGoing() {
+        return getProperty("keeps-game-going", false);
+    }
+
     public boolean isSameTeam(Role other) {
         if (faction == Faction.NEUTRAL) {
             return other.equals(this);
