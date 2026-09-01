@@ -8,6 +8,7 @@ import pro.fazeclan.river.deceit.role.definitions.innocent.SheriffRole;
 import pro.fazeclan.river.deceit.role.definitions.neutral.FiendRole;
 import pro.fazeclan.river.deceit.role.definitions.neutral.JesterRole;
 import pro.fazeclan.river.deceit.role.definitions.traitor.TraitorRole;
+import pro.fazeclan.river.deceit.role.definitions.traitor.UnderlingRole;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +32,7 @@ public class RoleManager {
 
         // traitor
         register(new TraitorRole(plugin));
+        register(new UnderlingRole(plugin));
 
         // innocent
         register(new InnocentRole(plugin));

@@ -35,15 +35,18 @@ public class RoleUtil {
     }
 
     public static boolean isEvil(Player player, GameValues values) {
-        return !getRole(player, values).getFaction().equals(Faction.INNOCENT);
+        var role = getRole(player, values);
+        return role != null && !getRole(player, values).getFaction().equals(Faction.INNOCENT);
     }
 
     public static boolean isInnocent(Player player, GameValues values) {
-        return getRole(player, values).getFaction().equals(Faction.INNOCENT);
+        var role = getRole(player, values);
+        return role != null && getRole(player, values).getFaction().equals(Faction.INNOCENT);
     }
 
     public static boolean isTraitor(Player player, GameValues values) {
-        return getRole(player, values).getFaction().equals(Faction.TRAITOR);
+        var role = getRole(player, values);
+        return role != null && role.getFaction().equals(Faction.TRAITOR);
     }
 
     public static boolean isTeamAlive(List<Player> players, GameValues values, Faction faction) {
@@ -82,6 +85,17 @@ public class RoleUtil {
                 .filter(p -> {
                     var role = RoleUtil.getRole(p, values);
                     return role != null && role.winsWith().equals(team);
+                })
+                .toList();
+    }
+
+    public static List<Player> getAllWithRole(World world, GameValues values, String roleId) {
+        return world.getPlayers()
+                .stream()
+                .filter(p -> !p.getGameMode().isInvulnerable())
+                .filter(p -> {
+                    var role = RoleUtil.getRole(p, values);
+                    return role != null && role.getId().equals(roleId);
                 })
                 .toList();
     }
