@@ -1,6 +1,7 @@
-name: '<#ff85f7>Jester'
+name: 'Jester'
+color: '#ff85f7'
 enabled: true
-announcement: <#ff85f7>You're a Jester!
+announcement: You're a Jester!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:

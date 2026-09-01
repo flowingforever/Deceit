@@ -113,7 +113,7 @@ public class JesterRole extends AbstractNeutralRole {
 
     @Override
     public String getPrefix() {
-        return "<#ff85f7>☻</#ff85f7>";
+        return "<" + getMiniMessageColor() + ">☻</" + getMiniMessageColor() + ">";
     }
 
 }

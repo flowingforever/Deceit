@@ -1,6 +1,7 @@
-name: '<dark_purple>Fiend'
+name: 'Fiend'
+color: 'dark_purple'
 enabled: true
-announcement: <dark_purple>You're a Fiend!
+announcement: You're a Fiend!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:

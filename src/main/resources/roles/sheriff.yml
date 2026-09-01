@@ -1,6 +1,7 @@
-name: '<gold>Sheriff'
+name: 'Sheriff'
+color: 'gold'
 enabled: true
-announcement: <gold>You're a Sheriff!
+announcement: You're a Sheriff!
 announcement-sound: 'minecraft:block.note_block.bit'
 announcement-pitch: 2.0
 description:

@@ -1,6 +1,7 @@
-name: '<green>Innocent'
+name: 'Innocent'
+color: 'green'
 enabled: true
-announcement: <green>You're Innocent!
+announcement: You're Innocent!
 announcement-sound: 'minecraft:block.note_block.bit'
 announcement-pitch: 2.0
 description:

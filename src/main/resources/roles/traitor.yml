@@ -1,6 +1,7 @@
-name: '<red>Traitor'
+name: 'Traitor'
+color: 'red'
 enabled: true
-announcement: <red>You're a Traitor!
+announcement: You're a Traitor!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:

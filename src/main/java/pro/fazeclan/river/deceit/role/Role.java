@@ -113,6 +113,10 @@ public abstract class Role implements Listener {
         );
     }
 
+    public String getMiniMessageColor() {
+        return getProperty("color", "green");
+    }
+
     public boolean isSameTeam(Role other) {
         if (faction == Faction.NEUTRAL) {
             return other.equals(this);

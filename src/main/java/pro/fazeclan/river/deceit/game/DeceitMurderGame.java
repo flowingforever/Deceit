@@ -67,9 +67,10 @@ public class DeceitMurderGame extends GameWithMap {
             Role role = values.getValue("role_" + player.getUniqueId());
             scheduler.runTaskLater(plugin, () -> {
                 var sound = role.getAnnouncementSound();
+                var color = role.getMiniMessageColor();
                 player.showTitle(Title.title(
                         mm.deserialize("<gray><< " + role.getPrefix() + " >></gray>"),
-                        mm.deserialize(role.getAnnouncement())
+                        mm.deserialize("<" + color + ">" + role.getAnnouncement() + "</" + color + ">")
                 ));
                 player.playSound(
                         player,

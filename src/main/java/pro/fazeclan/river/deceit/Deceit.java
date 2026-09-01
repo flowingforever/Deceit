@@ -7,10 +7,12 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 import pro.fazeclan.river.deceit.ability.AbilityManager;
 import pro.fazeclan.river.deceit.command.ConfigCommand;
+import pro.fazeclan.river.deceit.command.TeamChatCommand;
 import pro.fazeclan.river.deceit.game.DeceitMurderGame;
 import pro.fazeclan.river.deceit.listener.AbilityListener;
 import pro.fazeclan.river.deceit.listener.CorpseListener;
@@ -20,6 +22,7 @@ import pro.fazeclan.river.deceit.role.RoleManager;
 import pro.fazeclan.river.jarona.Jarona;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public final class Deceit extends JavaPlugin {
@@ -56,15 +59,16 @@ public final class Deceit extends JavaPlugin {
         events.registerListener(new PreventionListener(), PacketListenerPriority.NORMAL);
 
         // commands
-        List<LiteralArgumentBuilder<CommandSourceStack>> subcommands = new ArrayList<>();
+        List<Pair<LiteralArgumentBuilder<CommandSourceStack>, Collection<String>>> subcommands = new ArrayList<>();
         var command = Commands.literal("deceit");
         subcommands.add(ConfigCommand.command(this));
+        subcommands.add(TeamChatCommand.command());
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             // add each subcommand and register them
             subcommands.forEach(subcommand -> {
-                command.then(subcommand);
-                commands.registrar().register(subcommand.build());
+                command.then(subcommand.getLeft());
+                commands.registrar().register(subcommand.getLeft().build(), subcommand.getRight());
             });
 
             // root command

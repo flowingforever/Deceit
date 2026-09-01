@@ -59,6 +59,6 @@ public class InnocentRole extends AbstractInnocentRole {
 
     @Override
     public String getPrefix() {
-        return "<green>◆</green>";
+        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
     }
 }

@@ -143,6 +143,6 @@ public class TraitorRole extends AbstractTraitorRole {
 
     @Override
     public String getPrefix() {
-        return "<red>\uD83E\uDE93</red>";
+        return "<" + getMiniMessageColor() + ">\uD83E\uDE93</" + getMiniMessageColor() + ">";
     }
 }

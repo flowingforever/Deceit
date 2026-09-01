@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +19,6 @@ import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
 import pro.fazeclan.river.deceit.role.definitions.AbstractNeutralRole;
 import pro.fazeclan.river.deceit.util.GlowUtil;
-import pro.fazeclan.river.deceit.util.MessageUtil;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.deceit.util.TimeUtil;
 import pro.fazeclan.river.jarona.condition.Condition;
@@ -180,7 +178,7 @@ public class FiendRole extends AbstractNeutralRole {
                                 return c -> {
                                     var vl = game.getGameValues(world.getUID());
                                     if (vl.getValue("fiend_locked", false)) {
-                                        return "<dark_purple>☄ Survive.</dark_purple>";
+                                        return "<" + getMiniMessageColor() + ">☄ Survive.</" + getMiniMessageColor() + ">";
                                     }
 
                                     long duration = Math.max(0, vl.getValue("fiend_timer", 4800L));
@@ -189,7 +187,7 @@ public class FiendRole extends AbstractNeutralRole {
                                         completed = "☑";
                                     }
 
-                                    return "<dark_purple>☄ <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b> " + completed + "</dark_purple>";
+                                    return "<" + getMiniMessageColor() + ">☄ <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b> " + completed + "</" + getMiniMessageColor() + ">";
                                 };
                             }
 
@@ -289,6 +287,6 @@ public class FiendRole extends AbstractNeutralRole {
 
     @Override
     public String getPrefix() {
-        return "<dark_purple>☄</dark_purple>";
+        return "<" + getMiniMessageColor() + ">☄</" + getMiniMessageColor() + ">";
     }
 }

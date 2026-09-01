@@ -112,6 +112,6 @@ public class SheriffRole extends AbstractInnocentRole {
 
     @Override
     public String getPrefix() {
-        return "<gold>\uD83C\uDFF9</gold>";
+        return "<" + getMiniMessageColor() + ">\uD83C\uDFF9</" + getMiniMessageColor() + ">";
     }
 }

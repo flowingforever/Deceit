@@ -36,7 +36,8 @@ public class GameFunctions {
                         if (ctx.equals(NameContext.TABLIST)) {
                             return role.getPrefix() + " %jarona_nickname%";
                         } else {
-                            return role.getPrefix() + " " + role.getName() + "<newline>%jarona_nickname%";
+                            var color = role.getMiniMessageColor();
+                            return role.getPrefix() + " <" + color + ">" + role.getName() + "<newline>%jarona_nickname%";
                         }
                     }
 
