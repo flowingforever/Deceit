@@ -5,6 +5,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Mannequin;
+import org.bukkit.entity.Pose;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,6 +28,7 @@ public class CorpseListener implements Listener {
         }
         var world = corpse.getWorld();
         if (!GameUtil.hasGame(world, Deceit.getKey("murder"))) return;
+        if (!corpse.getPose().equals(Pose.SWIMMING)) return;
         if (corpse.getVisualFire().equals(TriState.TRUE)) return;
         if (!corpse.getPassengers().isEmpty()) return;
         if (event.getPlayer().getGameMode().isInvulnerable()) return;

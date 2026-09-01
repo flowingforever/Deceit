@@ -128,6 +128,21 @@ public class TraitorRole extends AbstractTraitorRole {
                             meta.itemName(Component.text("\"Health Kit\""));
                         }),
                         1
+                ),
+                new ShopEntry(
+                        ItemType.ENDER_EYE.createItemStack(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "concealer"
+                            );
+                            meta.itemName(Component.text("Concealer"));
+                            meta.lore(List.of(
+                                    Component.empty(),
+                                    Component.text("Save a location and teleport back to it!").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY)
+                            ));
+                        }),
+                        2
                 )
         );
     }
