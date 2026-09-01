@@ -1,4 +1,4 @@
-package pro.fazeclan.river.deceit.ability;
+package pro.fazeclan.river.deceit.event;
 
 import lombok.Getter;
 import org.bukkit.entity.Player;

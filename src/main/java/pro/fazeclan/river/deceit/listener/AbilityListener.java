@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.ability.AbilityEvent;
+import pro.fazeclan.river.deceit.event.AbilityEvent;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
 public class AbilityListener implements Listener {

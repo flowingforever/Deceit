@@ -1,5 +1,6 @@
 package pro.fazeclan.river.deceit.util;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
@@ -52,17 +53,36 @@ public class RoleUtil {
                 .anyMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(faction));
     }
 
+    public static boolean isTeamAlive(List<Player> players, GameValues values, String winsWith) {
+        return players
+                .stream()
+                .filter(player -> !player.getGameMode().isInvulnerable())
+                .filter(player -> RoleUtil.getRole(player, values) != null)
+                .anyMatch(player -> RoleUtil.getRole(player, values).winsWith().equals(winsWith));
+    }
+
     public static boolean onlyPlayersInFactionRemain(List<Player> players, GameValues values, Faction faction) {
         return players.stream()
                 .filter(player -> !player.getGameMode().isInvulnerable())
                 .allMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(faction));
     }
 
-    public List<Player> getAllInTeam(Player focus, List<Player> players, GameValues values) {
+    public static List<Player> getAllInTeam(Player focus, List<Player> players, GameValues values) {
         return players
                 .stream()
                 .filter(p -> RoleUtil.areSameTeam(focus, p, values))
                 .filter(p -> !p.getGameMode().isInvulnerable())
+                .toList();
+    }
+
+    public static List<Player> getAllWithTeam(World world, GameValues values, String team) {
+        return world.getPlayers()
+                .stream()
+                .filter(p -> !p.getGameMode().isInvulnerable())
+                .filter(p -> {
+                    var role = RoleUtil.getRole(p, values);
+                    return role != null && role.winsWith().equals(team);
+                })
                 .toList();
     }
 

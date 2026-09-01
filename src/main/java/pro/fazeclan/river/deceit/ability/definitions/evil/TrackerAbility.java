@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.ability.Ability;
-import pro.fazeclan.river.deceit.ability.AbilityEvent;
+import pro.fazeclan.river.deceit.event.AbilityEvent;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.util.GameUtil;
 

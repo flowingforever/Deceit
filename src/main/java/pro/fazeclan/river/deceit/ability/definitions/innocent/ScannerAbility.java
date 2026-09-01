@@ -16,7 +16,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.ability.Ability;
-import pro.fazeclan.river.deceit.ability.AbilityEvent;
+import pro.fazeclan.river.deceit.event.AbilityEvent;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.util.GameUtil;
 

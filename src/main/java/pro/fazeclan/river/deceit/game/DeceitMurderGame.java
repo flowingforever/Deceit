@@ -9,9 +9,12 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.event.MurderInitEvent;
+import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.GameFunctions;
+import pro.fazeclan.river.deceit.util.GlowUtil;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.deceit.util.TimeUtil;
 import pro.fazeclan.river.jarona.Jarona;
@@ -162,6 +165,8 @@ public class DeceitMurderGame extends GameWithMap {
                     public void reset() {}
                 }
         );
+
+        plugin.getServer().getPluginManager().callEvent(new MurderInitEvent(players, world, this));
     }
 
     @Override
@@ -192,6 +197,8 @@ public class DeceitMurderGame extends GameWithMap {
         if (values.getValue("time_limit", 4800L) <= getCurrentGameTick(world)) {
             GameUtil.endGame(world);
         }
+
+        plugin.getServer().getPluginManager().callEvent(new MurderTickEvent(players, world, this));
 
         incrementGameTick(world);
 
@@ -238,6 +245,8 @@ public class DeceitMurderGame extends GameWithMap {
                     mm.deserialize(title.toString()),
                     mm.deserialize(subtitle.toString())
             ));
+            player.setGlowing(false);
+            GlowUtil.removeGlowOfPlayerToWorld(player.getWorld(), player);
 
             if (svc != null) {
                 svc.removePlayer(player);
@@ -352,10 +361,12 @@ public class DeceitMurderGame extends GameWithMap {
             var role = RoleUtil.getRole(player, values);
             if (list.stream().noneMatch(r -> r.isSameTeam(role))) {
                 if (role.isTakesPriority()) {
-                    list.addFirst(role);
-                } else {
-                    list.addLast(role);
+                    if (role.winningEndsGames()) {
+                        return List.of(role);
+                    }
                 }
+
+                list.addLast(role);
             }
         }
         return list;

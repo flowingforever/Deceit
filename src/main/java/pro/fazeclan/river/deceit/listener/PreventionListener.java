@@ -6,6 +6,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.event.MurderEliminationEvent;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
@@ -76,6 +78,7 @@ public class PreventionListener implements Listener, PacketListener {
             victim.teleport(victim.getWorld().getSpawnLocation().clone().add(0, 20, 0));
             discovered = true;
         }
+        Bukkit.getServer().getPluginManager().callEvent(new MurderEliminationEvent(victim, event.getDamageSource(), discovered));
         GameFunctions.eliminatePlayer(victim, discovered);
     }
 

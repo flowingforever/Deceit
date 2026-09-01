@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.ability.Ability;
-import pro.fazeclan.river.deceit.ability.AbilityEvent;
+import pro.fazeclan.river.deceit.event.AbilityEvent;
 import pro.fazeclan.river.deceit.util.ExplosiveUtil;
 
 public class CreepanadeAbility extends Ability {

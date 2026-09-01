@@ -18,7 +18,6 @@ public abstract class AbstractTraitorRole extends Role {
     @Override
     public boolean hasWon(List<Player> players, GameValues values) {
         return !RoleUtil.isTeamAlive(players, values, Faction.INNOCENT)
-                && !RoleUtil.isTeamAlive(players, values, Faction.NEUTRAL)
                 && values.getValue("time_limit", 0L) > values.getValue("tick", 0L);
     }
 
