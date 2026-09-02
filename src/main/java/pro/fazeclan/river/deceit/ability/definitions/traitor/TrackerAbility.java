@@ -1,4 +1,4 @@
-package pro.fazeclan.river.deceit.ability.definitions.evil;
+package pro.fazeclan.river.deceit.ability.definitions.traitor;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.LodestoneTracker;

@@ -362,8 +362,11 @@ public class DeceitMurderGame extends GameWithMap {
                 .stream()
                 .unordered()
                 .map(role -> manager.getRole(role.winsWith()))
-                .filter(Objects::nonNull)
                 .distinct()
+                .filter(role -> players.stream().anyMatch(player -> {
+                    var r = RoleUtil.getRole(player, values);
+                    return r != null && r.winsWith().equals(role.winsWith());
+                }))
                 .toList();
 
         if (mainList.stream().anyMatch(Role::livingKeepsGameGoing)) {

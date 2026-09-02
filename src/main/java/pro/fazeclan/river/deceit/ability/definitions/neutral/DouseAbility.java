@@ -72,6 +72,7 @@ public class DouseAbility extends Ability {
     private long countAlivePlayersDoused(World world, GameValues values) {
         return world.getPlayers()
                 .stream()
+                .filter(player -> !player.getGameMode().isInvulnerable())
                 .filter(player -> RoleUtil.getRole(player, values) != null)
                 .filter(player -> !RoleUtil.getRole(player, values).winsWith().equals("pyromaniac"))
                 .filter(player -> values.getValue("doused_" + player.getUniqueId(), false))
@@ -81,6 +82,7 @@ public class DouseAbility extends Ability {
     private boolean allAlivePlayersDoused(World world, GameValues values) {
         return world.getPlayers()
                 .stream()
+                .filter(player -> !player.getGameMode().isInvulnerable())
                 .filter(player -> RoleUtil.getRole(player, values) != null)
                 .filter(player -> !RoleUtil.getRole(player, values).winsWith().equals("pyromaniac"))
                 .allMatch(player -> values.getValue("doused_" + player.getUniqueId(), false));

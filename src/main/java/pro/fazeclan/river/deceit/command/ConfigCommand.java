@@ -1,12 +1,14 @@
 package pro.fazeclan.river.deceit.command;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.apache.commons.lang3.tuple.Pair;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.ability.Ability;
@@ -102,7 +104,7 @@ public class ConfigCommand {
                                                             plugin.getConfig().getValues(true)
                                                                     .entrySet()
                                                                     .stream()
-                                                                    .filter(entry -> isNumerical(entry.getValue()))
+                                                                    .filter(entry -> isNumericalOrBoolean(entry.getValue()))
                                                                     .map(Map.Entry::getKey)
                                                                     .forEach(builder::suggest);
                                                             return builder.buildFuture();
@@ -164,7 +166,7 @@ public class ConfigCommand {
                                                                                                     .getValues(true)
                                                                                                     .entrySet()
                                                                                                     .stream()
-                                                                                                    .filter(entry -> isNumerical(entry.getValue()))
+                                                                                                    .filter(entry -> isNumericalOrBoolean(entry.getValue()))
                                                                                                     .map(Map.Entry::getKey)
                                                                                                     .forEach(builder::suggest);
                                                                                             return builder.buildFuture();
@@ -201,6 +203,22 @@ public class ConfigCommand {
 
                                                                                                             return Command.SINGLE_SUCCESS;
                                                                                                         })
+                                                                                        ).then(
+                                                                                                Commands.argument("boolean", BoolArgumentType.bool())
+                                                                                                        .executes(ctx -> {
+                                                                                                            var ability = ctx.getArgument("abilities", Ability.class);
+                                                                                                            var entry = ctx.getArgument("entry", String.class);
+                                                                                                            var aBoolean = ctx.getArgument("boolean", Boolean.class);
+                                                                                                            ability.getConfig().set(entry, aBoolean);
+                                                                                                            ability.saveAbility();
+                                                                                                            ability.reloadAbility();
+
+                                                                                                            ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
+                                                                                                                    "<green>Set " + entry + " in " + ability.getId() + " to " + aBoolean + "!"
+                                                                                                            ));
+
+                                                                                                            return Command.SINGLE_SUCCESS;
+                                                                                                        })
                                                                                         )
                                                                         )
                                                         )
@@ -214,7 +232,7 @@ public class ConfigCommand {
                                                                                                     .getValues(true)
                                                                                                     .entrySet()
                                                                                                     .stream()
-                                                                                                    .filter(entry -> isNumerical(entry.getValue()))
+                                                                                                    .filter(entry -> isNumericalOrBoolean(entry.getValue()))
                                                                                                     .map(Map.Entry::getKey)
                                                                                                     .forEach(builder::suggest);
                                                                                             return builder.buildFuture();
@@ -279,7 +297,7 @@ public class ConfigCommand {
                                                                                                     .getValues(true)
                                                                                                     .entrySet()
                                                                                                     .stream()
-                                                                                                    .filter(entry -> isNumerical(entry.getValue()))
+                                                                                                    .filter(entry -> isNumericalOrBoolean(entry.getValue()))
                                                                                                     .map(Map.Entry::getKey)
                                                                                                     .forEach(builder::suggest);
                                                                                             return builder.buildFuture();
@@ -316,6 +334,22 @@ public class ConfigCommand {
 
                                                                                                             return Command.SINGLE_SUCCESS;
                                                                                                         })
+                                                                                        ).then(
+                                                                                                Commands.argument("boolean", BoolArgumentType.bool())
+                                                                                                        .executes(ctx -> {
+                                                                                                            var role = ctx.getArgument("roles", Role.class);
+                                                                                                            var entry = ctx.getArgument("entry", String.class);
+                                                                                                            var aBoolean = ctx.getArgument("boolean", Boolean.class);
+                                                                                                            role.getConfig().set(entry, aBoolean);
+                                                                                                            role.saveRole();
+                                                                                                            role.reloadRole();
+
+                                                                                                            ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
+                                                                                                                    "<green>Set " + entry + " in " + role.getName() + "<reset><green> to " + aBoolean + "!"
+                                                                                                            ));
+
+                                                                                                            return Command.SINGLE_SUCCESS;
+                                                                                                        })
                                                                                         )
                                                                         )
                                                         )
@@ -329,7 +363,7 @@ public class ConfigCommand {
                                                                                                     .getValues(true)
                                                                                                     .entrySet()
                                                                                                     .stream()
-                                                                                                    .filter(entry -> isNumerical(entry.getValue()))
+                                                                                                    .filter(entry -> isNumericalOrBoolean(entry.getValue()))
                                                                                                     .map(Map.Entry::getKey)
                                                                                                     .forEach(builder::suggest);
                                                                                             return builder.buildFuture();
@@ -362,6 +396,10 @@ public class ConfigCommand {
 
     private static boolean isNumerical(Object object) {
         return object instanceof Integer || object instanceof Double;
+    }
+
+    private static boolean isNumericalOrBoolean(Object object) {
+        return isNumerical(object) || object instanceof Boolean;
     }
 
 }

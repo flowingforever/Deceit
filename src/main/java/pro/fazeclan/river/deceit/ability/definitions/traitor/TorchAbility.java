@@ -1,4 +1,4 @@
-package pro.fazeclan.river.deceit.ability.definitions.evil;
+package pro.fazeclan.river.deceit.ability.definitions.traitor;
 
 import net.kyori.adventure.util.TriState;
 import org.bukkit.entity.Mannequin;

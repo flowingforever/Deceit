@@ -1,4 +1,4 @@
-package pro.fazeclan.river.deceit.ability.definitions.evil;
+package pro.fazeclan.river.deceit.ability.definitions.traitor;
 
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.SulfurCube;

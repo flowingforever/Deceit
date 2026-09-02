@@ -3,7 +3,7 @@ package pro.fazeclan.river.deceit.ability;
 import lombok.Getter;
 import org.bukkit.event.HandlerList;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.ability.definitions.evil.*;
+import pro.fazeclan.river.deceit.ability.definitions.traitor.*;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.HealthKitAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.ScalpelAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.ScannerAbility;
@@ -33,6 +33,7 @@ public class AbilityManager {
         register(new FakeHealthKitAbility(plugin));
         register(new TorchAbility(plugin));
         register(new ConcealerAbility(plugin));
+        register(new RevivalAbility(plugin));
 
         // neutral
         register(new FakeDaggerAbility(plugin));
