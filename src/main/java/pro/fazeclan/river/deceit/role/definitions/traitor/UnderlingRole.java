@@ -49,6 +49,6 @@ public class UnderlingRole extends AbstractTraitorRole {
 
     @Override
     public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">\uD83D\uDDE1</" + getMiniMessageColor() + ">";
+        return "<" + getMiniMessageColor() + ">\uD83E\uDE93</" + getMiniMessageColor() + ">";
     }
 }

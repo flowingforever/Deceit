@@ -130,7 +130,7 @@ public class NecromancerRole extends AbstractTraitorRole {
 
     @Override
     public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">⚓</" + getMiniMessageColor() + ">";
+        return "<" + getMiniMessageColor() + ">\uD83E\uDE93</" + getMiniMessageColor() + ">";
     }
 
 }

@@ -84,7 +84,7 @@ public class DoctorRole extends AbstractInnocentRole {
 
     @Override
     public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">❤</" + getMiniMessageColor() + ">";
+        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
     }
 
 }
