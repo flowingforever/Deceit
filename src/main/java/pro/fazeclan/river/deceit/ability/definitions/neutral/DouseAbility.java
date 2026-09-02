@@ -1,13 +1,9 @@
 package pro.fazeclan.river.deceit.ability.definitions.neutral;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -15,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.ability.Ability;
+import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.util.GameUtil;
@@ -52,7 +49,7 @@ public class DouseAbility extends Ability {
                         1f,
                         0.7f
                 );
-                doused.damage(2000, DamageSource.builder(DamageType.IN_FIRE).withCausingEntity(player).withDirectEntity(player).build());
+                GameFunctions.eliminatePlayer(doused, false, true);
             }
         } else {
             values.setValue("doused_" + doused.getUniqueId(), true);

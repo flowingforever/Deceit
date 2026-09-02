@@ -7,7 +7,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import pro.fazeclan.river.deceit.game.DeceitMurderGame;
-import pro.fazeclan.river.jarona.game.Game;
 
 import java.util.List;
 

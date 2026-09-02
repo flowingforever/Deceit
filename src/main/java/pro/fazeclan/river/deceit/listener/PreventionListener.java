@@ -73,13 +73,20 @@ public class PreventionListener implements Listener, PacketListener {
 
         event.setDamage(0.0);
         boolean discovered = false;
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)
-                || event.getCause().equals(EntityDamageEvent.DamageCause.KILL)) {
+        var cause = event.getCause();
+        if (cause.equals(EntityDamageEvent.DamageCause.VOID)
+                || cause.equals(EntityDamageEvent.DamageCause.KILL)) {
             victim.teleport(victim.getWorld().getSpawnLocation().clone().add(0, 20, 0));
             discovered = true;
         }
+
+        boolean onFire = false;
+        if (cause.equals(EntityDamageEvent.DamageCause.FIRE)
+            || cause.equals(EntityDamageEvent.DamageCause.FIRE_TICK)) {
+            onFire = true;
+        }
         Bukkit.getServer().getPluginManager().callEvent(new MurderEliminationEvent(victim, event.getDamageSource(), discovered));
-        GameFunctions.eliminatePlayer(victim, discovered);
+        GameFunctions.eliminatePlayer(victim, discovered, onFire);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

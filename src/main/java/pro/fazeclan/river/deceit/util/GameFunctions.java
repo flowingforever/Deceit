@@ -4,15 +4,15 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import net.kyori.adventure.util.TriState;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 import org.bukkit.inventory.ItemStack;
+import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.game.GameValues;
@@ -63,7 +63,7 @@ public class GameFunctions {
 
     }
 
-    public static void eliminatePlayer(Player player, boolean revealed) {
+    public static void eliminatePlayer(Player player, boolean revealed, boolean burning) {
 
         var game = GameUtil.getGame(player);
         if (game == null) {
@@ -82,6 +82,10 @@ public class GameFunctions {
             m.setDescription(null);
             m.setPose(Pose.SWIMMING, true);
             m.setInvulnerable(true);
+
+            if (burning) {
+                burnCorpse(Deceit.getInstance(), m, 2);
+            }
         });
 
         // add time
@@ -138,6 +142,44 @@ public class GameFunctions {
 
     public static void revealPlayerAsDead(Player player, GameValues values) {
         revealPlayerAsDead(player.getUniqueId(), player.getName(), values, player.getWorld());
+    }
+
+    public static void burnCorpse(Deceit plugin, Mannequin corpse, int seconds) {
+        corpse.setVisualFire(TriState.TRUE);
+        var world = corpse.getWorld();
+        world.playSound(
+                corpse.getLocation(),
+                "minecraft:item.firecharge.use",
+                1f,
+                1f
+        );
+
+        plugin.getServer().getScheduler().runTaskLater(
+                plugin,
+                () -> {
+                    if (!corpse.isValid()) {
+                        return;
+                    }
+
+                    world.playSound(
+                            corpse.getLocation(),
+                            "minecraft:block.fire.extinguish",
+                            1f,
+                            1f
+                    );
+                    world.spawnParticle(
+                            Particle.DUST,
+                            corpse.getLocation(),
+                            20,
+                            1,
+                            0.3,
+                            1,
+                            new Particle.DustOptions(Color.fromRGB(38, 18, 17), 1.5f)
+                    );
+                    corpse.remove();
+                },
+                seconds * 20L
+        );
     }
 
 }
