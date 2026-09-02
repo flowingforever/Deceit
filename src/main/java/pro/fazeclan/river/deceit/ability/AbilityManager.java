@@ -8,6 +8,8 @@ import pro.fazeclan.river.deceit.ability.definitions.innocent.HealthKitAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.ScalpelAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.ScannerAbility;
 import pro.fazeclan.river.deceit.ability.definitions.innocent.SheriffCapAbility;
+import pro.fazeclan.river.deceit.ability.definitions.neutral.DouseAbility;
+import pro.fazeclan.river.deceit.ability.definitions.neutral.FakeDaggerAbility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +36,7 @@ public class AbilityManager {
 
         // neutral
         register(new FakeDaggerAbility(plugin));
+        register(new DouseAbility(plugin));
 
         // innocent
         register(new SheriffCapAbility(plugin));

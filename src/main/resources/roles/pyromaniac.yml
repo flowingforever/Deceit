@@ -1,0 +1,15 @@
+name: 'Pyromaniac'
+color: '#ff5b42'
+enabled: true
+announcement: You're a Pyromaniac!
+announcement-sound: 'minecraft:block.note_block.bass'
+announcement-pitch: 0.5
+description:
+  - '<gray>Be the last player standing through'
+  - '<gray>killing and setting people ablaze.'
+winning-ends-games: true
+bells: 0
+see-own-team: true
+selection:
+  remainder: true
+keeps-game-going: true

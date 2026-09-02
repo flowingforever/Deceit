@@ -70,6 +70,13 @@ public class RoleUtil {
                 .allMatch(player -> values.getValue("faction_" + player.getUniqueId(), Faction.INNOCENT).equals(faction));
     }
 
+    public static boolean onlyPlayersInTeamRemain(List<Player> players, GameValues values, String team) {
+        return players.stream()
+                .filter(player -> !player.getGameMode().isInvulnerable())
+                .filter(player -> RoleUtil.getRole(player, values) != null)
+                .allMatch(player -> RoleUtil.getRole(player, values).winsWith().equals(team));
+    }
+
     public static List<Player> getAllInTeam(Player focus, List<Player> players, GameValues values) {
         return players
                 .stream()
