@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.event.MurderEliminationEvent;
+import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.definitions.AbstractNeutralRole;
@@ -53,7 +53,7 @@ public class InverseRole extends AbstractNeutralRole {
     }
 
     @EventHandler
-    private void onInverseRole(MurderEliminationEvent event) {
+    private void onInverseRole(MurderPreEliminationEvent event) {
         if (!(event.getSource().getCausingEntity() instanceof Player attacker)) return;
         var victim = event.getEliminated();
         if (!GameUtil.hasGame(victim.getWorld(), Deceit.getKey("murder"))) return;

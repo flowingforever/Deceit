@@ -5,7 +5,7 @@ announcement: You're a Sheriff!
 announcement-sound: 'minecraft:block.note_block.bit'
 announcement-pitch: 2.0
 description:
-  - <gray>Find the opposing parties and eliminate them.
+  - Find the opposing parties and eliminate them.
 winning-ends-games: true
 bells: 2
 see-own-team: false

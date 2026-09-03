@@ -5,10 +5,10 @@ announcement: You're a Doctor!
 announcement-sound: 'minecraft:block.note_block.bit'
 announcement-pitch: 2.0
 description:
-  - <gray>Heal your teammates and assist them!
+  - Heal your teammates and assist them!
 winning-ends-games: true
 bells: 0
 see-own-team: false
 selection:
-  minimum: 1
+  minimum: 0
   percentage: 16.7

@@ -1,22 +1,22 @@
 package pro.fazeclan.river.deceit.event;
 
 import lombok.Getter;
-import org.bukkit.damage.DamageSource;
+import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class MurderEliminationEvent extends Event {
+public class MurderPostEliminationEvent extends Event {
 
     private final Player eliminated;
-    private final DamageSource source;
+    private final Mannequin corpse;
     private final boolean revealed;
 
-    public MurderEliminationEvent(Player eliminated, DamageSource source, boolean revealed) {
+    public MurderPostEliminationEvent(Player eliminated, Mannequin corpse, boolean revealed) {
         this.eliminated = eliminated;
-        this.source = source;
+        this.corpse = corpse;
         this.revealed = revealed;
     }
 

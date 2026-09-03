@@ -5,8 +5,8 @@ announcement: You're Innocent!
 announcement-sound: 'minecraft:block.note_block.bit'
 announcement-pitch: 2.0
 description:
-  - <gray>You're very defenseless. Stay alive until time
-  - <gray>runs out or eliminate all opposing parties.
+  - You're very defenseless. Stay alive until time
+  - runs out or eliminate all opposing parties.
 winning-ends-games: true
 bells: 0
 see-own-team: false

@@ -102,6 +102,14 @@ public abstract class Role implements Listener {
         }
     }
 
+    public int getMaximumCount() {
+        if (getProperty("selection.remainder", false)) {
+            return Integer.MAX_VALUE;
+        } else {
+            return getProperty("selection.maximum", Integer.MAX_VALUE);
+        }
+    }
+
     public Sound getAnnouncementSound() {
         String sound = getProperty("announcement-sound", "minecraft:block.note_block.bell");
         float pitch = getProperty("announcement-pitch", 1.0).floatValue();

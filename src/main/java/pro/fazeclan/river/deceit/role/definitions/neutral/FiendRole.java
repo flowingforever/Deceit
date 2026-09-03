@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.event.MurderEliminationEvent;
+import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderInitEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
@@ -251,7 +251,7 @@ public class FiendRole extends AbstractNeutralRole {
     }
 
     @EventHandler
-    private void onEliminationOfFiend(MurderEliminationEvent event) {
+    private void onEliminationOfFiend(MurderPreEliminationEvent event) {
         var eliminated = event.getEliminated();
         var values = GameUtil.getGame(eliminated).getGameValues(eliminated.getWorld().getUID());
         var role = RoleUtil.getRole(eliminated, values);
@@ -262,7 +262,7 @@ public class FiendRole extends AbstractNeutralRole {
     }
 
     @EventHandler
-    private void onFiendElimination(MurderEliminationEvent event) {
+    private void onFiendElimination(MurderPreEliminationEvent event) {
         var eliminated = event.getEliminated();
         var source = event.getSource();
         if (!(source.getCausingEntity() instanceof Player attacker)) return;

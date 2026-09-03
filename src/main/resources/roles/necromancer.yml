@@ -5,8 +5,8 @@ announcement: You're a Necromancer!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:
-  - '<gray>Assist your teammates with revivals'
-  - '<gray>that will put anyone revived on your side!'
+  - 'Assist your teammates with revivals'
+  - 'that will put anyone revived on your side!'
 winning-ends-games: true
 bells: 0
 see-own-team: true

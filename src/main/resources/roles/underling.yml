@@ -5,8 +5,8 @@ announcement: You're an Underling!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:
-  - '<gray>Find your fellow traitors and'
-  - '<gray>assist them on eliminating all opposers.'
+  - 'Find your fellow traitors and'
+  - 'assist them on eliminating all opposers.'
 winning-ends-games: true
 bells: 0
 see-own-team: false

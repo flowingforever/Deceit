@@ -5,11 +5,13 @@ announcement: You're a Fiend!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:
-  - '<gray>Get kills without alerting non-<dark_purple>Fiends</dark_purple>!'
-  - "<gray>You're on the clock, don't mess it up."
+  - 'Get kills without alerting non-<dark_purple>Fiends</dark_purple>!'
+  - "You're on the clock, don't mess it up."
 winning-ends-games: true
 bells: 0
 see-own-team: true
 selection:
   remainder: true
+
+# role specific values
 timer: 2400

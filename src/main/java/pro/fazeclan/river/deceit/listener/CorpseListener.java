@@ -39,9 +39,10 @@ public class CorpseListener implements Listener {
             var loc = corpse.getLocation().clone();
             loc.setPitch(0f);
             world.spawn(loc, TextDisplay.class, td -> {
+                var role = RoleUtil.getRole(profile.uuid(), values);
                 td.text(Component.text(profile.name())
                         .append(Component.newline())
-                        .append(MiniMessage.miniMessage().deserialize(RoleUtil.getRole(profile.uuid(), values).getName())));
+                        .append(MiniMessage.miniMessage().deserialize("<" + role.getMiniMessageColor() + ">" + role.getName())));
                 td.setTransformation(new Transformation(
                         new Vector3f(0f, 0.5f, 0f),
                         new Quaternionf(),

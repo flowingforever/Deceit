@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.event.MurderEliminationEvent;
+import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.role.definitions.AbstractTraitorRole;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.RoleUtil;
@@ -28,7 +28,7 @@ public class UnderlingRole extends AbstractTraitorRole {
     }
 
     @EventHandler
-    private void onTraitorDeath(MurderEliminationEvent event) {
+    private void onTraitorDeath(MurderPreEliminationEvent event) {
         var eliminated = event.getEliminated();
         var world = eliminated.getWorld();
         var values = GameUtil.getGame(world).getGameValues(world.getUID());

@@ -5,8 +5,8 @@ announcement: You're a Traitor!
 announcement-sound: 'minecraft:block.note_block.bass'
 announcement-pitch: 0.5
 description:
-  - '<gray>Eliminate all opposing players before'
-  - '<gray>time runs out to win!'
+  - 'Eliminate all opposing players before'
+  - 'time runs out to win!'
 winning-ends-games: true
 bells: 4
 see-own-team: true

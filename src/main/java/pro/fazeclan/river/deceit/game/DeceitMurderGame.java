@@ -9,6 +9,7 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.event.MurderEndEvent;
 import pro.fazeclan.river.deceit.event.MurderInitEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.role.Faction;
@@ -85,7 +86,7 @@ public class DeceitMurderGame extends GameWithMap {
                 scheduler.runTaskLater(plugin, () -> {
                     player.showTitle(Title.title(
                             mm.deserialize("<gray><< " + role.getPrefix() + " >></gray>"),
-                            mm.deserialize(text),
+                            mm.deserialize("<gray>" + text),
                             0, 65, 20
                     ));
                     player.playSound(
@@ -226,7 +227,9 @@ public class DeceitMurderGame extends GameWithMap {
             if (!subtitle.isEmpty()) {
                 subtitle.append(" + ");
             }
-            subtitle.append(winner.getName()).append("s");
+            subtitle.append("<").append(winner.getMiniMessageColor()).append(">")
+                    .append(winner.getName()).append("s")
+                    .append("</").append(winner.getMiniMessageColor()).append(">");
         }
 
         // if nothing changed, just do none bro
@@ -253,6 +256,8 @@ public class DeceitMurderGame extends GameWithMap {
                 svc.removePlayer(player);
             }
         }
+
+        plugin.getServer().getPluginManager().callEvent(new MurderEndEvent(players, world, this));
 
     }
 
@@ -348,9 +353,12 @@ public class DeceitMurderGame extends GameWithMap {
 
     private int getAmountOfRole(List<Player> players, Role role) {
         return (int) Math.min(
-                Math.floor(
-                        ((role.getSelectionPercentage() / 100.0) * players.size())
-                        + role.getMinimumCount()
+                Math.min(
+                        Math.floor(
+                                ((role.getSelectionPercentage() / 100.0) * players.size())
+                                        + role.getMinimumCount()
+                        ),
+                        role.getMaximumCount()
                 ),
                 players.size()
         );

@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.event.MurderEliminationEvent;
+import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
@@ -85,7 +85,7 @@ public class PreventionListener implements Listener, PacketListener {
             || cause.equals(EntityDamageEvent.DamageCause.FIRE_TICK)) {
             onFire = true;
         }
-        Bukkit.getServer().getPluginManager().callEvent(new MurderEliminationEvent(victim, event.getDamageSource(), discovered));
+        Bukkit.getServer().getPluginManager().callEvent(new MurderPreEliminationEvent(victim, event.getDamageSource(), discovered));
         GameFunctions.eliminatePlayer(victim, discovered, onFire);
     }
 

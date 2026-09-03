@@ -9,43 +9,13 @@ import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
 import pro.fazeclan.river.deceit.role.definitions.AbstractInnocentRole;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InnocentRole extends AbstractInnocentRole {
 
     public InnocentRole(Deceit plugin) {
         super(plugin, "innocent");
-    }
-
-    @Override
-    public List<ShopEntry> getShopItems() {
-        return List.of(
-                new ShopEntry(
-                        ItemType.STONE_SWORD.createItemStack(meta -> {
-                            meta.setUnbreakable(true);
-                            meta.addEnchant(Enchantment.SHARPNESS, 1, true);
-                        }),
-                        2
-                ),
-                new ShopEntry(
-                        List.of(
-                                ItemType.BOW.createItemStack(meta -> {
-                                    meta.setUnbreakable(true);
-                                    meta.addEnchant(Enchantment.POWER, 1, true);
-                                }),
-                                ItemType.ARROW.createItemStack(20)
-                        ),
-                        2
-                ),
-                new ShopEntry(
-                        ItemType.POTION.createItemStack(meta -> meta.setBasePotionType(PotionType.SWIFTNESS)),
-                        1
-                ),
-                new ShopEntry(
-                        ItemType.SPLASH_POTION.createItemStack(meta -> meta.setBasePotionType(PotionType.HEALING)),
-                        1
-                )
-        );
     }
 
     @Override

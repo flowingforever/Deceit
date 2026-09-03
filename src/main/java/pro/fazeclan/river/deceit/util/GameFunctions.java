@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Pose;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.event.MurderPostEliminationEvent;
+import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.game.GameValues;
@@ -76,7 +78,7 @@ public class GameFunctions {
         player.setGameMode(GameMode.SPECTATOR);
 
         // summon corpse
-        world.spawn(player.getLocation(), Mannequin.class, m -> {
+        var corpse = world.spawn(player.getLocation(), Mannequin.class, m -> {
             m.setProfile(ResolvableProfile.resolvableProfile(player.getPlayerProfile()));
             m.setCustomNameVisible(false);
             m.setDescription(null);
@@ -100,6 +102,8 @@ public class GameFunctions {
         if (svcPlugin != null) {
             svcPlugin.addSpectator(player);
         }
+
+        Bukkit.getServer().getPluginManager().callEvent(new MurderPostEliminationEvent(player, corpse, revealed));
 
     }
 

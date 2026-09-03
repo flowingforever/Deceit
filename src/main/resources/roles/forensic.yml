@@ -1,0 +1,20 @@
+name: 'Forensic'
+color: '#4D4DFF'
+enabled: true
+announcement: You're a Forensic!
+announcement-sound: 'minecraft:block.note_block.bit'
+announcement-pitch: 2.0
+description:
+  - "Inspect bodies and examine players"
+  - "to see who were close to the crime!"
+winning-ends-games: true
+bells: 0
+see-own-team: false
+selection:
+  minimum: 0
+  maximum: 1
+  percentage: 16.7
+
+# role specific values
+corpse-detection-radius: 4.0
+examine-cooldown: 25 # seconds
