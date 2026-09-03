@@ -10,6 +10,7 @@ import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.MurderWinner;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.game.GameValues;
+import pro.fazeclan.river.jarona.tablist.NameContext;
 import pro.fazeclan.river.jarona.util.NicknameUtil;
 
 import java.util.ArrayList;
@@ -74,11 +75,61 @@ public class LifelinkedModifier extends Modifier implements MurderWinner {
 
         var mm = MiniMessage.miniMessage();
 
+        var roleOne = RoleUtil.getRole(candidateOne, values);
+        var roleTwo = RoleUtil.getRole(candidateTwo, values);
+
         values.setValue("lovers_" + candidateOne.getUniqueId(), candidateTwo.getUniqueId());
+        Player finalCandidateTwo = candidateTwo;
+        GameFunctions.setName(candidateOne, values, (t, v, ctx, vl) -> {
+            if (RoleUtil.canSeeTeam(v, t, values)
+                    || vl.getValue("revealed_" + candidateOne.getUniqueId(), false)) {
+                if (ctx.equals(NameContext.TABLIST)) {
+                    return roleOne.getPrefix() + " %jarona_nickname%";
+                } else {
+                    var color = roleOne.getMiniMessageColor();
+                    return roleOne.getPrefix() + " <" + color + ">" + roleOne.getName() + "<newline>%jarona_nickname%";
+                }
+            }
+
+            if (v.equals(finalCandidateTwo)) {
+                if (ctx.equals(NameContext.TABLIST)) {
+                    return roleOne.getPrefix() + " " + getPrefix() + " %jarona_nickname%";
+                } else {
+                    var color = roleOne.getMiniMessageColor();
+                    return roleOne.getPrefix() + " <" + color + ">" + roleOne.getName() + " " + getPrefix() + "<newline>%jarona_nickname%";
+                }
+            }
+
+            return "%jarona_nickname%";
+        });
         candidateOne.sendMessage(mm.deserialize(
                 getPrefix() + " You are lovers with " + NicknameUtil.getNickname(candidateTwo) + "!"
         ));
+
+
         values.setValue("lovers_" + candidateTwo.getUniqueId(), candidateOne.getUniqueId());
+        GameFunctions.setName(candidateTwo, values, (t, v, ctx, vl) -> {
+            if (RoleUtil.canSeeTeam(v, t, values)
+                    || vl.getValue("revealed_" + finalCandidateTwo.getUniqueId(), false)) {
+                if (ctx.equals(NameContext.TABLIST)) {
+                    return roleTwo.getPrefix() + " %jarona_nickname%";
+                } else {
+                    var color = roleTwo.getMiniMessageColor();
+                    return roleTwo.getPrefix() + " <" + color + ">" + roleTwo.getName() + "<newline>%jarona_nickname%";
+                }
+            }
+
+            if (v.equals(candidateOne)) {
+                if (ctx.equals(NameContext.TABLIST)) {
+                    return roleTwo.getPrefix() + " " + getPrefix() + " %jarona_nickname%";
+                } else {
+                    var color = roleTwo.getMiniMessageColor();
+                    return roleTwo.getPrefix() + " <" + color + ">" + roleTwo.getName() + " " + getPrefix() + "<newline>%jarona_nickname%";
+                }
+            }
+
+            return "%jarona_nickname%";
+        });
         candidateTwo.sendMessage(mm.deserialize(
                 getPrefix() + " You are lovers with " + NicknameUtil.getNickname(candidateOne) + "!"
         ));

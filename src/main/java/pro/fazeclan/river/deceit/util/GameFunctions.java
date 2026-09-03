@@ -14,7 +14,6 @@ import org.bukkit.entity.Pose;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderPostEliminationEvent;
-import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.game.GameValues;
@@ -30,22 +29,20 @@ public class GameFunctions {
     public static void assignRole(Player player, Role role, GameValues values) {
         values.setValue("role_" + player.getUniqueId(), role);
         values.setValue("faction_" + player.getUniqueId(), role.getFaction());
-        values.setValue(
-                "name_" + player.getUniqueId(),
-                (QuadFunction<Player, Player, NameContext, GameValues, String>) (t, v, ctx, vl) -> {
-                    if (RoleUtil.canSeeTeam(v, t, values)
-                            || vl.getValue("revealed_" + player.getUniqueId(), false)) {
-                        if (ctx.equals(NameContext.TABLIST)) {
-                            return role.getPrefix() + " %jarona_nickname%";
-                        } else {
-                            var color = role.getMiniMessageColor();
-                            return role.getPrefix() + " <" + color + ">" + role.getName() + "<newline>%jarona_nickname%";
-                        }
-                    }
-
-                    return "%jarona_nickname%";
+        setName(player, values, (t, v, ctx, vl) -> {
+            if (RoleUtil.canSeeTeam(v, t, values)
+                    || vl.getValue("revealed_" + player.getUniqueId(), false)) {
+                if (ctx.equals(NameContext.TABLIST)) {
+                    return role.getPrefix() + " %jarona_nickname%";
+                } else {
+                    var color = role.getMiniMessageColor();
+                    return role.getPrefix() + " <" + color + ">" + role.getName() + "<newline>%jarona_nickname%";
                 }
-        );
+            }
+
+            return "%jarona_nickname%";
+        });
+
         giveBells(player, values, role.getBells());
 
         player.getInventory().clear();
@@ -183,6 +180,13 @@ public class GameFunctions {
                     corpse.remove();
                 },
                 seconds * 20L
+        );
+    }
+
+    public static void setName(Player player, GameValues values, QuadFunction<Player, Player, NameContext, GameValues, String> function) {
+        values.setValue(
+                "name_" + player.getUniqueId(),
+                function
         );
     }
 
