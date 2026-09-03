@@ -218,9 +218,19 @@ public class DeceitMurderGame extends GameWithMap {
     public void end(World world, List<Player> players) {
 
         var values = getGameValues(world.getUID());
-        var winners = new ArrayList<MurderWinner>();
-        winners.addAll(getPotentialWinningModifiers(players, values));
-        winners.addAll(getPotentialWinningRoles(players, values));
+        var winningModifiers = getPotentialWinningModifiers(players, values);
+        var winningRoles = getPotentialWinningRoles(players, values);
+        var winners = new ArrayList<>(winningModifiers);
+
+        // make sure numerous sole winners cannot win
+        if (winningModifiers.stream().anyMatch(MurderWinner::winningEndsGames)) {
+            winners.addAll(winningRoles.stream()
+                    .filter(role -> !role.winningEndsGames())
+                    .toList());
+        } else {
+            winners.addAll(winningRoles);
+        }
+
         var svc = Jarona.getInstance().getVoicechatPlugin();
 
         // end of game title builders
