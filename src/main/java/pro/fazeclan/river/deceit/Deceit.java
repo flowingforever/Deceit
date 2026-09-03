@@ -18,6 +18,7 @@ import pro.fazeclan.river.deceit.listener.AbilityListener;
 import pro.fazeclan.river.deceit.listener.CorpseListener;
 import pro.fazeclan.river.deceit.listener.PreventionListener;
 import pro.fazeclan.river.deceit.listener.ShopListener;
+import pro.fazeclan.river.deceit.modifier.ModifierManager;
 import pro.fazeclan.river.deceit.role.RoleManager;
 import pro.fazeclan.river.jarona.Jarona;
 
@@ -31,6 +32,8 @@ public final class Deceit extends JavaPlugin {
     private RoleManager roleManager;
     @Getter
     private AbilityManager abilityManager;
+    @Getter
+    private ModifierManager modifierManager;
 
     @Override
     public void onEnable() {
@@ -47,6 +50,8 @@ public final class Deceit extends JavaPlugin {
         roleManager.registerAll();
         this.abilityManager = new AbilityManager(this);
         abilityManager.registerAll();
+        this.modifierManager = new ModifierManager(this);
+        modifierManager.registerAll();
 
         // listeners
         var pluginManager = getServer().getPluginManager();

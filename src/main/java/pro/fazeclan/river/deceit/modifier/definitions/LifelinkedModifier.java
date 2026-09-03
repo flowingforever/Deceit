@@ -1,0 +1,99 @@
+package pro.fazeclan.river.deceit.modifier.definitions;
+
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.modifier.Modifier;
+import pro.fazeclan.river.deceit.util.GameFunctions;
+import pro.fazeclan.river.deceit.util.MurderWinner;
+import pro.fazeclan.river.deceit.util.RoleUtil;
+import pro.fazeclan.river.jarona.game.GameValues;
+import pro.fazeclan.river.jarona.util.NicknameUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+public class LifelinkedModifier extends Modifier implements MurderWinner {
+
+    public LifelinkedModifier(Deceit plugin) {
+        super(plugin, "lovers");
+    }
+
+    @Override
+    public String getPrefix() {
+        return "<" + getMiniMessageColor() + ">❤</" + getMiniMessageColor() + ">";
+    }
+
+    @Override
+    public String getMiniMessageColor() {
+        return getProperty("color", "white");
+    }
+
+    @Override
+    public String getName() {
+        return getProperty("name", "Lover");
+    }
+
+    @Override
+    public boolean hasWon(List<Player> players, GameValues values) {
+        return players.stream()
+                .filter(p -> !p.getGameMode().isInvulnerable())
+                .allMatch(p -> {
+                    var uuid = values.getValue("lovers_" + p.getUniqueId(), UUID.class);
+                    if (uuid == null) return false;
+                    var partner = Bukkit.getPlayer(uuid);
+                    return partner != null && !partner.getGameMode().isInvulnerable();
+                });
+    }
+
+    @Override
+    public String winsWith() {
+        return "lovers";
+    }
+
+    @Override
+    public boolean winningEndsGames() {
+        return true;
+    }
+
+    @Override
+    public void init(List<Player> players, World world, GameValues values) {
+        List<Player> loveCandidates = new ArrayList<>(players);
+        Collections.shuffle(loveCandidates);
+        var candidateOne = loveCandidates.removeFirst();
+        Player candidateTwo;
+
+        // ensure it may only be an evil-innocent, innocent-innocent, or evil-neutral combo
+        do {
+            candidateTwo = loveCandidates.removeFirst();
+        } while (candidateTwo == null || RoleUtil.isTraitor(candidateTwo, values));
+
+        var mm = MiniMessage.miniMessage();
+
+        values.setValue("lovers_" + candidateOne.getUniqueId(), candidateTwo.getUniqueId());
+        candidateOne.sendMessage(mm.deserialize(
+                getPrefix() + " You are lovers with " + NicknameUtil.getNickname(candidateTwo) + "!"
+        ));
+        values.setValue("lovers_" + candidateTwo.getUniqueId(), candidateOne.getUniqueId());
+        candidateTwo.sendMessage(mm.deserialize(
+                getPrefix() + " You are lovers with " + NicknameUtil.getNickname(candidateOne) + "!"
+        ));
+    }
+
+    @Override
+    public void tick(List<Player> players, World world, GameValues values) {
+        var lovers = players.stream()
+                .filter(p -> !p.getGameMode().isInvulnerable())
+                .filter(p -> values.getValue("lovers_" + p.getUniqueId()) != null)
+                .toList();
+        if (lovers.size() < 2) {
+            for (var player : lovers) {
+                GameFunctions.eliminatePlayer(player, false, false);
+            }
+        }
+    }
+}

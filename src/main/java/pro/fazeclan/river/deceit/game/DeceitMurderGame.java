@@ -12,12 +12,10 @@ import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderEndEvent;
 import pro.fazeclan.river.deceit.event.MurderInitEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
+import pro.fazeclan.river.deceit.modifier.Modifier;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
-import pro.fazeclan.river.deceit.util.GameFunctions;
-import pro.fazeclan.river.deceit.util.GlowUtil;
-import pro.fazeclan.river.deceit.util.RoleUtil;
-import pro.fazeclan.river.deceit.util.TimeUtil;
+import pro.fazeclan.river.deceit.util.*;
 import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.condition.Condition;
 import pro.fazeclan.river.jarona.game.GameValues;
@@ -27,14 +25,13 @@ import pro.fazeclan.river.jarona.util.GameUtil;
 import pro.fazeclan.river.jarona.util.WorldlessLocation;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 // say that again...
+@SuppressWarnings("unchecked")
 public class DeceitMurderGame extends GameWithMap {
 
     private final Deceit plugin;
@@ -168,6 +165,8 @@ public class DeceitMurderGame extends GameWithMap {
                 }
         );
 
+        selectModifiersAndApply(players, world, values);
+
         plugin.getServer().getPluginManager().callEvent(new MurderInitEvent(players, world, this));
     }
 
@@ -175,12 +174,21 @@ public class DeceitMurderGame extends GameWithMap {
     public void tick(World world, List<Player> players) {
 
         var values = getGameValues(world.getUID());
-        var winners = getWinningRoles(players, values);
+        var winners = new ArrayList<MurderWinner>();
+        winners.addAll(getPotentialWinningModifiers(players, values));
+        winners.addAll(getPotentialWinningRoles(players, values));
 
         for (var winner : winners) {
             if (winner.winningEndsGames()) {
                 GameUtil.endGame(world);
                 return;
+            }
+        }
+
+        var modifiers = values.getValue("modifiers", List.class);
+        for (Object mod : modifiers) {
+            if (mod instanceof Modifier modifier) {
+                modifier.tick(players, world, values);
             }
         }
 
@@ -209,8 +217,10 @@ public class DeceitMurderGame extends GameWithMap {
     @Override
     public void end(World world, List<Player> players) {
 
-        var gameValues = getGameValues(world.getUID());
-        var winners = getWinningRoles(players, gameValues);
+        var values = getGameValues(world.getUID());
+        var winners = new ArrayList<MurderWinner>();
+        winners.addAll(getPotentialWinningModifiers(players, values));
+        winners.addAll(getPotentialWinningRoles(players, values));
         var svc = Jarona.getInstance().getVoicechatPlugin();
 
         // end of game title builders
@@ -260,6 +270,10 @@ public class DeceitMurderGame extends GameWithMap {
         plugin.getServer().getPluginManager().callEvent(new MurderEndEvent(players, world, this));
 
     }
+
+    //
+    // HELPER METHODS FROM HERE ON OUT
+    //
 
     private void incrementGameTick(World world) {
         var gameValues = getGameValues(world.getUID());
@@ -364,17 +378,19 @@ public class DeceitMurderGame extends GameWithMap {
         );
     }
 
-    private List<Role> getWinningRoles(List<Player> players, GameValues values) {
+    private List<Role> getPotentialWinningRoles(List<Player> players, GameValues values) {
         var manager = plugin.getRoleManager();
         var mainList = manager.getRoles()
                 .stream()
                 .unordered()
                 .map(role -> manager.getRole(role.winsWith()))
                 .distinct()
-                .filter(role -> players.stream().anyMatch(player -> {
-                    var r = RoleUtil.getRole(player, values);
-                    return r != null && r.winsWith().equals(role.winsWith());
-                }))
+                .filter(role -> players.stream()
+                        .filter(p -> !p.getGameMode().isInvulnerable())
+                        .anyMatch(player -> {
+                            var r = RoleUtil.getRole(player, values);
+                            return r != null && r.winsWith().equals(role.winsWith());
+                        }))
                 .toList();
 
         if (mainList.stream().anyMatch(Role::livingKeepsGameGoing)) {
@@ -397,6 +413,34 @@ public class DeceitMurderGame extends GameWithMap {
                 .stream()
                 .filter(role -> role.hasWon(players, values))
                 .toList();
+    }
+
+    private List<MurderWinner> getPotentialWinningModifiers(List<Player> players, GameValues values) {
+        var manager = plugin.getModifierManager();
+        return manager.getModifiers()
+                .stream()
+                .unordered()
+                .filter(modifier -> modifier instanceof MurderWinner)
+                .filter(modifier -> (((MurderWinner) modifier).hasWon(players, values)))
+                .map(mod -> (MurderWinner) mod)
+                .distinct()
+                .toList();
+    }
+
+    private void selectModifiersAndApply(List<Player> players, World world, GameValues values) {
+        var potentialModifiers = new ArrayList<>(plugin.getModifierManager().getRegistry().values());
+        Collections.shuffle(potentialModifiers);
+        var config = plugin.getConfig();
+        double chance = Math.clamp(config.getDouble("modifier-chance", 75.0) / 100, 0.0, 1.0);
+        double initialChance = chance;
+        List<Modifier> modifiers = new ArrayList<>();
+        while (ThreadLocalRandom.current().nextFloat() < chance && !potentialModifiers.isEmpty()) {
+            var modifier = potentialModifiers.removeFirst();
+            modifier.init(players, world, values);
+            modifiers.add(modifier);
+            chance *= initialChance; // decrease chances after each successful addition
+        }
+        values.setValue("modifiers", modifiers);
     }
 
 }

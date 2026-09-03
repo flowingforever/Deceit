@@ -3,18 +3,20 @@ package pro.fazeclan.river.deceit.role;
 import lombok.Getter;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.menu.ShopEntry;
+import pro.fazeclan.river.deceit.util.MurderWinner;
 import pro.fazeclan.river.jarona.game.GameValues;
 
 import java.io.File;
 import java.util.List;
 
-public abstract class Role implements Listener {
+public abstract class Role implements Listener, MurderWinner {
 
     private final File file;
     @Getter
@@ -50,9 +52,7 @@ public abstract class Role implements Listener {
     public abstract List<ItemStack> getSpawnItems();
     public abstract List<ShopEntry> getShopItems();
     public abstract ItemStack getDisplayItem();
-    public abstract boolean hasWon(List<Player> players, GameValues values);
     public abstract String getPrefix();
-    public abstract String winsWith();
 
     public String getName() {
         return getProperty("name", "None");
@@ -66,6 +66,7 @@ public abstract class Role implements Listener {
         return getProperty("description", List.of());
     }
 
+    @Override
     public boolean winningEndsGames() {
         return getProperty("winning-ends-games", true);
     }
