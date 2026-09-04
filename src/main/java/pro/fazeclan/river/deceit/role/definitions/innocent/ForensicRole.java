@@ -17,6 +17,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
+import pro.fazeclan.river.deceit.event.MurderEndEvent;
 import pro.fazeclan.river.deceit.event.MurderPostEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
@@ -134,6 +135,13 @@ public class ForensicRole extends AbstractInnocentRole {
                     .map(e -> e.getUniqueId().toString())
                     .toList();
             corpse.getScoreboardTags().addAll(nearbyPlayers);
+        }
+    }
+
+    @EventHandler
+    private void forensicTrackingClear(MurderEndEvent event) {
+        for (var p : event.getPlayers()) {
+            forensicToCorpseMap.remove(p.getUniqueId());
         }
     }
 

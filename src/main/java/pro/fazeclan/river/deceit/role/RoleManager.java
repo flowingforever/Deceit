@@ -2,10 +2,7 @@ package pro.fazeclan.river.deceit.role;
 
 import lombok.Getter;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.role.definitions.innocent.DoctorRole;
-import pro.fazeclan.river.deceit.role.definitions.innocent.ForensicRole;
-import pro.fazeclan.river.deceit.role.definitions.innocent.InnocentRole;
-import pro.fazeclan.river.deceit.role.definitions.innocent.SheriffRole;
+import pro.fazeclan.river.deceit.role.definitions.innocent.*;
 import pro.fazeclan.river.deceit.role.definitions.neutral.FiendRole;
 import pro.fazeclan.river.deceit.role.definitions.neutral.InverseRole;
 import pro.fazeclan.river.deceit.role.definitions.neutral.JesterRole;
@@ -46,6 +43,7 @@ public class RoleManager {
         register(new SheriffRole(plugin));
         register(new DoctorRole(plugin));
         register(new ForensicRole(plugin));
+        register(new SeerRole(plugin));
     }
 
     public <R extends Role> R register(R role) {

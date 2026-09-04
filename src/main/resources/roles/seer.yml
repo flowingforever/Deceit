@@ -1,0 +1,19 @@
+name: 'Seer'
+color: '#FFCC80'
+enabled: true
+announcement: You're a Seer!
+announcement-sound: 'minecraft:block.note_block.bit'
+announcement-pitch: 2.0
+description:
+  - "Compare alignments between two players"
+  - "and figure out who aren't the innocent!"
+winning-ends-games: true
+bells: 0
+see-own-team: false
+selection:
+  minimum: 0
+  maximum: 1
+  percentage: 16.7
+
+# role specific values
+intuition-cooldown: 25 # seconds
