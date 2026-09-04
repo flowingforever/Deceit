@@ -3,15 +3,12 @@ package pro.fazeclan.river.deceit.role;
 import lombok.Getter;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.menu.ShopEntry;
+import pro.fazeclan.river.deceit.menu.inventory.ShopEntry;
 import pro.fazeclan.river.deceit.util.MurderWinner;
-import pro.fazeclan.river.jarona.game.GameValues;
 
 import java.io.File;
 import java.util.List;

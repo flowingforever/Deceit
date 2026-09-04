@@ -1,16 +1,10 @@
 package pro.fazeclan.river.deceit.role.definitions.innocent;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
-import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.menu.ShopEntry;
 import pro.fazeclan.river.deceit.role.definitions.AbstractInnocentRole;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InnocentRole extends AbstractInnocentRole {
 

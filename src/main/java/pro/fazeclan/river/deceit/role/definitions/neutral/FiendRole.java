@@ -16,7 +16,7 @@ import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderInitEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
-import pro.fazeclan.river.deceit.menu.ShopEntry;
+import pro.fazeclan.river.deceit.menu.inventory.ShopEntry;
 import pro.fazeclan.river.deceit.role.definitions.AbstractNeutralRole;
 import pro.fazeclan.river.deceit.util.GlowUtil;
 import pro.fazeclan.river.deceit.util.RoleUtil;

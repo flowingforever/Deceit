@@ -1,0 +1,15 @@
+name: 'Swapper'
+color: '#31E0EF'
+enabled: true
+announcement: You're a Swapper!
+announcement-sound: 'minecraft:block.note_block.bit'
+announcement-pitch: 2.0
+description:
+  - "Swap the positions of any two players!"
+winning-ends-games: true
+bells: 0
+see-own-team: false
+selection:
+  minimum: 0
+  maximum: 1
+  percentage: 16.7

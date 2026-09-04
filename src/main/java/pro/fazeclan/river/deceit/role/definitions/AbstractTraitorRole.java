@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.menu.ShopEntry;
+import pro.fazeclan.river.deceit.menu.inventory.ShopEntry;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
 import pro.fazeclan.river.deceit.util.RoleUtil;

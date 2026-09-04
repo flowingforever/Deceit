@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.menu.ShopMenu;
+import pro.fazeclan.river.deceit.menu.inventory.ShopMenu;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
 public class ShopListener implements Listener {

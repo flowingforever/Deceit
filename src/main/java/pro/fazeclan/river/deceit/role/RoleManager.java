@@ -45,6 +45,7 @@ public class RoleManager {
         register(new ForensicRole(plugin));
         register(new SeerRole(plugin));
         register(new AltruistRole(plugin));
+        register(new SwapperRole(plugin));
     }
 
     public <R extends Role> R register(R role) {

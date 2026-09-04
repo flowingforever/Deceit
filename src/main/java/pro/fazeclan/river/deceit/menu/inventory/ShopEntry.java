@@ -1,4 +1,4 @@
-package pro.fazeclan.river.deceit.menu;
+package pro.fazeclan.river.deceit.menu.inventory;
 
 import lombok.Getter;
 import net.kyori.adventure.text.Component;

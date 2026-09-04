@@ -1,4 +1,4 @@
-package pro.fazeclan.river.deceit.menu;
+package pro.fazeclan.river.deceit.menu.inventory;
 
 import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.util.GameFunctions;

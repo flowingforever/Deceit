@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
-import pro.fazeclan.river.deceit.menu.ShopEntry;
+import pro.fazeclan.river.deceit.menu.inventory.ShopEntry;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.definitions.AbstractNeutralRole;
 import pro.fazeclan.river.deceit.util.GameFunctions;
