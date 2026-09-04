@@ -16,6 +16,7 @@ import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.GlowUtil;
 import pro.fazeclan.river.deceit.util.RoleUtil;
+import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.util.GameUtil;
 
@@ -62,6 +63,7 @@ public class RevivalAbility extends Ability {
                 var selectedRole = roles.getFirst();
                 revived.teleport(corpse);
                 revived.setGameMode(GameMode.ADVENTURE);
+                Jarona.getInstance().getVoicechatPlugin().removePlayer(revived);
                 corpse.remove();
                 GameFunctions.assignRole(revived, selectedRole, values);
                 player.sendMessage(mm.deserialize(
