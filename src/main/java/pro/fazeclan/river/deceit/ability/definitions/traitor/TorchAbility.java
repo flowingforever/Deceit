@@ -23,6 +23,7 @@ public class TorchAbility extends Ability {
         if (!hasAbility(item)) return;
         if (!(event.getRightClicked() instanceof Mannequin corpse)) return;
         if (corpse.getVisualFire().equals(TriState.TRUE)) return;
+        item.setAmount(item.getAmount() - 1);
         GameFunctions.burnCorpse(getPlugin(), corpse, getProperty("burn-time", 1));
     }
 
