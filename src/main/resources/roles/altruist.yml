@@ -13,3 +13,6 @@ selection:
   minimum: 0
   maximum: 1
   percentage: 16.7
+
+# role specific values
+reveals-on-sacrifice: false

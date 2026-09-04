@@ -79,7 +79,7 @@ public class AltruistRole extends AbstractInnocentRole {
                 player.sendMessage(mm.deserialize(
                         role.getPrefix() + " You sacrificed yourself to resurrect " + NicknameUtil.getNickname(revived) + "<reset>!"
                 ));
-                GameFunctions.eliminatePlayer(player, false, true);
+                GameFunctions.eliminatePlayer(player, getProperty("reveals-on-sacrifice", false), true);
                 revived.sendMessage(mm.deserialize(
                         role.getPrefix() + " You have been resurrected by an " + getPrefix() + "<" + getMiniMessageColor() + ">" + getName() + "!"
                 ));
