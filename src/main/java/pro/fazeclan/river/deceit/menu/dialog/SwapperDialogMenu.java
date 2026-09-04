@@ -10,7 +10,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import pro.fazeclan.river.deceit.Deceit;
@@ -42,7 +46,7 @@ public class SwapperDialogMenu {
                                                     condition.setDuration(cooldown * 20L);
                                                     condition.setHudCondition((c, _) -> !c.getAvailable());
                                                     player.closeInventory();
-                                                    swapPositions(p1, p, role);
+                                                    swapPositions(player, p1, p, role);
                                                 } else {
                                                     openMenu(player, world, values, condition, cooldown, p);
                                                 }
@@ -67,13 +71,51 @@ public class SwapperDialogMenu {
         ));
     }
 
-    private static void swapPositions(Player p1, Player p2, Role role) {
-        var loc1 = p1.getLocation().clone();
-        var loc2 = p2.getLocation().clone();
-        p1.teleport(loc2);
-        p2.teleport(loc1);
+    private static void swapPositions(Player swapper, Player p1, Player p2, Role role) {
+        LivingEntity tp1 = p1;
+        LivingEntity tp2 = p2;
 
-        var message = MiniMessage.miniMessage().deserialize(role.getPrefix() + " You've swapped locations with another player!");
+        Location loc1 = null;
+        Location loc2 = null;
+
+        var mm = MiniMessage.miniMessage();
+
+        if (p1.getGameMode().isInvulnerable()) {
+            for (var corpse : p1.getWorld().getEntitiesByClass(Mannequin.class)) {
+                if (p1.getUniqueId().equals(corpse.getProfile().uuid())) {
+                    loc1 = corpse.getLocation().clone();
+                    tp1 = corpse;
+                }
+            }
+
+            if (loc1 == null) {
+                swapper.sendMessage(mm.deserialize(role.getPrefix() + " The swap between both players had failed."));
+                return;
+            }
+        } else {
+            loc1 = p1.getLocation().clone();
+        }
+
+        if (p2.getGameMode().isInvulnerable()) {
+            for (var corpse : p2.getWorld().getEntitiesByClass(Mannequin.class)) {
+                if (p2.getUniqueId().equals(corpse.getProfile().uuid())) {
+                    loc2 = corpse.getLocation().clone();
+                    tp2 = corpse;
+                }
+            }
+
+            if (loc2 == null) {
+                swapper.sendMessage(mm.deserialize(role.getPrefix() + " The swap between both players had failed."));
+                return;
+            }
+        } else {
+            loc2 = p2.getLocation().clone();
+        }
+
+        tp1.teleport(loc2);
+        tp2.teleport(loc1);
+
+        var message = mm.deserialize(role.getPrefix() + " You've swapped locations with another player!");
         p1.sendMessage(message);
         p2.sendMessage(message);
     }
