@@ -19,14 +19,6 @@ public class UnderlingRole extends AbstractTraitorRole {
         super(plugin, "underling");
     }
 
-    @Override
-    public List<ItemStack> getSpawnItems() {
-        return List.of(
-                ItemType.BOW.createItemStack(meta -> meta.setUnbreakable(true)),
-                ItemType.ARROW.createItemStack(30)
-        );
-    }
-
     @EventHandler
     private void onTraitorDeath(MurderPreEliminationEvent event) {
         var eliminated = event.getEliminated();
