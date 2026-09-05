@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
+import org.bukkit.potion.PotionEffectType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.util.GameFunctions;
@@ -92,8 +93,21 @@ public class PreventionListener implements Listener, PacketListener {
     @EventHandler(priority = EventPriority.HIGH)
     private void onSpectatorChat(AsyncChatEvent event) {
         if (!GameUtil.hasGame(event.getPlayer().getWorld(), Deceit.getKey("murder"))) return;
-        if (!event.getPlayer().getGameMode().isInvulnerable()) return;
-        event.viewers().removeIf(viewer -> viewer instanceof Player player && !player.getGameMode().isInvulnerable());
+        if (event.getPlayer().getGameMode().isInvulnerable()) {
+            event.viewers().removeIf(
+                    v -> v instanceof Player viewer &&
+                            (!viewer.getGameMode().isInvulnerable()
+                                    || !viewer.getWorld().equals(event.getPlayer().getWorld()))
+            );
+        } else {
+            if (event.getPlayer().hasPotionEffect(PotionEffectType.UNLUCK)) {
+                event.setCancelled(true);
+                return;
+            }
+            event.viewers().removeIf(
+                    v -> v instanceof Player viewer && !viewer.getWorld().equals(event.getPlayer().getWorld())
+            );
+        }
     }
 
 }

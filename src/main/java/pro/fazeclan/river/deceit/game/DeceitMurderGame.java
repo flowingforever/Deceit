@@ -62,7 +62,6 @@ public class DeceitMurderGame extends GameWithMap {
         var scheduler = Bukkit.getScheduler();
         var mm = MiniMessage.miniMessage();
         for (var player : players) {
-            GlowUtil.setGlowOfPlayerToWorld(world, player, NamedTextColor.WHITE);
             Role role = values.getValue("role_" + player.getUniqueId());
             scheduler.runTaskLater(plugin, () -> {
                 var sound = role.getAnnouncementSound();

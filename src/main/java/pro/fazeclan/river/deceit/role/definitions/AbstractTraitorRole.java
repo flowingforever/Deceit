@@ -167,6 +167,17 @@ public abstract class AbstractTraitorRole extends Role {
                             stack.unsetData(DataComponentTypes.CONSUMABLE);
                         }),
                         2
+                ),
+                new ShopEntry(
+                        MiscUtil.createItem(Material.SLIME_BALL, 1, stack -> stack.editMeta(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "muzzle"
+                            );
+                            meta.itemName(Component.text("Muzzle"));
+                        })),
+                        2
                 )
         );
     }

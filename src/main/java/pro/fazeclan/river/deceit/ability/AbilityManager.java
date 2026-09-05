@@ -32,6 +32,7 @@ public class AbilityManager {
         register(new ConcealerAbility(plugin));
         register(new RevivalAbility(plugin));
         register(new SwoopAbility(plugin));
+        register(new MuzzleAbility(plugin));
 
         // neutral
         register(new FakeDaggerAbility(plugin));

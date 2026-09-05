@@ -1,0 +1,5 @@
+cooldown: 5 # seconds
+duration: 10 # seconds
+instant: false
+minimum-wait-time: 3
+maximum-wait-time: 10
