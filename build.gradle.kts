@@ -21,7 +21,6 @@ dependencies {
     paperweight.paperDevBundle("26.2.build.+")
     compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
     compileOnly(files("../Jarona/build/libs/Jarona-" + providers.gradleProperty("jarona_version").get() + "-all.jar"))
-    compileOnly("de.tr7zw:item-nbt-api-plugin:2.15.7")
     compileOnly("de.maxhenkel.voicechat:voicechat-api:2.6.20")
     compileOnly("com.github.Lodestones:Sign-API:1.0.0")
 }
