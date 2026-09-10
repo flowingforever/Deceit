@@ -219,6 +219,7 @@ public class FiendRole extends AbstractNeutralRole {
 
         var fiends = RoleUtil.getAllWithTeam(world, values, winsWith());
         if (fiends.isEmpty()) return;
+        if (values.getValue("intermission_phase", 300L) > 0) return;
         values.setValue("fiend_timer", values.getValue("fiend_timer", 2400L) - 1);
         if (values.getValue("fiend_locked", false)) return;
         if (values.getValue("fiend_timer", 2400L) > 0) return;

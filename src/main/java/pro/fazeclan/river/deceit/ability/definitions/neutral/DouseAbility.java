@@ -30,6 +30,7 @@ public class DouseAbility extends Ability {
         if (!(event.getRightClicked() instanceof Player doused)) return;
         var values = GameUtil.getGame(player).getGameValues(player.getWorld().getUID());
         if (player.hasCooldown(item)) return;
+        if (values.getValue("intermission_phase", 300L) > 0) return;
         player.setCooldown(item, getProperty("cooldown", 20) * 20);
         var role = getPlugin().getRoleManager().getRole("pyromaniac");
         if (values.getValue("doused_" + doused.getUniqueId(), false)) {

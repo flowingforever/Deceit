@@ -167,6 +167,35 @@ public class DeceitMurderGame extends GameWithMap {
 
         selectModifiersAndApply(players, world, values);
 
+        // intermission phase before game actually starts
+        values.setValue("intermission_phase", config.getLong("deceit.intermission", 300L));
+        worldConditions.getOrCreate(
+                "murder_intermission",
+                new Condition() {
+                    @Override
+                    public Function<Condition, String> getHud() {
+                        return c -> {
+                            var vl = getGameValues(world.getUID());
+                            long duration = vl.getValue("intermission_phase", 300L);
+                            return "<dark_gray>Intermission: <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></dark_gray>";
+                        };
+                    }
+
+                    @Override
+                    public BiFunction<Condition, Player, Boolean> getHudCondition() {
+                        return (_, _) -> values.getValue("intermission_phase", 300L) > 0;
+                    }
+
+                    @Override
+                    public boolean getAvailable() {
+                        return true;
+                    }
+
+                    @Override
+                    public void reset() {}
+                }
+        );
+
         plugin.getServer().getPluginManager().callEvent(new MurderInitEvent(players, world, this));
     }
 
@@ -174,6 +203,12 @@ public class DeceitMurderGame extends GameWithMap {
     public void tick(World world, List<Player> players) {
 
         var values = getGameValues(world.getUID());
+
+        if (values.getValue("intermission_phase", 300L) > 0) {
+            values.setValue("intermission_phase", values.getValue("intermission_phase", 300L) - 1L);
+            return;
+        }
+
         var winners = new ArrayList<MurderWinner>();
         winners.addAll(getPotentialWinningModifiers(players, values));
         winners.addAll(getPotentialWinningRoles(players, values));

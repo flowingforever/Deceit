@@ -22,12 +22,14 @@ public class AbilityListener implements Listener {
     private void onAbilityItemInteract(PlayerInteractEvent event) {
         var player = event.getPlayer();
         if (!GameUtil.hasGame(player.getWorld(), Deceit.getKey("murder"))) return;
+        var values = GameUtil.getGame(player).getGameValues(player.getWorld().getUID());
         if (player.getGameMode().equals(GameMode.SPECTATOR)) return;
         if (player.hasPotionEffect(PotionEffectType.UNLUCK)) return;
         var item = event.getItem();
         if (item == null) return;
         if (player.hasCooldown(item)) return;
         if (!item.getPersistentDataContainer().has(Deceit.getKey("ability"))) return;
+        if (values.getValue("intermission_phase", 300L) > 0) return;
         plugin.getServer().getPluginManager().callEvent(new AbilityEvent(
                 player,
                 item,

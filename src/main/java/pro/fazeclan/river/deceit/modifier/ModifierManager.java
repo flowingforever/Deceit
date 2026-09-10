@@ -2,7 +2,7 @@ package pro.fazeclan.river.deceit.modifier;
 
 import lombok.Getter;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.modifier.definitions.LifelinkedModifier;
+import pro.fazeclan.river.deceit.modifier.definitions.LoversModifier;
 
 import java.util.Collection;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class ModifierManager {
     }
 
     public void registerAll() {
-        register(new LifelinkedModifier(plugin));
+        register(new LoversModifier(plugin));
     }
 
     public <R extends Modifier> R register(R modifier) {

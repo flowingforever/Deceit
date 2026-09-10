@@ -20,6 +20,8 @@ public class ShopListener implements Listener {
         if (game == null) {
             return;
         }
+        var values = game.getGameValues(world.getUID());
+        if (values.getValue("intermission_phase", 300L) > 0) return;
         event.setCancelled(true);
         ShopMenu.createAndShowMenu(player, game.getGameValues(world.getUID()));
     }

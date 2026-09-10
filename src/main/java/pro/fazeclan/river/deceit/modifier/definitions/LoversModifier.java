@@ -11,6 +11,7 @@ import pro.fazeclan.river.deceit.util.MurderWinner;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.tablist.NameContext;
+import pro.fazeclan.river.jarona.util.NametagUtil;
 import pro.fazeclan.river.jarona.util.NicknameUtil;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class LifelinkedModifier extends Modifier implements MurderWinner {
+public class LoversModifier extends Modifier implements MurderWinner {
 
-    public LifelinkedModifier(Deceit plugin) {
+    public LoversModifier(Deceit plugin) {
         super(plugin, "lovers");
     }
 
@@ -80,7 +81,7 @@ public class LifelinkedModifier extends Modifier implements MurderWinner {
 
         values.setValue("lovers_" + candidateOne.getUniqueId(), candidateTwo.getUniqueId());
         Player finalCandidateTwo = candidateTwo;
-        GameFunctions.setName(candidateOne, values, (t, v, ctx, vl) -> {
+        NametagUtil.setName(candidateOne, values, (t, v, ctx, vl) -> {
             if (RoleUtil.canSeeTeam(v, t, values)
                     || vl.getValue("revealed_" + candidateOne.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {
@@ -108,7 +109,7 @@ public class LifelinkedModifier extends Modifier implements MurderWinner {
 
 
         values.setValue("lovers_" + candidateTwo.getUniqueId(), candidateOne.getUniqueId());
-        GameFunctions.setName(candidateTwo, values, (t, v, ctx, vl) -> {
+        NametagUtil.setName(candidateTwo, values, (t, v, ctx, vl) -> {
             if (RoleUtil.canSeeTeam(v, t, values)
                     || vl.getValue("revealed_" + finalCandidateTwo.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {

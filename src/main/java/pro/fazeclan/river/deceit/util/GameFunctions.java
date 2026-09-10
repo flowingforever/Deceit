@@ -19,6 +19,8 @@ import pro.fazeclan.river.jarona.Jarona;
 import pro.fazeclan.river.jarona.game.GameValues;
 import pro.fazeclan.river.jarona.tablist.NameContext;
 import pro.fazeclan.river.jarona.util.GameUtil;
+import pro.fazeclan.river.jarona.util.NametagUtil;
+import pro.fazeclan.river.jarona.util.NicknameUtil;
 import pro.fazeclan.river.jarona.util.QuadFunction;
 
 import java.io.File;
@@ -29,7 +31,7 @@ public class GameFunctions {
     public static void assignRole(Player player, Role role, GameValues values) {
         values.setValue("role_" + player.getUniqueId(), role);
         values.setValue("faction_" + player.getUniqueId(), role.getFaction());
-        setName(player, values, (t, v, ctx, vl) -> {
+        NametagUtil.setName(player, values, (t, v, ctx, vl) -> {
             if (RoleUtil.canSeeTeam(v, t, values)
                     || vl.getValue("revealed_" + player.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {
@@ -180,13 +182,6 @@ public class GameFunctions {
                     corpse.remove();
                 },
                 seconds * 20L
-        );
-    }
-
-    public static void setName(Player player, GameValues values, QuadFunction<Player, Player, NameContext, GameValues, String> function) {
-        values.setValue(
-                "name_" + player.getUniqueId(),
-                function
         );
     }
 

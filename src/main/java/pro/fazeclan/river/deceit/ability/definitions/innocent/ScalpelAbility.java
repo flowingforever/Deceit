@@ -34,6 +34,10 @@ public class ScalpelAbility extends Ability {
             return;
         }
         event.setCancelled(true);
+        var values = GameUtil.getGame(victim).getGameValues(victim.getWorld().getUID());
+        if (values.getValue("intermission_phase", 300L) > 0) {
+            return;
+        }
         if (attacker.hasCooldown(item)) {
             return;
         }
