@@ -64,6 +64,10 @@ public class LoversModifier extends Modifier implements MurderWinner {
 
     @Override
     public void init(List<Player> players, World world, GameValues values) {
+        if (players.size() <= 2) {
+            return; // two player games should not have the possibility of lovers
+        }
+
         List<Player> loveCandidates = new ArrayList<>(players);
         Collections.shuffle(loveCandidates);
         var candidateOne = loveCandidates.removeFirst();
@@ -82,54 +86,53 @@ public class LoversModifier extends Modifier implements MurderWinner {
         values.setValue("lovers_" + candidateOne.getUniqueId(), candidateTwo.getUniqueId());
         Player finalCandidateTwo = candidateTwo;
         NametagUtil.setName(candidateOne, values, (t, v, ctx, vl) -> {
-            if (RoleUtil.canSeeTeam(v, t, values)
-                    || vl.getValue("revealed_" + candidateOne.getUniqueId(), false)) {
-                if (ctx.equals(NameContext.TABLIST)) {
-                    return roleOne.getPrefix() + " %jarona_nickname%";
-                } else {
-                    var color = roleOne.getMiniMessageColor();
-                    return roleOne.getPrefix() + " <" + color + ">" + roleOne.getName() + "<newline>%jarona_nickname%";
-                }
-            }
-
+            var builder = new StringBuilder();
             if (v.equals(finalCandidateTwo)) {
+                builder.append(getPrefix()).append(" ");
+            }
+
+            if (RoleUtil.canSeeTeam(v, t, values)
+                    || vl.getValue("revealed_" + t.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {
-                    return roleOne.getPrefix() + " " + getPrefix() + " %jarona_nickname%";
+                    builder.append(roleOne.getPrefix()).append(" ");
                 } else {
                     var color = roleOne.getMiniMessageColor();
-                    return roleOne.getPrefix() + " <" + color + ">" + roleOne.getName() + " " + getPrefix() + "<newline>%jarona_nickname%";
+                    builder.append(roleOne.getPrefix())
+                            .append("<").append(color).append(">")
+                            .append(roleOne.getName())
+                            .append("<newline>");
                 }
             }
 
-            return "%jarona_nickname%";
+            builder.append("%jarona_nickname%");
+            return builder.toString();
         });
         candidateOne.sendMessage(mm.deserialize(
                 getPrefix() + " You are lovers with " + NicknameUtil.getNickname(candidateTwo) + "!"
         ));
 
-
         values.setValue("lovers_" + candidateTwo.getUniqueId(), candidateOne.getUniqueId());
         NametagUtil.setName(candidateTwo, values, (t, v, ctx, vl) -> {
-            if (RoleUtil.canSeeTeam(v, t, values)
-                    || vl.getValue("revealed_" + finalCandidateTwo.getUniqueId(), false)) {
-                if (ctx.equals(NameContext.TABLIST)) {
-                    return roleTwo.getPrefix() + " %jarona_nickname%";
-                } else {
-                    var color = roleTwo.getMiniMessageColor();
-                    return roleTwo.getPrefix() + " <" + color + ">" + roleTwo.getName() + "<newline>%jarona_nickname%";
-                }
-            }
-
+            var builder = new StringBuilder();
             if (v.equals(candidateOne)) {
+                builder.append(getPrefix()).append(" ");
+            }
+
+            if (RoleUtil.canSeeTeam(v, t, values)
+                    || vl.getValue("revealed_" + t.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {
-                    return roleTwo.getPrefix() + " " + getPrefix() + " %jarona_nickname%";
+                    builder.append(roleTwo.getPrefix()).append(" ");
                 } else {
                     var color = roleTwo.getMiniMessageColor();
-                    return roleTwo.getPrefix() + " <" + color + ">" + roleTwo.getName() + " " + getPrefix() + "<newline>%jarona_nickname%";
+                    builder.append(roleTwo.getPrefix())
+                            .append("<").append(color).append(">")
+                            .append(roleTwo.getName())
+                            .append("<newline>");
                 }
             }
 
-            return "%jarona_nickname%";
+            builder.append("%jarona_nickname%");
+            return builder.toString();
         });
         candidateTwo.sendMessage(mm.deserialize(
                 getPrefix() + " You are lovers with " + NicknameUtil.getNickname(candidateOne) + "!"

@@ -30,7 +30,6 @@ public class RoleUtil {
         var r2 = getRole(target, values);
         return (r1 != null && r2 != null
                 && r1.isSameTeam(r2) && r1.canSeeTeam())
-                || viewer.getGameMode().isInvulnerable()
                 || viewer.equals(target);
     }
 

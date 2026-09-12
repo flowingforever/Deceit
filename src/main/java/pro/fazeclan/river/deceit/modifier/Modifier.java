@@ -6,7 +6,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.jarona.game.Game;
 import pro.fazeclan.river.jarona.game.GameValues;
 
 import java.io.File;

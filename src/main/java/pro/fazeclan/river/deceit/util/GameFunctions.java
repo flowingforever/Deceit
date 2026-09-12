@@ -32,17 +32,22 @@ public class GameFunctions {
         values.setValue("role_" + player.getUniqueId(), role);
         values.setValue("faction_" + player.getUniqueId(), role.getFaction());
         NametagUtil.setName(player, values, (t, v, ctx, vl) -> {
+            var builder = new StringBuilder();
             if (RoleUtil.canSeeTeam(v, t, values)
                     || vl.getValue("revealed_" + player.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {
-                    return role.getPrefix() + " %jarona_nickname%";
+                    builder.append(role.getPrefix()).append(" ");
                 } else {
                     var color = role.getMiniMessageColor();
-                    return role.getPrefix() + " <" + color + ">" + role.getName() + "<newline>%jarona_nickname%";
+                    builder.append(role.getPrefix())
+                            .append("<").append(color).append(">")
+                            .append(role.getName())
+                            .append("<newline>");
                 }
             }
 
-            return "%jarona_nickname%";
+            builder.append("%jarona_nickname%");
+            return builder.toString();
         });
 
         giveBells(player, values, role.getBells());
