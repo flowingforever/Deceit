@@ -16,16 +16,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ConcealerAbility extends Ability {
+public class TeleporterAbility extends Ability {
 
     private final Map<UUID, Location> lastSavedPosition = new HashMap<>();
 
-    public ConcealerAbility(Deceit plugin) {
-        super(plugin, "concealer");
+    public TeleporterAbility(Deceit plugin) {
+        super(plugin, "teleporter");
     }
 
     @EventHandler
-    private void onSmokeBombUse(AbilityEvent event) {
+    private void onTeleporterUse(AbilityEvent event) {
         if (!event.getExpectedAbility().equals(getId())) return;
 
         var user = event.getPlayer();

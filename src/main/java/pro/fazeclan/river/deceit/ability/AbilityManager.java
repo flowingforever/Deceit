@@ -29,7 +29,7 @@ public class AbilityManager {
         register(new BackstabAbility(plugin));
         register(new FakeHealthKitAbility(plugin));
         register(new TorchAbility(plugin));
-        register(new ConcealerAbility(plugin));
+        register(new TeleporterAbility(plugin));
         register(new RevivalAbility(plugin));
         register(new SwoopAbility(plugin));
         register(new MuzzleAbility(plugin));

@@ -143,9 +143,9 @@ public abstract class AbstractTraitorRole extends Role {
                             meta.getPersistentDataContainer().set(
                                     Deceit.getKey("ability"),
                                     PersistentDataType.STRING,
-                                    "concealer"
+                                    "teleporter"
                             );
-                            meta.itemName(Component.text("Concealer"));
+                            meta.itemName(Component.text("Teleporter"));
                             meta.lore(List.of(
                                     Component.empty(),
                                     Component.text("Save a location and teleport back to it!").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY)
