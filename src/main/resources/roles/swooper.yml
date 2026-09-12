@@ -1,0 +1,15 @@
+name: 'Swooper'
+color: '#F6F6F6'
+enabled: true
+announcement: You're a Swooper!
+announcement-sound: 'minecraft:block.note_block.bass'
+announcement-pitch: 0.5
+description:
+  - 'You may go invisible to pull off quick kills!'
+winning-ends-games: true
+bells: 2
+see-own-team: true
+selection:
+  minimum: 0
+  maximum: 1
+  percentage: 33.3

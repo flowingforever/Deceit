@@ -154,21 +154,6 @@ public abstract class AbstractTraitorRole extends Role {
                         2
                 ),
                 new ShopEntry(
-                        MiscUtil.createItem(Material.POTION, 1, stack -> {
-                            stack.editMeta(meta -> {
-                                meta.getPersistentDataContainer().set(
-                                        Deceit.getKey("ability"),
-                                        PersistentDataType.STRING,
-                                        "swoop"
-                                );
-                                meta.customName(Component.text("Swoop").decoration(TextDecoration.ITALIC, false));
-                                ((PotionMeta) meta).setBasePotionType(PotionType.INVISIBILITY);
-                            });
-                            stack.unsetData(DataComponentTypes.CONSUMABLE);
-                        }),
-                        2
-                ),
-                new ShopEntry(
                         MiscUtil.createItem(Material.SLIME_BALL, 1, stack -> stack.editMeta(meta -> {
                             meta.getPersistentDataContainer().set(
                                     Deceit.getKey("ability"),
@@ -193,6 +178,11 @@ public abstract class AbstractTraitorRole extends Role {
     @Override
     public String winsWith() {
         return "traitor";
+    }
+
+    @Override
+    public String getPrefix() {
+        return "<" + getMiniMessageColor() + ">\uD83E\uDE93</" + getMiniMessageColor() + ">";
     }
 
 }

@@ -20,9 +20,4 @@ public class InnocentRole extends AbstractInnocentRole {
             meta.lore(getDescription().stream().map(mm::deserialize).toList());
         });
     }
-
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
 }

@@ -37,11 +37,6 @@ public class SeerRole extends AbstractInnocentRole {
         return ItemType.ALLAY_SPAWN_EGG.createItemStack();
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
-
     @EventHandler
     private void seerPlayerIntuition(PlayerInteractAtEntityEvent event) {
         var player = event.getPlayer();

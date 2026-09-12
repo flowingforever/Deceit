@@ -69,4 +69,9 @@ public abstract class AbstractInnocentRole extends Role {
     public String winsWith() {
         return "innocent";
     }
+
+    @Override
+    public String getPrefix() {
+        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
+    }
 }

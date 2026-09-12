@@ -128,9 +128,4 @@ public class NecromancerRole extends AbstractTraitorRole {
         return ItemType.GOLDEN_CARROT.createItemStack();
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">\uD83E\uDE93</" + getMiniMessageColor() + ">";
-    }
-
 }

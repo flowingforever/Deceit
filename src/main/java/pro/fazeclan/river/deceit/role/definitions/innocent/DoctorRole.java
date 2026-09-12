@@ -82,9 +82,4 @@ public class DoctorRole extends AbstractInnocentRole {
         return ItemType.SPLASH_POTION.createItemStack(meta -> meta.setBasePotionType(PotionType.HEALING));
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
-
 }

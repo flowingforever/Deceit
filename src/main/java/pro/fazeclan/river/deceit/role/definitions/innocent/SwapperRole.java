@@ -21,11 +21,6 @@ public class SwapperRole extends AbstractInnocentRole {
     }
 
     @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
-
-    @Override
     public List<ItemStack> getSpawnItems() {
         return List.of(
                 ItemType.BOW.createItemStack(meta -> meta.setUnbreakable(true)),

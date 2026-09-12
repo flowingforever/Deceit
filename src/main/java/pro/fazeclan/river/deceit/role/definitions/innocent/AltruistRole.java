@@ -31,11 +31,6 @@ public class AltruistRole extends AbstractInnocentRole {
         return ItemType.GHAST_SPAWN_EGG.createItemStack();
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
-
     @EventHandler
     private void altruistRevivalAttempt(PlayerInteractAtEntityEvent event) {
         var player = event.getPlayer();

@@ -145,9 +145,4 @@ public class ForensicRole extends AbstractInnocentRole {
         }
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
-
 }

@@ -110,8 +110,4 @@ public class SheriffRole extends AbstractInnocentRole {
         });
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">◆</" + getMiniMessageColor() + ">";
-    }
 }

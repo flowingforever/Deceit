@@ -39,8 +39,4 @@ public class UnderlingRole extends AbstractTraitorRole {
         return ItemType.COPPER_SWORD.createItemStack();
     }
 
-    @Override
-    public String getPrefix() {
-        return "<" + getMiniMessageColor() + ">\uD83E\uDE93</" + getMiniMessageColor() + ">";
-    }
 }
