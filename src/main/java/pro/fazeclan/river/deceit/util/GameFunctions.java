@@ -34,16 +34,21 @@ public class GameFunctions {
         NametagUtil.setName(player, values, (t, v, ctx, vl) -> {
             var builder = new StringBuilder();
             if (RoleUtil.canSeeTeam(v, t, values)
-                    || vl.getValue("revealed_" + player.getUniqueId(), false)) {
+                    || vl.getValue("revealed_" + t.getUniqueId(), false)) {
                 if (ctx.equals(NameContext.TABLIST)) {
                     builder.append(role.getPrefix()).append(" ");
                 } else {
                     var color = role.getMiniMessageColor();
                     builder.append(role.getPrefix())
-                            .append("<").append(color).append(">")
+                            .append(" <").append(color).append(">")
                             .append(role.getName())
                             .append("<newline>");
                 }
+            }
+
+            if (vl.getValue("doused_" + t.getUniqueId(), false)
+                && RoleUtil.canSeeDousedPlayers(v, vl)) {
+                builder.append("<#ff5b42>\uD83D\uDD25</#ff5b42> ");
             }
 
             builder.append("%jarona_nickname%");

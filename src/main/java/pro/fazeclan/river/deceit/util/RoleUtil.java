@@ -106,4 +106,9 @@ public class RoleUtil {
                 .toList();
     }
 
+    public static boolean canSeeDousedPlayers(Player viewer, GameValues values) {
+        var role = getRole(viewer, values);
+        return role != null && role.winsWith().equalsIgnoreCase("pyromaniac");
+    }
+
 }

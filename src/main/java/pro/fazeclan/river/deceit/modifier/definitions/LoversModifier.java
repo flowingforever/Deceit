@@ -98,10 +98,15 @@ public class LoversModifier extends Modifier implements MurderWinner {
                 } else {
                     var color = roleOne.getMiniMessageColor();
                     builder.append(roleOne.getPrefix())
-                            .append("<").append(color).append(">")
+                            .append(" <").append(color).append(">")
                             .append(roleOne.getName())
                             .append("<newline>");
                 }
+            }
+
+            if (vl.getValue("doused_" + t.getUniqueId(), false)
+                    && RoleUtil.canSeeDousedPlayers(v, vl)) {
+                builder.append("<#ff5b42>\uD83D\uDD25</#ff5b42> ");
             }
 
             builder.append("%jarona_nickname%");
@@ -125,10 +130,15 @@ public class LoversModifier extends Modifier implements MurderWinner {
                 } else {
                     var color = roleTwo.getMiniMessageColor();
                     builder.append(roleTwo.getPrefix())
-                            .append("<").append(color).append(">")
+                            .append(" <").append(color).append(">")
                             .append(roleTwo.getName())
                             .append("<newline>");
                 }
+            }
+
+            if (vl.getValue("doused_" + t.getUniqueId(), false)
+                    && RoleUtil.canSeeDousedPlayers(v, vl)) {
+                builder.append("<#ff5b42>\uD83D\uDD25</#ff5b42> ");
             }
 
             builder.append("%jarona_nickname%");
