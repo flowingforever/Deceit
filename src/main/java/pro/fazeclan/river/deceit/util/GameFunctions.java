@@ -48,7 +48,7 @@ public class GameFunctions {
 
             if (vl.getValue("doused_" + t.getUniqueId(), false)
                 && RoleUtil.canSeeDousedPlayers(v, vl)) {
-                builder.append("<#ff5b42>\uD83D\uDD25</#ff5b42> ");
+                builder.append("<#ff5b42>\uD83E\uDEA3</#ff5b42> ");
             }
 
             builder.append("%jarona_nickname%");
