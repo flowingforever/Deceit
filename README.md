@@ -21,13 +21,14 @@ This game uses Bells as their currency. 1 bell is usually for the smaller stuff,
 - **Seer**: May interact with two players to see if they have the same goals.
 - **Altruist**: May revive any dead player in exchange for their life. Be careful of who you revive.
 - **Swapper**: May swap the positions of two players in a menu. This is just a fun one.
+- **Mystic**: Bodies glow to them for a short period of time after dropping dead.
 
 ### Traitor:
 **Their goal is to eliminate every innocent player before time runs out!**
-**This faction does not have as many roles compared to the others, since I want this faction to have a bit more freedom in what they do.**
 - **Traitor**: Basic traitor. Spawns with a bow and 40 arrows, as well as 4 Bells to choose which items to get in the shop.
 - **Necromancer**: Spawns with fewer arrows and no Bells, in exchange for the ability to resurrect any dead player to assist the traitors! A teammate must be dead before you may resurrect anyone!
-- **Underling**: Spawns with 30 arrows and no Bells, and they do not know who their fellow traitors are. 
+- **Underling**: Spawns with 30 arrows and no Bells, and they do not know who their fellow traitors are.
+- **Swooper**: Spawns with an invisibility potion that allows them to get sneaky kills.
 
 ### Neutral:
 **Each role has their own goals they must attain.**
