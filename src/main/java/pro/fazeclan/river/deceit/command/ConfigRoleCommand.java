@@ -25,7 +25,7 @@ public class ConfigRoleCommand {
                                         Commands.literal("reload")
                                                 .executes(ctx -> {
                                                     var role = ctx.getArgument("role", Role.class);
-                                                    role.reloadRole();
+                                                    role.reload();
                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                             "<green>Reloaded role " + role.getName() + "<reset><green>'s configuration!"
                                                     ));
@@ -37,7 +37,7 @@ public class ConfigRoleCommand {
                                         Commands.literal("reset")
                                                 .executes(ctx -> {
                                                     var role = ctx.getArgument("role", Role.class);
-                                                    role.resetRole();
+                                                    role.reset();
                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                             "<green>Reset role " + role.getName() + "<reset><green>'s configuration to defaults and reloaded!"
                                                     ));
@@ -67,8 +67,8 @@ public class ConfigRoleCommand {
                                                                                     var entry = ctx.getArgument("entry", String.class);
                                                                                     var integer = ctx.getArgument("integer", Integer.class);
                                                                                     role.getConfig().set(entry, integer);
-                                                                                    role.saveRole();
-                                                                                    role.reloadRole();
+                                                                                    role.save();
+                                                                                    role.reload();
 
                                                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                                                             "<green>Set " + entry + " in " + role.getName() + "<reset><green> to " + integer + "!"
@@ -83,8 +83,8 @@ public class ConfigRoleCommand {
                                                                                     var entry = ctx.getArgument("entry", String.class);
                                                                                     var aDouble = ctx.getArgument("double", Double.class);
                                                                                     role.getConfig().set(entry, aDouble);
-                                                                                    role.saveRole();
-                                                                                    role.reloadRole();
+                                                                                    role.save();
+                                                                                    role.reload();
 
                                                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                                                             "<green>Set " + entry + " in " + role.getName() + "<reset><green> to " + aDouble + "!"
@@ -99,8 +99,8 @@ public class ConfigRoleCommand {
                                                                                     var entry = ctx.getArgument("entry", String.class);
                                                                                     var aBoolean = ctx.getArgument("boolean", Boolean.class);
                                                                                     role.getConfig().set(entry, aBoolean);
-                                                                                    role.saveRole();
-                                                                                    role.reloadRole();
+                                                                                    role.save();
+                                                                                    role.reload();
 
                                                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                                                             "<green>Set " + entry + " in " + role.getName() + "<reset><green> to " + aBoolean + "!"

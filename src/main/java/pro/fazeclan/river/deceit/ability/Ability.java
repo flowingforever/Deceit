@@ -56,7 +56,7 @@ public abstract class Ability implements Listener {
 
     public abstract ItemStack getDisplayItem();
 
-    public void reloadAbility() {
+    public void reload() {
         try {
             config.load(file);
         } catch (Exception _) {
@@ -64,12 +64,12 @@ public abstract class Ability implements Listener {
         }
     }
 
-    public void resetAbility() {
+    public void reset() {
         plugin.saveResource("abilities/" + id + ".yml", true);
-        reloadAbility();
+        reload();
     }
 
-    public void saveAbility() {
+    public void save() {
         try {
             config.save(file);
         } catch (Exception _) {

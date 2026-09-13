@@ -25,7 +25,7 @@ public class ConfigAbilityCommand {
                                         Commands.literal("reload")
                                                 .executes(ctx -> {
                                                     var ability = ctx.getArgument("ability", Ability.class);
-                                                    ability.reloadAbility();
+                                                    ability.reload();
                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                             "<green>Reloaded ability " + ability.getId() + "'s configuration!"
                                                     ));
@@ -37,7 +37,7 @@ public class ConfigAbilityCommand {
                                         Commands.literal("reset")
                                                 .executes(ctx -> {
                                                     var ability = ctx.getArgument("ability", Ability.class);
-                                                    ability.resetAbility();
+                                                    ability.reset();
                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                             "<green>Reset ability " + ability.getId() + "'s configuration to defaults and reloaded!"
                                                     ));
@@ -67,8 +67,8 @@ public class ConfigAbilityCommand {
                                                                                     var entry = ctx.getArgument("entry", String.class);
                                                                                     var integer = ctx.getArgument("integer", Integer.class);
                                                                                     ability.getConfig().set(entry, integer);
-                                                                                    ability.saveAbility();
-                                                                                    ability.reloadAbility();
+                                                                                    ability.save();
+                                                                                    ability.reload();
 
                                                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                                                             "<green>Set " + entry + " in " + ability.getId() + " to " + integer + "!"
@@ -83,8 +83,8 @@ public class ConfigAbilityCommand {
                                                                                     var entry = ctx.getArgument("entry", String.class);
                                                                                     var aDouble = ctx.getArgument("double", Double.class);
                                                                                     ability.getConfig().set(entry, aDouble);
-                                                                                    ability.saveAbility();
-                                                                                    ability.reloadAbility();
+                                                                                    ability.save();
+                                                                                    ability.reload();
 
                                                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                                                             "<green>Set " + entry + " in " + ability.getId() + " to " + aDouble + "!"
@@ -99,8 +99,8 @@ public class ConfigAbilityCommand {
                                                                                     var entry = ctx.getArgument("entry", String.class);
                                                                                     var aBoolean = ctx.getArgument("boolean", Boolean.class);
                                                                                     ability.getConfig().set(entry, aBoolean);
-                                                                                    ability.saveAbility();
-                                                                                    ability.reloadAbility();
+                                                                                    ability.save();
+                                                                                    ability.reload();
 
                                                                                     ctx.getSource().getSender().sendMessage(MessageUtil.formatComponent(
                                                                                             "<green>Set " + entry + " in " + ability.getId() + " to " + aBoolean + "!"

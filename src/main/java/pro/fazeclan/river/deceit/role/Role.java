@@ -136,7 +136,7 @@ public abstract class Role implements Listener, MurderWinner {
         }
     }
 
-    public void reloadRole() {
+    public void reload() {
         try {
             config.load(file);
         } catch (Exception _) {
@@ -144,12 +144,12 @@ public abstract class Role implements Listener, MurderWinner {
         }
     }
 
-    public void resetRole() {
+    public void reset() {
         plugin.saveResource("roles/" + id + ".yml", true);
-        reloadRole();
+        reload();
     }
 
-    public void saveRole() {
+    public void save() {
         try {
             config.save(file);
         } catch (Exception _) {

@@ -431,7 +431,6 @@ public class DeceitMurderGame extends GameWithMap {
                 .map(role -> manager.getRole(role.winsWith()))
                 .distinct()
                 .filter(role -> players.stream()
-                        .filter(p -> !p.getGameMode().isInvulnerable())
                         .anyMatch(player -> {
                             var r = RoleUtil.getRole(player, values);
                             return r != null && r.winsWith().equals(role.winsWith());
@@ -443,14 +442,6 @@ public class DeceitMurderGame extends GameWithMap {
                     .stream()
                     .filter(role -> role.hasWon(players, values))
                     .filter(Role::livingKeepsGameGoing)
-                    .toList();
-        }
-
-        if (mainList.stream().anyMatch(Role::isTakesPriority)) {
-            return mainList
-                    .stream()
-                    .filter(role -> role.hasWon(players, values))
-                    .filter(Role::isTakesPriority)
                     .toList();
         }
 
