@@ -107,11 +107,6 @@ public class PyromaniacRole extends AbstractNeutralRole {
     }
 
     @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.BLAZE_ROD.createItemStack();
-    }
-
-    @Override
     public boolean hasWon(List<Player> players, GameValues values) {
         return RoleUtil.onlyPlayersInTeamRemain(players, values, winsWith());
     }

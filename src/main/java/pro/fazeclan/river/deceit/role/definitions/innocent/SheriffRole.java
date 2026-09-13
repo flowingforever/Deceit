@@ -3,7 +3,6 @@ package pro.fazeclan.river.deceit.role.definitions.innocent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -99,15 +98,6 @@ public class SheriffRole extends AbstractInnocentRole {
                         1
                 )
         );
-    }
-
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.BOW.createItemStack(meta -> {
-            var mm = MiniMessage.miniMessage();
-            meta.itemName(mm.deserialize(getName()));
-            meta.lore(getDescription().stream().map(mm::deserialize).toList());
-        });
     }
 
 }

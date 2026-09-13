@@ -21,16 +21,6 @@ public class SwooperRole extends AbstractTraitorRole {
     }
 
     @Override
-    public ItemStack getDisplayItem() {
-        return MiscUtil.createItem(Material.POTION, 1, stack -> {
-            stack.editMeta(meta -> {
-                meta.customName(Component.text("Swoop").decoration(TextDecoration.ITALIC, false));
-                ((PotionMeta) meta).setBasePotionType(PotionType.INVISIBILITY);
-            });
-        });
-    }
-
-    @Override
     public List<ItemStack> getSpawnItems() {
         var list = new ArrayList<>(super.getSpawnItems());
         list.add(MiscUtil.createItem(Material.POTION, 1, stack -> {

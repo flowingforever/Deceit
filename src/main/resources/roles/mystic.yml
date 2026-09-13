@@ -1,0 +1,20 @@
+name: 'Mystic'
+color: '#4D99E6'
+enabled: true
+announcement: You're a Mystic!
+announcement-sound: 'minecraft:block.note_block.bit'
+announcement-pitch: 2.0
+description:
+  - "Bodies glow to you the moment they drop."
+winning-ends-games: true
+bells: 0
+see-own-team: false
+selection:
+  minimum: 0
+  maximum: 1
+  percentage: 16.7
+
+# role specific values
+
+# Represents how long the corpse of a player glows for a Mystic.
+duration: 3 # seconds

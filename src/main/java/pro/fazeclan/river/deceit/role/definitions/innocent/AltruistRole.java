@@ -8,8 +8,6 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Mannequin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.role.definitions.AbstractInnocentRole;
 import pro.fazeclan.river.deceit.util.GameFunctions;
@@ -24,11 +22,6 @@ import pro.fazeclan.river.jarona.util.NicknameUtil;
 public class AltruistRole extends AbstractInnocentRole {
     public AltruistRole(Deceit plugin) {
         super(plugin, "altruist");
-    }
-
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.GHAST_SPAWN_EGG.createItemStack();
     }
 
     @EventHandler

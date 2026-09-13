@@ -2,16 +2,12 @@ package pro.fazeclan.river.deceit.role.definitions.traitor;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.role.definitions.AbstractTraitorRole;
 import pro.fazeclan.river.deceit.util.GameFunctions;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.jarona.util.GameUtil;
-
-import java.util.List;
 
 public class UnderlingRole extends AbstractTraitorRole {
 
@@ -32,11 +28,6 @@ public class UnderlingRole extends AbstractTraitorRole {
                     getPrefix() + " You have been awarded a bell due to a loss of a teammate."
             ));
         }
-    }
-
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.COPPER_SWORD.createItemStack();
     }
 
 }

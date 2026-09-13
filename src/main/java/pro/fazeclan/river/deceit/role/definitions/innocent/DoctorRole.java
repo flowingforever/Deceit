@@ -77,9 +77,4 @@ public class DoctorRole extends AbstractInnocentRole {
         );
     }
 
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.SPLASH_POTION.createItemStack(meta -> meta.setBasePotionType(PotionType.HEALING));
-    }
-
 }

@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderEndEvent;
 import pro.fazeclan.river.deceit.role.definitions.AbstractInnocentRole;
@@ -30,11 +28,6 @@ public class SeerRole extends AbstractInnocentRole {
 
     public SeerRole(Deceit plugin) {
         super(plugin, "seer");
-    }
-
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.ALLAY_SPAWN_EGG.createItemStack();
     }
 
     @EventHandler

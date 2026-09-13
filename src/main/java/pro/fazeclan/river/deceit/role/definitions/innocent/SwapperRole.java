@@ -16,11 +16,6 @@ public class SwapperRole extends AbstractInnocentRole {
     }
 
     @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.DISPENSER.createItemStack();
-    }
-
-    @Override
     public List<ItemStack> getSpawnItems() {
         return List.of(
                 ItemType.BOW.createItemStack(meta -> meta.setUnbreakable(true)),

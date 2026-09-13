@@ -8,18 +8,13 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.Bukkit;
 import org.bukkit.SoundCategory;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import pro.fazeclan.river.deceit.Deceit;
 import pro.fazeclan.river.deceit.event.MurderEndEvent;
-import pro.fazeclan.river.deceit.event.MurderPostEliminationEvent;
-import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.role.definitions.AbstractInnocentRole;
 import pro.fazeclan.river.deceit.util.MiscUtil;
@@ -39,11 +34,6 @@ public class ForensicRole extends AbstractInnocentRole {
 
     public ForensicRole(Deceit plugin) {
         super(plugin, "forensic");
-    }
-
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.SPYGLASS.createItemStack();
     }
 
     @EventHandler

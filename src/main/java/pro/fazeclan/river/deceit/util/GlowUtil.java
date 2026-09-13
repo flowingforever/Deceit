@@ -1,11 +1,17 @@
 package pro.fazeclan.river.deceit.util;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
 
 public class GlowUtil {
 
@@ -49,6 +55,20 @@ public class GlowUtil {
                 (WrapperPlayServerTeams.ScoreBoardTeamInfo) null,
                 target.getName()
         ));
+    }
+
+    public static void setGlowing(Entity entity, Player viewer, boolean glowing) {
+        PacketEvents.getAPI().getPlayerManager().sendPacket(
+                viewer,
+                new WrapperPlayServerEntityMetadata(
+                        entity.getEntityId(),
+                        Collections.singletonList(new EntityData<>(
+                                0,
+                                EntityDataTypes.BYTE,
+                                glowing ? (byte) 0x40 : (byte) 0x00
+                        ))
+                )
+        );
     }
 
 }

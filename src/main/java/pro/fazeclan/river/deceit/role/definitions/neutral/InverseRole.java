@@ -43,11 +43,6 @@ public class InverseRole extends AbstractNeutralRole {
     }
 
     @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.MAGENTA_GLAZED_TERRACOTTA.createItemStack();
-    }
-
-    @Override
     public boolean hasWon(List<Player> players, GameValues values) {
         return false; // cannot win as this role
     }

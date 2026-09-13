@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
-import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderInitEvent;
+import pro.fazeclan.river.deceit.event.MurderPreEliminationEvent;
 import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.menu.inventory.ShopEntry;
 import pro.fazeclan.river.deceit.role.definitions.AbstractNeutralRole;
@@ -145,11 +145,6 @@ public class FiendRole extends AbstractNeutralRole {
                         1
                 )
         );
-    }
-
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.WOODEN_SWORD.createItemStack();
     }
 
     @Override

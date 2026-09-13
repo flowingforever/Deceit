@@ -76,11 +76,6 @@ public class JesterRole extends AbstractNeutralRole {
     }
 
     @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.SPECTRAL_ARROW.createItemStack();
-    }
-
-    @Override
     public boolean hasWon(List<Player> players, GameValues values) {
         return values.getValue("jester_won", false);
     }

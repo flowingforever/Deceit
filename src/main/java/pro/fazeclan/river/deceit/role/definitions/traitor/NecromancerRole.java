@@ -123,9 +123,4 @@ public class NecromancerRole extends AbstractTraitorRole {
         );
     }
 
-    @Override
-    public ItemStack getDisplayItem() {
-        return ItemType.GOLDEN_CARROT.createItemStack();
-    }
-
 }

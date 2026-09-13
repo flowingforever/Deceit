@@ -48,7 +48,6 @@ public abstract class Role implements Listener, MurderWinner {
 
     public abstract List<ItemStack> getSpawnItems();
     public abstract List<ShopEntry> getShopItems();
-    public abstract ItemStack getDisplayItem();
     public abstract String getPrefix();
 
     public String getName() {
