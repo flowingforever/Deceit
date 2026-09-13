@@ -31,7 +31,6 @@ public class DouseAbility extends Ability {
         var values = GameUtil.getGame(player).getGameValues(player.getWorld().getUID());
         if (player.hasCooldown(item)) return;
         if (values.getValue("intermission_phase", 300L) > 0) return;
-        player.setCooldown(item, getProperty("cooldown", 20) * 20);
         var role = getPlugin().getRoleManager().getRole("pyromaniac");
         if (values.getValue("doused_" + doused.getUniqueId(), false)) {
             if (allAlivePlayersDoused(player.getWorld(), values)) {
@@ -53,6 +52,7 @@ public class DouseAbility extends Ability {
                 GameFunctions.eliminatePlayer(doused, false, true);
             }
         } else {
+            player.setCooldown(item, getProperty("cooldown", 20) * 20);
             values.setValue("doused_" + doused.getUniqueId(), true);
             player.sendMessage(MiniMessage.miniMessage().deserialize(
                     role.getPrefix() + " You've doused " + doused.getName() + "!"
