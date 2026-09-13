@@ -168,7 +168,7 @@ public class DeceitMurderGame extends GameWithMap {
         selectModifiersAndApply(players, world, values);
 
         // intermission phase before game actually starts
-        values.setValue("intermission_phase", config.getLong("deceit.intermission", 300L));
+        values.setValue("intermission_phase", config.getLong("deceit.intermission", 400L));
         worldConditions.getOrCreate(
                 "murder_intermission",
                 new Condition() {
@@ -176,14 +176,14 @@ public class DeceitMurderGame extends GameWithMap {
                     public Function<Condition, String> getHud() {
                         return c -> {
                             var vl = getGameValues(world.getUID());
-                            long duration = vl.getValue("intermission_phase", 300L);
+                            long duration = vl.getValue("intermission_phase", 400L);
                             return "<dark_gray>Intermission: <b>" + TimeUtil.ticksIntoReadableFormat(duration) + "</b></dark_gray>";
                         };
                     }
 
                     @Override
                     public BiFunction<Condition, Player, Boolean> getHudCondition() {
-                        return (_, _) -> values.getValue("intermission_phase", 300L) > 0;
+                        return (_, _) -> values.getValue("intermission_phase", 400L) > 0;
                     }
 
                     @Override
@@ -204,8 +204,8 @@ public class DeceitMurderGame extends GameWithMap {
 
         var values = getGameValues(world.getUID());
 
-        if (values.getValue("intermission_phase", 300L) > 0) {
-            values.setValue("intermission_phase", values.getValue("intermission_phase", 300L) - 1L);
+        if (values.getValue("intermission_phase", 400L) > 0) {
+            values.setValue("intermission_phase", values.getValue("intermission_phase", 400L) - 1L);
             return;
         }
 
