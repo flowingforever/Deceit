@@ -16,4 +16,4 @@ selection:
   percentage: 16.7
 
 # role specific values
-intuition-cooldown: 25 # seconds
+intuition-cooldown: 45 # seconds
