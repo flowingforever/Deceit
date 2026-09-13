@@ -1,3 +1,3 @@
-cooldown: 1 # cooldown per use of "health" kit
+cooldown: 1 # cooldown per use of "health" kit in seconds
 duration: 3 # wither duration
 damage: 7.0 # initial damage

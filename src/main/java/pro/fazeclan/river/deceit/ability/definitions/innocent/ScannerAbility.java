@@ -43,7 +43,7 @@ public class ScannerAbility extends Ability {
         var values = GameUtil.getGame(player).getGameValues(player.getWorld().getUID());
 
         item.setAmount(item.getAmount() - 1);
-        player.setCooldown(item, getProperty("cooldown", 0));
+        player.setCooldown(item, getProperty("cooldown", 60) * 20);
 
         var world = player.getWorld();
         world.spawn(player.getLocation().clone().setRotation(0,0), SulfurCube.class, sc -> {

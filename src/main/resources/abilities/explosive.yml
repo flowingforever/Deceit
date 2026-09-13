@@ -1,4 +1,4 @@
-cooldown: 400 # ticks
+cooldown: 60 # seconds
 radius: 3.5
 damage: 40.0
 minimum-damage: 10.0

@@ -26,7 +26,7 @@ public class ExplosiveAbility extends Ability {
         var item = event.getItemStack();
 
         item.setAmount(item.getAmount() - 1);
-        player.setCooldown(item, getProperty("cooldown", 0));
+        player.setCooldown(item, getProperty("cooldown", 60) * 20);
         var world = player.getWorld();
         player.playSound(player.getLocation(), "minecraft:block.note_block.bit", 1.0f, 1.0f);
         world.spawn(player.getLocation(), SulfurCube.class, sc -> {

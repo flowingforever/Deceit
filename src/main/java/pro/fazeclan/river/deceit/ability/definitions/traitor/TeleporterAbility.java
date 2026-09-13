@@ -34,7 +34,7 @@ public class TeleporterAbility extends Ability {
         if (user.hasCooldown(stack)) {
             return;
         }
-        user.setCooldown(stack, getProperty("cooldown", 30) * 20);
+        user.setCooldown(stack, getProperty("cooldown", 120) * 20);
         var savedPos = lastSavedPosition.get(user.getUniqueId());
         if (savedPos != null && savedPos.isWorldLoaded()) {
             var world = user.getWorld();

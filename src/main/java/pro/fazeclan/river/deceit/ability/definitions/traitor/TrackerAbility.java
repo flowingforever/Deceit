@@ -26,7 +26,7 @@ public class TrackerAbility extends Ability {
         var item = event.getItemStack();
 
         var values = GameUtil.getGame(player.getWorld()).getGameValues(player.getWorld().getUID());
-        player.setCooldown(item, getProperty("cooldown", 100));
+        player.setCooldown(item, getProperty("cooldown", 5) * 20);
         var tracked = player.getWorld().getPlayers()
                 .stream()
                 .filter(p -> !p.equals(player) && !p.getGameMode().isInvulnerable() && RoleUtil.isInnocent(p, values))

@@ -34,7 +34,7 @@ public class BackstabAbility extends Ability {
             event.setDamage(0.0);
             return;
         }
-        attacker.setCooldown(item, getProperty("cooldown", 100));
+        attacker.setCooldown(item, getProperty("cooldown", 30) * 20);
         if (!isBehindPlayer(attacker, victim)) {
             event.setDamage(event.getDamage() / 2.0);
             return;

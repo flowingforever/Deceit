@@ -38,7 +38,7 @@ public class SwapperAbility extends Ability {
                 );
         if (!condition.getAvailable()) return;
         player.setCooldown(event.getItemStack(), 60); // prevent fast uses of the item
-        SwapperDialogMenu.openMenu(player, player.getWorld(), values, condition, getProperty("cooldown", 30), null);
+        SwapperDialogMenu.openMenu(player, player.getWorld(), values, condition, getProperty("cooldown", 90), null);
     }
 
     @Override

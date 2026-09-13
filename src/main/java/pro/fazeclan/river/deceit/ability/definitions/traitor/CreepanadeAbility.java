@@ -26,7 +26,7 @@ public class CreepanadeAbility extends Ability {
         var player = event.getPlayer();
         var item = event.getItemStack();
 
-        player.setCooldown(item, getProperty("cooldown", 200));
+        player.setCooldown(item, getProperty("cooldown", 60) * 20);
         var world = player.getWorld();
         world.playSound(player.getLocation(), "minecraft:entity.creeper.hurt", 1.0f, 1.0f);
         world.spawn(player.getEyeLocation(), SulfurCube.class, sc -> {
