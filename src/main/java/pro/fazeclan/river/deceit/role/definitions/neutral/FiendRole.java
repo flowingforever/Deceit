@@ -1,15 +1,18 @@
 package pro.fazeclan.river.deceit.role.definitions.neutral;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import pro.fazeclan.river.deceit.Deceit;
@@ -19,6 +22,7 @@ import pro.fazeclan.river.deceit.event.MurderTickEvent;
 import pro.fazeclan.river.deceit.menu.inventory.ShopEntry;
 import pro.fazeclan.river.deceit.role.definitions.AbstractNeutralRole;
 import pro.fazeclan.river.deceit.util.GlowUtil;
+import pro.fazeclan.river.deceit.util.MiscUtil;
 import pro.fazeclan.river.deceit.util.RoleUtil;
 import pro.fazeclan.river.deceit.util.TimeUtil;
 import pro.fazeclan.river.jarona.condition.Condition;
@@ -143,6 +147,47 @@ public class FiendRole extends AbstractNeutralRole {
                             meta.itemName(Component.text("\"Health Kit\""));
                         }),
                         1
+                ),
+                new ShopEntry(
+                        ItemType.ENDER_EYE.createItemStack(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "teleporter"
+                            );
+                            meta.itemName(Component.text("Teleporter"));
+                            meta.lore(List.of(
+                                    Component.empty(),
+                                    Component.text("Save a location and teleport back to it!").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY)
+                            ));
+                        }),
+                        2
+                ),
+                new ShopEntry(
+                        MiscUtil.createItem(Material.SLIME_BALL, 1, stack -> stack.editMeta(meta -> {
+                            meta.getPersistentDataContainer().set(
+                                    Deceit.getKey("ability"),
+                                    PersistentDataType.STRING,
+                                    "muzzle"
+                            );
+                            meta.itemName(Component.text("Muzzle"));
+                        })),
+                        2
+                ),
+                new ShopEntry(
+                        MiscUtil.createItem(Material.POTION, 1, stack -> {
+                            stack.editMeta(meta -> {
+                                meta.getPersistentDataContainer().set(
+                                        Deceit.getKey("ability"),
+                                        PersistentDataType.STRING,
+                                        "swoop"
+                                );
+                                meta.customName(Component.text("Swoop").decoration(TextDecoration.ITALIC, false));
+                                ((PotionMeta) meta).setBasePotionType(PotionType.INVISIBILITY);
+                            });
+                            stack.unsetData(DataComponentTypes.CONSUMABLE);
+                        }),
+                        2
                 )
         );
     }
