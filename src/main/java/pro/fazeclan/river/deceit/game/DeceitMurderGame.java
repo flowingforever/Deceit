@@ -425,7 +425,7 @@ public class DeceitMurderGame extends GameWithMap {
 
     private List<Role> getPotentialWinningRoles(List<Player> players, GameValues values) {
         var manager = plugin.getRoleManager();
-        var mainList = manager.getRoles()
+        return manager.getRoles()
                 .stream()
                 .unordered()
                 .map(role -> manager.getRole(role.winsWith()))
@@ -435,18 +435,6 @@ public class DeceitMurderGame extends GameWithMap {
                             var r = RoleUtil.getRole(player, values);
                             return r != null && r.winsWith().equals(role.winsWith());
                         }))
-                .toList();
-
-        if (mainList.stream().anyMatch(Role::livingKeepsGameGoing)) {
-            return mainList
-                    .stream()
-                    .filter(role -> role.hasWon(players, values))
-                    .filter(Role::livingKeepsGameGoing)
-                    .toList();
-        }
-
-        return mainList
-                .stream()
                 .filter(role -> role.hasWon(players, values))
                 .toList();
     }
@@ -464,9 +452,13 @@ public class DeceitMurderGame extends GameWithMap {
     }
 
     private void selectModifiersAndApply(List<Player> players, World world, GameValues values) {
-        var potentialModifiers = new ArrayList<>(plugin.getModifierManager().getRegistry().values());
+        var potentialModifiers = new ArrayList<>(plugin.getModifierManager().getModifiers());
         Collections.shuffle(potentialModifiers);
         var config = plugin.getConfig();
+        var modChance = config.getDouble("modifier-chance", 75.0);
+        if (modChance <= 0.0) {
+            return;
+        }
         double chance = Math.clamp(config.getDouble("modifier-chance", 75.0) / 100, 0.0, 1.0);
         double initialChance = chance;
         List<Modifier> modifiers = new ArrayList<>();

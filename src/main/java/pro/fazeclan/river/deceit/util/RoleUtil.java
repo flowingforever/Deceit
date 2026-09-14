@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import pro.fazeclan.river.deceit.role.Faction;
 import pro.fazeclan.river.deceit.role.Role;
+import pro.fazeclan.river.deceit.role.RoleManager;
 import pro.fazeclan.river.jarona.game.GameValues;
 
 import java.util.List;
@@ -16,7 +17,13 @@ public class RoleUtil {
     }
 
     public static Role getRole(Player player, GameValues values) {
-        return values.getValue("role_" + player.getUniqueId());
+        return getRole(player.getUniqueId(), values);
+    }
+
+    public static Role getRoleElseInnocent(Player player, GameValues values, RoleManager manager) {
+        var role = getRole(player, values);
+        if (role == null) return manager.getRole("innocent");
+        return role;
     }
 
     public static boolean areSameTeam(Player p1, Player p2, GameValues values) {

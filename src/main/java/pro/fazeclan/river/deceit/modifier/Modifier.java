@@ -37,6 +37,10 @@ public abstract class Modifier implements Listener {
         return (T) config.get(key, def);
     }
 
+    public boolean isEnabled() {
+        return getProperty("enabled", true);
+    }
+
     public abstract void init(List<Player> players, World world, GameValues values);
     public abstract void tick(List<Player> players, World world, GameValues values);
 

@@ -37,7 +37,10 @@ public class ModifierManager {
     }
 
     public Collection<Modifier> getModifiers() {
-        return registry.values();
+        return registry.values()
+                .stream()
+                .filter(Modifier::isEnabled)
+                .toList();
     }
 
 }

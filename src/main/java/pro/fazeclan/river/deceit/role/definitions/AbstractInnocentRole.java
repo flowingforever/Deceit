@@ -22,8 +22,11 @@ public abstract class AbstractInnocentRole extends Role {
 
     @Override
     public boolean hasWon(List<Player> players, GameValues values) {
-        return !RoleUtil.isTeamAlive(players, values, Faction.TRAITOR)
-                || values.getValue("time_limit", 0L) <= values.getValue("tick", 0L);
+        var manager = getPlugin().getRoleManager();
+        return (!RoleUtil.isTeamAlive(players, values, Faction.TRAITOR)
+                || values.getValue("time_limit", 0L) <= values.getValue("tick", 0L))
+                && players.stream().filter(p -> !p.getGameMode().isInvulnerable())
+                .noneMatch(p -> RoleUtil.getRoleElseInnocent(p, values, manager).livingKeepsGameGoing());
     }
 
     @Override
